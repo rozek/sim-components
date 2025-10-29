@@ -1,2 +1,7 @@
-# sim-components
-(wip, please ignore)
+# sim-components #
+
+(WIP, please ignore for the moment)
+
+## License ##
+
+[MIT License](LICENSE.md)
