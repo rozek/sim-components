@@ -14,8 +14,8 @@
   },
   "license": "MIT",
   "type": "module",
-  "main": "./dist/sim-components.js",
-  "module": "./dist/sim-components.js",
+  "main": "./dist/sim-components.esm.js",
+  "module": "./dist/sim-components.esm.js",
   "types": "./dist/sim-components.d.ts",
   "scripts": {
     "dev": "vite",
