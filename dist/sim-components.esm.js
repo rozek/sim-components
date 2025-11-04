@@ -1,402 +1,669 @@
-import { ValidatorForClassifier as _e, acceptNil as Ue, rejectNil as je, ValueIsStringMatching as Ne, ValueIsFiniteNumber as no, ValueIsPlainObject as Re, expectText as ei, expectBoolean as ti, quoted as it, ValueIsOneOf as ze, ValueIsListSatisfying as ue, ValueIsOrdinal as dt, expectPlainObject as Kt, ValueIsFunction as Ke, expectFunction as Zt, allowTextline as oo, ValueIsBoolean as Xt, ValueIsNumber as ht, ValueIsNumberInRange as Yt, ValueIsInteger as io, ValueIsIntegerInRange as ao, ValueIsCardinal as ro, ValueIsString as so, ValueIsText as kn, ValueIsTextline as ce, ValueIsColor as Ft, ValueIsEMailAddress as Ht, ValueIsURL as Ut, allowPlainObject as An, expectValue as lo, allowFunction as Oe, allowOrdinal as mn, expectTextline as ni } from "javascript-interface-library";
-import { h as oi, options as ii, toChildArray as In } from "preact";
-import ai from "htm";
-import { Marked as ri } from "marked";
-import { Marked as Ul } from "marked";
-import si from "marked-katex-extension";
-import { markedHighlight as li } from "marked-highlight";
-var w = ai.bind(oi), at, le, gn, Pn, bt = 0, co = [], pe = ii, Bn = pe.__b, Vn = pe.__r, zn = pe.diffed, Fn = pe.__c, Hn = pe.unmount, Un = pe.__;
-function Jt(e, t) {
-  pe.__h && pe.__h(le, e, bt || t), bt = 0;
-  var n = le.__H || (le.__H = { __: [], __h: [] });
-  return e >= n.__.length && n.__.push({}), n.__[e];
-}
-function pt(e) {
-  return bt = 1, ci(po, e);
-}
-function ci(e, t, n) {
-  var o = Jt(at++, 2);
-  if (o.t = e, !o.__c && (o.__ = [po(void 0, t), function(s) {
-    var l = o.__N ? o.__N[0] : o.__[0], c = o.t(l, s);
-    l !== c && (o.__N = [c, o.__[1]], o.__c.setState({}));
-  }], o.__c = le, !le.__f)) {
-    var i = function(s, l, c) {
-      if (!o.__c.__H) return !0;
-      var u = o.__c.__H.__.filter(function(p) {
-        return !!p.__c;
-      });
-      if (u.every(function(p) {
-        return !p.__N;
-      })) return !r || r.call(this, s, l, c);
-      var d = o.__c.props !== s;
-      return u.forEach(function(p) {
-        if (p.__N) {
-          var m = p.__[0];
-          p.__ = p.__N, p.__N = void 0, m !== p.__[0] && (d = !0);
+import { ValidatorForClassifier, acceptNil, rejectNil, ValueIsStringMatching, ValueIsFiniteNumber, ValueIsPlainObject, expectText, expectBoolean, quoted, ValueIsOneOf, ValueIsListSatisfying, ValueIsOrdinal, expectPlainObject, ValueIsFunction, expectFunction, allowTextline, ValueIsBoolean, ValueIsNumber, ValueIsNumberInRange, ValueIsInteger, ValueIsIntegerInRange, ValueIsCardinal, ValueIsString, ValueIsText, ValueIsTextline, ValueIsColor, ValueIsEMailAddress, ValueIsURL, allowPlainObject, expectValue, allowFunction, allowOrdinal, expectTextline } from "javascript-interface-library";
+import { h, toChildArray } from "preact";
+import e from "htm";
+import { Marked } from "marked";
+import { Marked as Marked2 } from "marked";
+import markedKatex from "marked-katex-extension";
+import { markedHighlight } from "marked-highlight";
+var m = e.bind(h);
+var l;
+l = { __e: function(n, l2, u, t) {
+  for (var i, r, o; l2 = l2.__; ) if ((i = l2.__c) && !i.__) try {
+    if ((r = i.constructor) && null != r.getDerivedStateFromError && (i.setState(r.getDerivedStateFromError(n)), o = i.__d), null != i.componentDidCatch && (i.componentDidCatch(n, t || {}), o = i.__d), o) return i.__E = i;
+  } catch (l3) {
+    n = l3;
+  }
+  throw n;
+} }, "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout;
+const COMPONENT_FORCE = 1 << 2;
+const ObjectIs = Object.is;
+let currentIndex;
+let currentComponent;
+let previousComponent;
+let currentHook = 0;
+let afterPaintEffects = [];
+const options$1 = (
+  /** @type {import('./internal').Options} */
+  l
+);
+let oldBeforeDiff = options$1._diff;
+let oldBeforeRender = options$1._render;
+let oldAfterDiff = options$1.diffed;
+let oldCommit = options$1._commit;
+let oldBeforeUnmount = options$1.unmount;
+let oldRoot = options$1._root;
+const RAF_TIMEOUT = 35;
+let prevRaf;
+options$1._diff = (vnode) => {
+  currentComponent = null;
+  if (oldBeforeDiff) oldBeforeDiff(vnode);
+};
+options$1._root = (vnode, parentDom) => {
+  if (vnode && parentDom._children && parentDom._children._mask) {
+    vnode._mask = parentDom._children._mask;
+  }
+  if (oldRoot) oldRoot(vnode, parentDom);
+};
+options$1._render = (vnode) => {
+  if (oldBeforeRender) oldBeforeRender(vnode);
+  currentComponent = vnode._component;
+  currentIndex = 0;
+  const hooks = currentComponent.__hooks;
+  if (hooks) {
+    if (previousComponent === currentComponent) {
+      hooks._pendingEffects = [];
+      currentComponent._renderCallbacks = [];
+      hooks._list.forEach((hookItem) => {
+        if (hookItem._nextValue) {
+          hookItem._value = hookItem._nextValue;
         }
-      }), r && r.call(this, s, l, c) || d;
-    };
-    le.__f = !0;
-    var r = le.shouldComponentUpdate, a = le.componentWillUpdate;
-    le.componentWillUpdate = function(s, l, c) {
-      if (this.__e) {
-        var u = r;
-        r = void 0, i(s, l, c), r = u;
-      }
-      a && a.call(this, s, l, c);
-    }, le.shouldComponentUpdate = i;
-  }
-  return o.__N || o.__;
-}
-function rt(e, t) {
-  var n = Jt(at++, 3);
-  !pe.__s && uo(n.__H, t) && (n.__ = e, n.u = t, le.__H.__h.push(n));
-}
-function W(e) {
-  return bt = 5, kt(function() {
-    return { current: e };
-  }, []);
-}
-function kt(e, t) {
-  var n = Jt(at++, 7);
-  return uo(n.__H, t) && (n.__ = e(), n.__H = t, n.__h = e), n.__;
-}
-function X(e, t) {
-  return bt = 8, kt(function() {
-    return e;
-  }, t);
-}
-function Ee() {
-  var e = Jt(at++, 11);
-  if (!e.__) {
-    for (var t = le.__v; t !== null && !t.__m && t.__ !== null; ) t = t.__;
-    var n = t.__m || (t.__m = [0, 0]);
-    e.__ = "P" + n[0] + "-" + n[1]++;
-  }
-  return e.__;
-}
-function ui() {
-  for (var e; e = co.shift(); ) if (e.__P && e.__H) try {
-    e.__H.__h.forEach(Vt), e.__H.__h.forEach(xn), e.__H.__h = [];
-  } catch (t) {
-    e.__H.__h = [], pe.__e(t, e.__v);
-  }
-}
-pe.__b = function(e) {
-  le = null, Bn && Bn(e);
-}, pe.__ = function(e, t) {
-  e && t.__k && t.__k.__m && (e.__m = t.__k.__m), Un && Un(e, t);
-}, pe.__r = function(e) {
-  Vn && Vn(e), at = 0;
-  var t = (le = e.__c).__H;
-  t && (gn === le ? (t.__h = [], le.__h = [], t.__.forEach(function(n) {
-    n.__N && (n.__ = n.__N), n.u = n.__N = void 0;
-  })) : (t.__h.forEach(Vt), t.__h.forEach(xn), t.__h = [], at = 0)), gn = le;
-}, pe.diffed = function(e) {
-  zn && zn(e);
-  var t = e.__c;
-  t && t.__H && (t.__H.__h.length && (co.push(t) !== 1 && Pn === pe.requestAnimationFrame || ((Pn = pe.requestAnimationFrame) || di)(ui)), t.__H.__.forEach(function(n) {
-    n.u && (n.__H = n.u), n.u = void 0;
-  })), gn = le = null;
-}, pe.__c = function(e, t) {
-  t.some(function(n) {
-    try {
-      n.__h.forEach(Vt), n.__h = n.__h.filter(function(o) {
-        return !o.__ || xn(o);
+        hookItem._pendingArgs = hookItem._nextValue = void 0;
       });
-    } catch (o) {
-      t.some(function(i) {
-        i.__h && (i.__h = []);
-      }), t = [], pe.__e(o, n.__v);
+    } else {
+      hooks._pendingEffects.forEach(invokeCleanup);
+      hooks._pendingEffects.forEach(invokeEffect);
+      hooks._pendingEffects = [];
+      currentIndex = 0;
     }
-  }), Fn && Fn(e, t);
-}, pe.unmount = function(e) {
-  Hn && Hn(e);
-  var t, n = e.__c;
-  n && n.__H && (n.__H.__.forEach(function(o) {
+  }
+  previousComponent = currentComponent;
+};
+options$1.diffed = (vnode) => {
+  if (oldAfterDiff) oldAfterDiff(vnode);
+  const c = vnode._component;
+  if (c && c.__hooks) {
+    if (c.__hooks._pendingEffects.length) afterPaint(afterPaintEffects.push(c));
+    c.__hooks._list.forEach((hookItem) => {
+      if (hookItem._pendingArgs) {
+        hookItem._args = hookItem._pendingArgs;
+      }
+      hookItem._pendingArgs = void 0;
+    });
+  }
+  previousComponent = currentComponent = null;
+};
+options$1._commit = (vnode, commitQueue) => {
+  commitQueue.some((component) => {
     try {
-      Vt(o);
-    } catch (i) {
-      t = i;
+      component._renderCallbacks.forEach(invokeCleanup);
+      component._renderCallbacks = component._renderCallbacks.filter(
+        (cb) => cb._value ? invokeEffect(cb) : true
+      );
+    } catch (e2) {
+      commitQueue.some((c) => {
+        if (c._renderCallbacks) c._renderCallbacks = [];
+      });
+      commitQueue = [];
+      options$1._catchError(e2, component._vnode);
     }
-  }), n.__H = void 0, t && pe.__e(t, n.__v));
-};
-var jn = typeof requestAnimationFrame == "function";
-function di(e) {
-  var t, n = function() {
-    clearTimeout(o), jn && cancelAnimationFrame(t), setTimeout(e);
-  }, o = setTimeout(n, 35);
-  jn && (t = requestAnimationFrame(n));
-}
-function Vt(e) {
-  var t = le, n = e.__c;
-  typeof n == "function" && (e.__c = void 0, n()), le = t;
-}
-function xn(e) {
-  var t = le;
-  e.__c = e.__(), le = t;
-}
-function uo(e, t) {
-  return !e || e.length !== t.length || t.some(function(n, o) {
-    return n !== e[o];
   });
+  if (oldCommit) oldCommit(vnode, commitQueue);
+};
+options$1.unmount = (vnode) => {
+  if (oldBeforeUnmount) oldBeforeUnmount(vnode);
+  const c = vnode._component;
+  if (c && c.__hooks) {
+    let hasErrored;
+    c.__hooks._list.forEach((s) => {
+      try {
+        invokeCleanup(s);
+      } catch (e2) {
+        hasErrored = e2;
+      }
+    });
+    c.__hooks = void 0;
+    if (hasErrored) options$1._catchError(hasErrored, c._vnode);
+  }
+};
+function getHookState(index, type) {
+  if (options$1._hook) {
+    options$1._hook(currentComponent, index, currentHook || type);
+  }
+  currentHook = 0;
+  const hooks = currentComponent.__hooks || (currentComponent.__hooks = {
+    _list: [],
+    _pendingEffects: []
+  });
+  if (index >= hooks._list.length) {
+    hooks._list.push({});
+  }
+  return hooks._list[index];
 }
-function po(e, t) {
-  return typeof t == "function" ? t(e) : t;
+function useState(initialState) {
+  currentHook = 1;
+  return useReducer(invokeOrReturn, initialState);
 }
-const vn = /* @__PURE__ */ new Set(), ye = /* @__PURE__ */ new WeakMap(), Ze = /* @__PURE__ */ new WeakMap(), Se = /* @__PURE__ */ new WeakMap(), wt = /* @__PURE__ */ new WeakMap(), hn = /* @__PURE__ */ new WeakMap(), gt = /* @__PURE__ */ new WeakMap(), qe = /* @__PURE__ */ new WeakMap(), Fe = /* @__PURE__ */ new WeakMap(), et = /* @__PURE__ */ new WeakSet();
-let $e, $n = 0, En = 0;
-const Be = "__aa_tgt", xt = "__aa_del", jt = "__aa_new", fo = (e) => {
-  const t = gi(e);
-  t && t.forEach((n) => hi(n));
-}, pi = (e) => {
-  e.forEach((t) => {
-    t.target === $e && fi(), ye.has(t.target) && Xe(t.target);
+function useReducer(reducer, initialState, init) {
+  const hookState = getHookState(currentIndex++, 2);
+  hookState._reducer = reducer;
+  if (!hookState._component) {
+    hookState._value = [
+      invokeOrReturn(void 0, initialState),
+      (action) => {
+        const currentValue = hookState._nextValue ? hookState._nextValue[0] : hookState._value[0];
+        const nextValue = hookState._reducer(currentValue, action);
+        if (!ObjectIs(currentValue, nextValue)) {
+          hookState._nextValue = [nextValue, hookState._value[1]];
+          hookState._component.setState({});
+        }
+      }
+    ];
+    hookState._component = currentComponent;
+    if (!currentComponent._hasScuFromHooks) {
+      let updateHookState = function(p, s, c) {
+        if (!hookState._component.__hooks) return true;
+        const hooksList = hookState._component.__hooks._list;
+        let shouldUpdate = hookState._component.props !== p || hooksList.every((x) => !x._nextValue);
+        hooksList.forEach((hookItem) => {
+          if (hookItem._nextValue) {
+            const currentValue = hookItem._value[0];
+            hookItem._value = hookItem._nextValue;
+            hookItem._nextValue = void 0;
+            if (!ObjectIs(currentValue, hookItem._value[0]))
+              shouldUpdate = true;
+          }
+        });
+        return prevScu ? prevScu.call(this, p, s, c) || shouldUpdate : shouldUpdate;
+      };
+      currentComponent._hasScuFromHooks = true;
+      let prevScu = currentComponent.shouldComponentUpdate;
+      const prevCWU = currentComponent.componentWillUpdate;
+      currentComponent.componentWillUpdate = function(p, s, c) {
+        if (this._bits & COMPONENT_FORCE) {
+          let tmp = prevScu;
+          prevScu = void 0;
+          updateHookState(p, s, c);
+          prevScu = tmp;
+        }
+        if (prevCWU) prevCWU.call(this, p, s, c);
+      };
+      currentComponent.shouldComponentUpdate = updateHookState;
+    }
+  }
+  return hookState._value;
+}
+function useEffect(callback, args) {
+  const state = getHookState(currentIndex++, 3);
+  if (!options$1._skipEffects && argsChanged(state._args, args)) {
+    state._value = callback;
+    state._pendingArgs = args;
+    currentComponent.__hooks._pendingEffects.push(state);
+  }
+}
+function useRef(initialValue) {
+  currentHook = 5;
+  return useMemo(() => ({ current: initialValue }), []);
+}
+function useMemo(factory, args) {
+  const state = getHookState(currentIndex++, 7);
+  if (argsChanged(state._args, args)) {
+    state._value = factory();
+    state._args = args;
+    state._factory = factory;
+  }
+  return state._value;
+}
+function useCallback(callback, args) {
+  currentHook = 8;
+  return useMemo(() => callback, args);
+}
+function useId() {
+  const state = getHookState(currentIndex++, 11);
+  if (!state._value) {
+    let root2 = currentComponent._vnode;
+    while (root2 !== null && !root2._mask && root2._parent !== null) {
+      root2 = root2._parent;
+    }
+    let mask = root2._mask || (root2._mask = [0, 0]);
+    state._value = "P" + mask[0] + "-" + mask[1]++;
+  }
+  return state._value;
+}
+function flushAfterPaintEffects() {
+  let component;
+  while (component = afterPaintEffects.shift()) {
+    if (!component._parentDom || !component.__hooks) continue;
+    try {
+      component.__hooks._pendingEffects.forEach(invokeCleanup);
+      component.__hooks._pendingEffects.forEach(invokeEffect);
+      component.__hooks._pendingEffects = [];
+    } catch (e2) {
+      component.__hooks._pendingEffects = [];
+      options$1._catchError(e2, component._vnode);
+    }
+  }
+}
+let HAS_RAF = typeof requestAnimationFrame == "function";
+function afterNextFrame(callback) {
+  const done = () => {
+    clearTimeout(timeout);
+    if (HAS_RAF) cancelAnimationFrame(raf);
+    setTimeout(callback);
+  };
+  const timeout = setTimeout(done, RAF_TIMEOUT);
+  let raf;
+  if (HAS_RAF) {
+    raf = requestAnimationFrame(done);
+  }
+}
+function afterPaint(newQueueLength) {
+  if (newQueueLength === 1 || prevRaf !== options$1.requestAnimationFrame) {
+    prevRaf = options$1.requestAnimationFrame;
+    (prevRaf || afterNextFrame)(flushAfterPaintEffects);
+  }
+}
+function invokeCleanup(hook) {
+  const comp = currentComponent;
+  let cleanup = hook._cleanup;
+  if (typeof cleanup == "function") {
+    hook._cleanup = void 0;
+    cleanup();
+  }
+  currentComponent = comp;
+}
+function invokeEffect(hook) {
+  const comp = currentComponent;
+  hook._cleanup = hook._value();
+  currentComponent = comp;
+}
+function argsChanged(oldArgs, newArgs) {
+  return !oldArgs || oldArgs.length !== newArgs.length || newArgs.some((arg, index) => !ObjectIs(arg, oldArgs[index]));
+}
+function invokeOrReturn(arg, f) {
+  return typeof f == "function" ? f(arg) : f;
+}
+const parents = /* @__PURE__ */ new Set();
+const coords = /* @__PURE__ */ new WeakMap();
+const siblings = /* @__PURE__ */ new WeakMap();
+const animations = /* @__PURE__ */ new WeakMap();
+const intersections = /* @__PURE__ */ new WeakMap();
+const mutationObservers = /* @__PURE__ */ new WeakMap();
+const intervals = /* @__PURE__ */ new WeakMap();
+const options = /* @__PURE__ */ new WeakMap();
+const debounces = /* @__PURE__ */ new WeakMap();
+const enabled = /* @__PURE__ */ new WeakSet();
+let root;
+let scrollX = 0;
+let scrollY = 0;
+const TGT = "__aa_tgt";
+const DEL = "__aa_del";
+const NEW = "__aa_new";
+const handleMutations = (mutations) => {
+  const elements = getElements(mutations);
+  if (elements) {
+    elements.forEach((el) => animate(el));
+  }
+};
+const handleResizes = (entries) => {
+  entries.forEach((entry) => {
+    if (entry.target === root)
+      updateAllPos();
+    if (coords.has(entry.target))
+      updatePos(entry.target);
   });
 };
-function mo(e) {
-  const t = e.getBoundingClientRect(), n = $e?.clientWidth || 0, o = $e?.clientHeight || 0;
-  return t.bottom < 0 || t.top > o || t.right < 0 || t.left > n;
+function isOffscreen(el) {
+  const rect = el.getBoundingClientRect();
+  const vw = (root === null || root === void 0 ? void 0 : root.clientWidth) || 0;
+  const vh = (root === null || root === void 0 ? void 0 : root.clientHeight) || 0;
+  return rect.bottom < 0 || rect.top > vh || rect.right < 0 || rect.left > vw;
 }
-function Sn(e) {
-  const t = wt.get(e);
-  t?.disconnect();
-  let n = ye.get(e), o = 0;
-  const i = 5;
-  n || (n = st(e), ye.set(e, n));
-  const { offsetWidth: r, offsetHeight: a } = $e, l = [
-    n.top - i,
-    r - (n.left + i + n.width),
-    a - (n.top + i + n.height),
-    n.left - i
-  ].map((u) => `${-1 * Math.floor(u)}px`).join(" "), c = new IntersectionObserver(() => {
-    ++o > 1 && Xe(e);
+function observePosition(el) {
+  const oldObserver = intersections.get(el);
+  oldObserver === null || oldObserver === void 0 ? void 0 : oldObserver.disconnect();
+  let rect = coords.get(el);
+  let invocations = 0;
+  const buffer = 5;
+  if (!rect) {
+    rect = getCoords(el);
+    coords.set(el, rect);
+  }
+  const { offsetWidth, offsetHeight } = root;
+  const rootMargins = [
+    rect.top - buffer,
+    offsetWidth - (rect.left + buffer + rect.width),
+    offsetHeight - (rect.top + buffer + rect.height),
+    rect.left - buffer
+  ];
+  const rootMargin = rootMargins.map((px) => `${-1 * Math.floor(px)}px`).join(" ");
+  const observer = new IntersectionObserver(() => {
+    ++invocations > 1 && updatePos(el);
   }, {
-    root: $e,
+    root,
     threshold: 1,
-    rootMargin: l
+    rootMargin
   });
-  c.observe(e), wt.set(e, c);
+  observer.observe(el);
+  intersections.set(el, observer);
 }
-function Xe(e, t = !0) {
-  clearTimeout(Fe.get(e));
-  const n = Qt(e), o = t ? vt(n) ? 500 : n.duration : 0;
-  Fe.set(e, setTimeout(async () => {
-    const i = Se.get(e);
+function updatePos(el, debounce = true) {
+  clearTimeout(debounces.get(el));
+  const optionsOrPlugin = getOptions(el);
+  const delay = debounce ? isPlugin(optionsOrPlugin) ? 500 : optionsOrPlugin.duration : 0;
+  debounces.set(el, setTimeout(async () => {
+    const currentAnimation = animations.get(el);
     try {
-      await i?.finished, ye.set(e, st(e)), Sn(e);
+      await (currentAnimation === null || currentAnimation === void 0 ? void 0 : currentAnimation.finished);
+      coords.set(el, getCoords(el));
+      observePosition(el);
     } catch {
     }
-  }, o));
+  }, delay));
 }
-function fi() {
-  clearTimeout(Fe.get($e)), Fe.set($e, setTimeout(() => {
-    vn.forEach((e) => zt(e, (t) => go(() => Xe(t))));
+function updateAllPos() {
+  clearTimeout(debounces.get(root));
+  debounces.set(root, setTimeout(() => {
+    parents.forEach((parent) => forEach(parent, (el) => lowPriority(() => updatePos(el))));
   }, 100));
 }
-function mi(e) {
+function poll(el) {
   setTimeout(() => {
-    gt.set(e, setInterval(() => go(Xe.bind(null, e)), 2e3));
+    intervals.set(el, setInterval(() => lowPriority(updatePos.bind(null, el)), 2e3));
   }, Math.round(2e3 * Math.random()));
 }
-function go(e) {
-  typeof requestIdleCallback == "function" ? requestIdleCallback(() => e()) : requestAnimationFrame(() => e());
+function lowPriority(callback) {
+  if (typeof requestIdleCallback === "function") {
+    requestIdleCallback(() => callback());
+  } else {
+    requestAnimationFrame(() => callback());
+  }
 }
-let Pe;
-const ho = typeof window < "u" && "ResizeObserver" in window;
-ho && ($e = document.documentElement, new MutationObserver(fo), Pe = new ResizeObserver(pi), window.addEventListener("scroll", () => {
-  En = window.scrollY, $n = window.scrollX;
-}), Pe.observe($e));
-function gi(e) {
-  return e.reduce((o, i) => [
-    ...o,
-    ...Array.from(i.addedNodes),
-    ...Array.from(i.removedNodes)
-  ], []).every((o) => o.nodeName === "#comment") ? !1 : e.reduce((o, i) => {
-    if (o === !1)
-      return !1;
-    if (i.target instanceof Element) {
-      if (bn(i.target), !o.has(i.target)) {
-        o.add(i.target);
-        for (let r = 0; r < i.target.children.length; r++) {
-          const a = i.target.children.item(r);
-          if (a) {
-            if (xt in a)
-              return !1;
-            bn(i.target, a), o.add(a);
+let resize;
+const supportedBrowser = typeof window !== "undefined" && "ResizeObserver" in window;
+if (supportedBrowser) {
+  root = document.documentElement;
+  new MutationObserver(handleMutations);
+  resize = new ResizeObserver(handleResizes);
+  window.addEventListener("scroll", () => {
+    scrollY = window.scrollY;
+    scrollX = window.scrollX;
+  });
+  resize.observe(root);
+}
+function getElements(mutations) {
+  const observedNodes = mutations.reduce((nodes, mutation) => {
+    return [
+      ...nodes,
+      ...Array.from(mutation.addedNodes),
+      ...Array.from(mutation.removedNodes)
+    ];
+  }, []);
+  const onlyCommentNodesObserved = observedNodes.every((node) => node.nodeName === "#comment");
+  if (onlyCommentNodesObserved)
+    return false;
+  return mutations.reduce((elements, mutation) => {
+    if (elements === false)
+      return false;
+    if (mutation.target instanceof Element) {
+      target(mutation.target);
+      if (!elements.has(mutation.target)) {
+        elements.add(mutation.target);
+        for (let i = 0; i < mutation.target.children.length; i++) {
+          const child = mutation.target.children.item(i);
+          if (!child)
+            continue;
+          if (DEL in child) {
+            return false;
+          }
+          target(mutation.target, child);
+          elements.add(child);
+        }
+      }
+      if (mutation.removedNodes.length) {
+        for (let i = 0; i < mutation.removedNodes.length; i++) {
+          const child = mutation.removedNodes[i];
+          if (DEL in child) {
+            return false;
+          }
+          if (child instanceof Element) {
+            elements.add(child);
+            target(mutation.target, child);
+            siblings.set(child, [
+              mutation.previousSibling,
+              mutation.nextSibling
+            ]);
           }
         }
       }
-      if (i.removedNodes.length)
-        for (let r = 0; r < i.removedNodes.length; r++) {
-          const a = i.removedNodes[r];
-          if (xt in a)
-            return !1;
-          a instanceof Element && (o.add(a), bn(i.target, a), Ze.set(a, [
-            i.previousSibling,
-            i.nextSibling
-          ]));
-        }
     }
-    return o;
+    return elements;
   }, /* @__PURE__ */ new Set());
 }
-function bn(e, t) {
-  !t && !(Be in e) ? Object.defineProperty(e, Be, { value: e }) : t && !(Be in t) && Object.defineProperty(t, Be, { value: e });
+function target(el, child) {
+  if (!child && !(TGT in el))
+    Object.defineProperty(el, TGT, { value: el });
+  else if (child && !(TGT in child))
+    Object.defineProperty(child, TGT, { value: el });
 }
-function hi(e) {
-  var t, n;
-  const o = e.isConnected, i = ye.has(e);
-  o && Ze.has(e) && Ze.delete(e), ((t = Se.get(e)) === null || t === void 0 ? void 0 : t.playState) !== "finished" && ((n = Se.get(e)) === null || n === void 0 || n.cancel()), jt in e ? Gn(e) : i && o ? wi(e) : i && !o ? xi(e) : Gn(e);
+function animate(el) {
+  var _a, _b;
+  const isMounted = el.isConnected;
+  const preExisting = coords.has(el);
+  if (isMounted && siblings.has(el))
+    siblings.delete(el);
+  if (((_a = animations.get(el)) === null || _a === void 0 ? void 0 : _a.playState) !== "finished") {
+    (_b = animations.get(el)) === null || _b === void 0 ? void 0 : _b.cancel();
+  }
+  if (NEW in el) {
+    add(el);
+  } else if (preExisting && isMounted) {
+    remain(el);
+  } else if (preExisting && !isMounted) {
+    remove(el);
+  } else {
+    add(el);
+  }
 }
-function Ce(e) {
-  return Number(e.replace(/[^0-9.\-]/g, ""));
+function raw(str) {
+  return Number(str.replace(/[^0-9.\-]/g, ""));
 }
-function bi(e) {
-  let t = e.parentElement;
-  for (; t; ) {
-    if (t.scrollLeft || t.scrollTop)
-      return { x: t.scrollLeft, y: t.scrollTop };
-    t = t.parentElement;
+function getScrollOffset(el) {
+  let p = el.parentElement;
+  while (p) {
+    if (p.scrollLeft || p.scrollTop) {
+      return { x: p.scrollLeft, y: p.scrollTop };
+    }
+    p = p.parentElement;
   }
   return { x: 0, y: 0 };
 }
-function st(e) {
-  const t = e.getBoundingClientRect(), { x: n, y: o } = bi(e);
+function getCoords(el) {
+  const rect = el.getBoundingClientRect();
+  const { x, y } = getScrollOffset(el);
   return {
-    top: t.top + o,
-    left: t.left + n,
-    width: t.width,
-    height: t.height
+    top: rect.top + y,
+    left: rect.left + x,
+    width: rect.width,
+    height: rect.height
   };
 }
-function bo(e, t, n) {
-  let o = t.width, i = t.height, r = n.width, a = n.height;
-  const s = getComputedStyle(e);
-  if (s.getPropertyValue("box-sizing") === "content-box") {
-    const c = Ce(s.paddingTop) + Ce(s.paddingBottom) + Ce(s.borderTopWidth) + Ce(s.borderBottomWidth), u = Ce(s.paddingLeft) + Ce(s.paddingRight) + Ce(s.borderRightWidth) + Ce(s.borderLeftWidth);
-    o -= u, r -= u, i -= c, a -= c;
+function getTransitionSizes(el, oldCoords, newCoords) {
+  let widthFrom = oldCoords.width;
+  let heightFrom = oldCoords.height;
+  let widthTo = newCoords.width;
+  let heightTo = newCoords.height;
+  const styles = getComputedStyle(el);
+  const sizing = styles.getPropertyValue("box-sizing");
+  if (sizing === "content-box") {
+    const paddingY = raw(styles.paddingTop) + raw(styles.paddingBottom) + raw(styles.borderTopWidth) + raw(styles.borderBottomWidth);
+    const paddingX = raw(styles.paddingLeft) + raw(styles.paddingRight) + raw(styles.borderRightWidth) + raw(styles.borderLeftWidth);
+    widthFrom -= paddingX;
+    widthTo -= paddingX;
+    heightFrom -= paddingY;
+    heightTo -= paddingY;
   }
-  return [o, r, i, a].map(Math.round);
+  return [widthFrom, widthTo, heightFrom, heightTo].map(Math.round);
 }
-function Qt(e) {
-  return Be in e && qe.has(e[Be]) ? qe.get(e[Be]) : { duration: 250, easing: "ease-in-out" };
+function getOptions(el) {
+  return TGT in el && options.has(el[TGT]) ? options.get(el[TGT]) : { duration: 250, easing: "ease-in-out" };
 }
-function wo(e) {
-  if (Be in e)
-    return e[Be];
+function getTarget(el) {
+  if (TGT in el)
+    return el[TGT];
+  return void 0;
 }
-function Tn(e) {
-  const t = wo(e);
-  return t ? et.has(t) : !1;
+function isEnabled(el) {
+  const target2 = getTarget(el);
+  return target2 ? enabled.has(target2) : false;
 }
-function zt(e, ...t) {
-  t.forEach((n) => n(e, qe.has(e)));
-  for (let n = 0; n < e.children.length; n++) {
-    const o = e.children.item(n);
-    o && t.forEach((i) => i(o, qe.has(o)));
+function forEach(parent, ...callbacks) {
+  callbacks.forEach((callback) => callback(parent, options.has(parent)));
+  for (let i = 0; i < parent.children.length; i++) {
+    const child = parent.children.item(i);
+    if (child) {
+      callbacks.forEach((callback) => callback(child, options.has(child)));
+    }
   }
 }
-function Mn(e) {
-  return Array.isArray(e) ? e : [e];
+function getPluginTuple(pluginReturn) {
+  if (Array.isArray(pluginReturn))
+    return pluginReturn;
+  return [pluginReturn];
 }
-function vt(e) {
-  return typeof e == "function";
+function isPlugin(config) {
+  return typeof config === "function";
 }
-function wi(e) {
-  const t = ye.get(e), n = st(e);
-  if (!Tn(e))
-    return ye.set(e, n);
-  if (mo(e)) {
-    ye.set(e, n), Sn(e);
+function remain(el) {
+  const oldCoords = coords.get(el);
+  const newCoords = getCoords(el);
+  if (!isEnabled(el))
+    return coords.set(el, newCoords);
+  if (isOffscreen(el)) {
+    coords.set(el, newCoords);
+    observePosition(el);
     return;
   }
-  let o;
-  if (!t)
+  let animation;
+  if (!oldCoords)
     return;
-  const i = Qt(e);
-  if (typeof i != "function") {
-    let r = t.left - n.left, a = t.top - n.top;
-    const s = t.left + t.width - (n.left + n.width);
-    t.top + t.height - (n.top + n.height) == 0 && (a = 0), s == 0 && (r = 0);
-    const [c, u, d, p] = bo(e, t, n), m = {
-      transform: `translate(${r}px, ${a}px)`
-    }, g = {
-      transform: "translate(0, 0)"
+  const pluginOrOptions = getOptions(el);
+  if (typeof pluginOrOptions !== "function") {
+    let deltaLeft = oldCoords.left - newCoords.left;
+    let deltaTop = oldCoords.top - newCoords.top;
+    const deltaRight = oldCoords.left + oldCoords.width - (newCoords.left + newCoords.width);
+    const deltaBottom = oldCoords.top + oldCoords.height - (newCoords.top + newCoords.height);
+    if (deltaBottom == 0)
+      deltaTop = 0;
+    if (deltaRight == 0)
+      deltaLeft = 0;
+    const [widthFrom, widthTo, heightFrom, heightTo] = getTransitionSizes(el, oldCoords, newCoords);
+    const start = {
+      transform: `translate(${deltaLeft}px, ${deltaTop}px)`
     };
-    c !== u && (m.width = `${c}px`, g.width = `${u}px`), d !== p && (m.height = `${d}px`, g.height = `${p}px`), o = e.animate([m, g], {
-      duration: i.duration,
-      easing: i.easing
+    const end = {
+      transform: `translate(0, 0)`
+    };
+    if (widthFrom !== widthTo) {
+      start.width = `${widthFrom}px`;
+      end.width = `${widthTo}px`;
+    }
+    if (heightFrom !== heightTo) {
+      start.height = `${heightFrom}px`;
+      end.height = `${heightTo}px`;
+    }
+    animation = el.animate([start, end], {
+      duration: pluginOrOptions.duration,
+      easing: pluginOrOptions.easing
     });
   } else {
-    const [r] = Mn(i(e, "remain", t, n));
-    o = new Animation(r), o.play();
+    const [keyframes] = getPluginTuple(pluginOrOptions(el, "remain", oldCoords, newCoords));
+    animation = new Animation(keyframes);
+    animation.play();
   }
-  Se.set(e, o), ye.set(e, n), o.addEventListener("finish", Xe.bind(null, e, !1), {
-    once: !0
+  animations.set(el, animation);
+  coords.set(el, newCoords);
+  animation.addEventListener("finish", updatePos.bind(null, el, false), {
+    once: true
   });
 }
-function Gn(e) {
-  jt in e && delete e[jt];
-  const t = st(e);
-  ye.set(e, t);
-  const n = Qt(e);
-  if (!Tn(e))
+function add(el) {
+  if (NEW in el)
+    delete el[NEW];
+  const newCoords = getCoords(el);
+  coords.set(el, newCoords);
+  const pluginOrOptions = getOptions(el);
+  if (!isEnabled(el))
     return;
-  if (mo(e)) {
-    Sn(e);
+  if (isOffscreen(el)) {
+    observePosition(el);
     return;
   }
-  let o;
-  if (typeof n != "function")
-    o = e.animate([
+  let animation;
+  if (typeof pluginOrOptions !== "function") {
+    animation = el.animate([
       { transform: "scale(.98)", opacity: 0 },
       { transform: "scale(0.98)", opacity: 0, offset: 0.5 },
       { transform: "scale(1)", opacity: 1 }
     ], {
-      duration: n.duration * 1.5,
+      duration: pluginOrOptions.duration * 1.5,
       easing: "ease-in"
     });
-  else {
-    const [i] = Mn(n(e, "add", t));
-    o = new Animation(i), o.play();
+  } else {
+    const [keyframes] = getPluginTuple(pluginOrOptions(el, "add", newCoords));
+    animation = new Animation(keyframes);
+    animation.play();
   }
-  Se.set(e, o), o.addEventListener("finish", Xe.bind(null, e, !1), {
-    once: !0
+  animations.set(el, animation);
+  animation.addEventListener("finish", updatePos.bind(null, el, false), {
+    once: true
   });
 }
-function qn(e, t) {
-  var n;
-  e.remove(), ye.delete(e), Ze.delete(e), Se.delete(e), (n = wt.get(e)) === null || n === void 0 || n.disconnect(), setTimeout(() => {
-    if (xt in e && delete e[xt], Object.defineProperty(e, jt, { value: !0, configurable: !0 }), t && e instanceof HTMLElement)
-      for (const o in t)
-        e.style[o] = "";
+function cleanUp(el, styles) {
+  var _a;
+  el.remove();
+  coords.delete(el);
+  siblings.delete(el);
+  animations.delete(el);
+  (_a = intersections.get(el)) === null || _a === void 0 ? void 0 : _a.disconnect();
+  setTimeout(() => {
+    if (DEL in el)
+      delete el[DEL];
+    Object.defineProperty(el, NEW, { value: true, configurable: true });
+    if (styles && el instanceof HTMLElement) {
+      for (const style in styles) {
+        el.style[style] = "";
+      }
+    }
   }, 0);
 }
-function xi(e) {
-  var t;
-  if (!Ze.has(e) || !ye.has(e))
+function remove(el) {
+  var _a;
+  if (!siblings.has(el) || !coords.has(el))
     return;
-  const [n, o] = Ze.get(e);
-  Object.defineProperty(e, xt, { value: !0, configurable: !0 });
-  const i = window.scrollX, r = window.scrollY;
-  if (o && o.parentNode && o.parentNode instanceof Element ? o.parentNode.insertBefore(e, o) : n && n.parentNode ? n.parentNode.appendChild(e) : (t = wo(e)) === null || t === void 0 || t.appendChild(e), !Tn(e))
-    return qn(e);
-  const [a, s, l, c] = yi(e), u = Qt(e), d = ye.get(e);
-  (i !== $n || r !== En) && vi(e, i, r, u);
-  let p, m = {
+  const [prev, next] = siblings.get(el);
+  Object.defineProperty(el, DEL, { value: true, configurable: true });
+  const finalX = window.scrollX;
+  const finalY = window.scrollY;
+  if (next && next.parentNode && next.parentNode instanceof Element) {
+    next.parentNode.insertBefore(el, next);
+  } else if (prev && prev.parentNode) {
+    prev.parentNode.appendChild(el);
+  } else {
+    (_a = getTarget(el)) === null || _a === void 0 ? void 0 : _a.appendChild(el);
+  }
+  if (!isEnabled(el))
+    return cleanUp(el);
+  const [top, left, width, height] = deletePosition(el);
+  const optionsOrPlugin = getOptions(el);
+  const oldCoords = coords.get(el);
+  if (finalX !== scrollX || finalY !== scrollY) {
+    adjustScroll(el, finalX, finalY, optionsOrPlugin);
+  }
+  let animation;
+  let styleReset = {
     position: "absolute",
-    top: `${a}px`,
-    left: `${s}px`,
-    width: `${l}px`,
-    height: `${c}px`,
+    top: `${top}px`,
+    left: `${left}px`,
+    width: `${width}px`,
+    height: `${height}px`,
     margin: "0",
     pointerEvents: "none",
     transformOrigin: "center",
     zIndex: "100"
   };
-  if (!vt(u))
-    Object.assign(e.style, m), p = e.animate([
+  if (!isPlugin(optionsOrPlugin)) {
+    Object.assign(el.style, styleReset);
+    animation = el.animate([
       {
         transform: "scale(1)",
         opacity: 1
@@ -406,193 +673,287 @@ function xi(e) {
         opacity: 0
       }
     ], {
-      duration: u.duration,
+      duration: optionsOrPlugin.duration,
       easing: "ease-out"
     });
-  else {
-    const [g, f] = Mn(u(e, "remove", d));
-    f?.styleReset !== !1 && (m = f?.styleReset || m, Object.assign(e.style, m)), p = new Animation(g), p.play();
+  } else {
+    const [keyframes, options2] = getPluginTuple(optionsOrPlugin(el, "remove", oldCoords));
+    if ((options2 === null || options2 === void 0 ? void 0 : options2.styleReset) !== false) {
+      styleReset = (options2 === null || options2 === void 0 ? void 0 : options2.styleReset) || styleReset;
+      Object.assign(el.style, styleReset);
+    }
+    animation = new Animation(keyframes);
+    animation.play();
   }
-  Se.set(e, p), p.addEventListener("finish", () => qn(e, m), {
-    once: !0
+  animations.set(el, animation);
+  animation.addEventListener("finish", () => cleanUp(el, styleReset), {
+    once: true
   });
 }
-function vi(e, t, n, o) {
-  const i = $n - t, r = En - n, a = document.documentElement.style.scrollBehavior;
-  if (getComputedStyle($e).scrollBehavior === "smooth" && (document.documentElement.style.scrollBehavior = "auto"), window.scrollTo(window.scrollX + i, window.scrollY + r), !e.parentElement)
+function adjustScroll(el, finalX, finalY, optionsOrPlugin) {
+  const scrollDeltaX = scrollX - finalX;
+  const scrollDeltaY = scrollY - finalY;
+  const scrollBefore = document.documentElement.style.scrollBehavior;
+  const scrollBehavior = getComputedStyle(root).scrollBehavior;
+  if (scrollBehavior === "smooth") {
+    document.documentElement.style.scrollBehavior = "auto";
+  }
+  window.scrollTo(window.scrollX + scrollDeltaX, window.scrollY + scrollDeltaY);
+  if (!el.parentElement)
     return;
-  const l = e.parentElement;
-  let c = l.clientHeight, u = l.clientWidth;
-  const d = performance.now();
-  function p() {
+  const parent = el.parentElement;
+  let lastHeight = parent.clientHeight;
+  let lastWidth = parent.clientWidth;
+  const startScroll = performance.now();
+  function smoothScroll() {
     requestAnimationFrame(() => {
-      if (!vt(o)) {
-        const m = c - l.clientHeight, g = u - l.clientWidth;
-        d + o.duration > performance.now() ? (window.scrollTo({
-          left: window.scrollX - g,
-          top: window.scrollY - m
-        }), c = l.clientHeight, u = l.clientWidth, p()) : document.documentElement.style.scrollBehavior = a;
+      if (!isPlugin(optionsOrPlugin)) {
+        const deltaY = lastHeight - parent.clientHeight;
+        const deltaX = lastWidth - parent.clientWidth;
+        if (startScroll + optionsOrPlugin.duration > performance.now()) {
+          window.scrollTo({
+            left: window.scrollX - deltaX,
+            top: window.scrollY - deltaY
+          });
+          lastHeight = parent.clientHeight;
+          lastWidth = parent.clientWidth;
+          smoothScroll();
+        } else {
+          document.documentElement.style.scrollBehavior = scrollBefore;
+        }
       }
     });
   }
-  p();
+  smoothScroll();
 }
-function yi(e) {
-  var t;
-  const n = ye.get(e), [o, , i] = bo(e, n, st(e));
-  let r = e.parentElement;
-  for (; r && (getComputedStyle(r).position === "static" || r instanceof HTMLBodyElement); )
-    r = r.parentElement;
-  r || (r = document.body);
-  const a = getComputedStyle(r), s = !Se.has(e) || ((t = Se.get(e)) === null || t === void 0 ? void 0 : t.playState) === "finished" ? st(r) : ye.get(r), l = Math.round(n.top - s.top) - Ce(a.borderTopWidth), c = Math.round(n.left - s.left) - Ce(a.borderLeftWidth);
-  return [l, c, o, i];
-}
-function _i(e, t = {}) {
-  if (ho && Pe && !(window.matchMedia("(prefers-reduced-motion: reduce)").matches && !vt(t) && !t.disrespectUserMotionPreference)) {
-    et.add(e), getComputedStyle(e).position === "static" && Object.assign(e.style, { position: "relative" }), zt(e, Xe, mi, (a) => Pe?.observe(a)), vt(t) ? qe.set(e, t) : qe.set(e, {
-      duration: 250,
-      easing: "ease-in-out",
-      ...t
-    });
-    const r = new MutationObserver(fo);
-    r.observe(e, { childList: !0 }), hn.set(e, r), vn.add(e);
+function deletePosition(el) {
+  var _a;
+  const oldCoords = coords.get(el);
+  const [width, , height] = getTransitionSizes(el, oldCoords, getCoords(el));
+  let offsetParent = el.parentElement;
+  while (offsetParent && (getComputedStyle(offsetParent).position === "static" || offsetParent instanceof HTMLBodyElement)) {
+    offsetParent = offsetParent.parentElement;
   }
-  return Object.freeze({
-    parent: e,
+  if (!offsetParent)
+    offsetParent = document.body;
+  const parentStyles = getComputedStyle(offsetParent);
+  const parentCoords = !animations.has(el) || ((_a = animations.get(el)) === null || _a === void 0 ? void 0 : _a.playState) === "finished" ? getCoords(offsetParent) : coords.get(offsetParent);
+  const top = Math.round(oldCoords.top - parentCoords.top) - raw(parentStyles.borderTopWidth);
+  const left = Math.round(oldCoords.left - parentCoords.left) - raw(parentStyles.borderLeftWidth);
+  return [top, left, width, height];
+}
+function autoAnimate(el, config = {}) {
+  if (supportedBrowser && resize) {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const isDisabledDueToReduceMotion = mediaQuery.matches && !isPlugin(config) && !config.disrespectUserMotionPreference;
+    if (!isDisabledDueToReduceMotion) {
+      enabled.add(el);
+      if (getComputedStyle(el).position === "static") {
+        Object.assign(el.style, { position: "relative" });
+      }
+      forEach(el, updatePos, poll, (element) => resize === null || resize === void 0 ? void 0 : resize.observe(element));
+      if (isPlugin(config)) {
+        options.set(el, config);
+      } else {
+        options.set(el, {
+          duration: 250,
+          easing: "ease-in-out",
+          ...config
+        });
+      }
+      const mo = new MutationObserver(handleMutations);
+      mo.observe(el, { childList: true });
+      mutationObservers.set(el, mo);
+      parents.add(el);
+    }
+  }
+  const controller = Object.freeze({
+    parent: el,
     enable: () => {
-      et.add(e);
+      enabled.add(el);
     },
     disable: () => {
-      et.delete(e), zt(e, (o) => {
-        const i = Se.get(o);
+      enabled.delete(el);
+      forEach(el, (node) => {
+        const a = animations.get(node);
         try {
-          i?.cancel();
+          a === null || a === void 0 ? void 0 : a.cancel();
         } catch {
         }
-        Se.delete(o);
-        const r = Fe.get(o);
-        r && clearTimeout(r), Fe.delete(o);
-        const a = gt.get(o);
-        a && clearInterval(a), gt.delete(o);
+        animations.delete(node);
+        const d = debounces.get(node);
+        if (d)
+          clearTimeout(d);
+        debounces.delete(node);
+        const i = intervals.get(node);
+        if (i)
+          clearInterval(i);
+        intervals.delete(node);
       });
     },
-    isEnabled: () => et.has(e),
+    isEnabled: () => enabled.has(el),
     destroy: () => {
-      et.delete(e), vn.delete(e), qe.delete(e);
-      const o = hn.get(e);
-      o?.disconnect(), hn.delete(e), zt(e, (i) => {
-        Pe?.unobserve(i);
-        const r = Se.get(i);
+      enabled.delete(el);
+      parents.delete(el);
+      options.delete(el);
+      const mo = mutationObservers.get(el);
+      mo === null || mo === void 0 ? void 0 : mo.disconnect();
+      mutationObservers.delete(el);
+      forEach(el, (node) => {
+        resize === null || resize === void 0 ? void 0 : resize.unobserve(node);
+        const a = animations.get(node);
         try {
-          r?.cancel();
+          a === null || a === void 0 ? void 0 : a.cancel();
         } catch {
         }
-        Se.delete(i);
-        const a = wt.get(i);
-        a?.disconnect(), wt.delete(i);
-        const s = gt.get(i);
-        s && clearInterval(s), gt.delete(i);
-        const l = Fe.get(i);
-        l && clearTimeout(l), Fe.delete(i), ye.delete(i), Ze.delete(i);
+        animations.delete(node);
+        const io = intersections.get(node);
+        io === null || io === void 0 ? void 0 : io.disconnect();
+        intersections.delete(node);
+        const i = intervals.get(node);
+        if (i)
+          clearInterval(i);
+        intervals.delete(node);
+        const d = debounces.get(node);
+        if (d)
+          clearTimeout(d);
+        debounces.delete(node);
+        coords.delete(node);
+        siblings.delete(node);
       });
     }
   });
+  return controller;
 }
-function en(e) {
-  const t = W(null), [n, o] = pt(), i = (r) => {
-    n && (r ? n.enable() : n.disable());
+function useAutoAnimate(options2) {
+  const element = useRef(null);
+  const [controller, setController] = useState();
+  const setEnabled = (enabled2) => {
+    if (controller) {
+      enabled2 ? controller.enable() : controller.disable();
+    }
   };
-  return rt(() => {
-    t.current instanceof HTMLElement && o(_i(t.current, {}));
-  }, []), rt(() => () => {
-    var r;
-    (r = n?.destroy) === null || r === void 0 || r.call(n);
-  }, [n]), [t, i];
+  useEffect(() => {
+    if (element.current instanceof HTMLElement)
+      setController(autoAnimate(element.current, {}));
+  }, []);
+  useEffect(() => {
+    return () => {
+      var _a;
+      (_a = controller === null || controller === void 0 ? void 0 : controller.destroy) === null || _a === void 0 ? void 0 : _a.call(controller);
+    };
+  }, [controller]);
+  return [element, setEnabled];
 }
-function ki(e) {
-  return e && e.__esModule && Object.prototype.hasOwnProperty.call(e, "default") ? e.default : e;
+function getDefaultExportFromCjs(x) {
+  return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
 }
-function xo(e) {
-  return e instanceof Map ? e.clear = e.delete = e.set = function() {
-    throw new Error("map is read-only");
-  } : e instanceof Set && (e.add = e.clear = e.delete = function() {
-    throw new Error("set is read-only");
-  }), Object.freeze(e), Object.getOwnPropertyNames(e).forEach((t) => {
-    const n = e[t], o = typeof n;
-    (o === "object" || o === "function") && !Object.isFrozen(n) && xo(n);
-  }), e;
+function deepFreeze(obj) {
+  if (obj instanceof Map) {
+    obj.clear = obj.delete = obj.set = function() {
+      throw new Error("map is read-only");
+    };
+  } else if (obj instanceof Set) {
+    obj.add = obj.clear = obj.delete = function() {
+      throw new Error("set is read-only");
+    };
+  }
+  Object.freeze(obj);
+  Object.getOwnPropertyNames(obj).forEach((name) => {
+    const prop = obj[name];
+    const type = typeof prop;
+    if ((type === "object" || type === "function") && !Object.isFrozen(prop)) {
+      deepFreeze(prop);
+    }
+  });
+  return obj;
 }
-class Wn {
+class Response {
   /**
    * @param {CompiledMode} mode
    */
-  constructor(t) {
-    t.data === void 0 && (t.data = {}), this.data = t.data, this.isMatchIgnored = !1;
+  constructor(mode) {
+    if (mode.data === void 0) mode.data = {};
+    this.data = mode.data;
+    this.isMatchIgnored = false;
   }
   ignoreMatch() {
-    this.isMatchIgnored = !0;
+    this.isMatchIgnored = true;
   }
 }
-function vo(e) {
-  return e.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
+function escapeHTML(value) {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
 }
-function He(e, ...t) {
-  const n = /* @__PURE__ */ Object.create(null);
-  for (const o in e)
-    n[o] = e[o];
-  return t.forEach(function(o) {
-    for (const i in o)
-      n[i] = o[i];
-  }), /** @type {T} */
-  n;
+function inherit$1(original, ...objects) {
+  const result = /* @__PURE__ */ Object.create(null);
+  for (const key in original) {
+    result[key] = original[key];
+  }
+  objects.forEach(function(obj) {
+    for (const key in obj) {
+      result[key] = obj[key];
+    }
+  });
+  return (
+    /** @type {T} */
+    result
+  );
 }
-const Ii = "</span>", Kn = (e) => !!e.scope, $i = (e, { prefix: t }) => {
-  if (e.startsWith("language:"))
-    return e.replace("language:", "language-");
-  if (e.includes(".")) {
-    const n = e.split(".");
+const SPAN_CLOSE = "</span>";
+const emitsWrappingTags = (node) => {
+  return !!node.scope;
+};
+const scopeToCSSClass = (name, { prefix }) => {
+  if (name.startsWith("language:")) {
+    return name.replace("language:", "language-");
+  }
+  if (name.includes(".")) {
+    const pieces = name.split(".");
     return [
-      `${t}${n.shift()}`,
-      ...n.map((o, i) => `${o}${"_".repeat(i + 1)}`)
+      `${prefix}${pieces.shift()}`,
+      ...pieces.map((x, i) => `${x}${"_".repeat(i + 1)}`)
     ].join(" ");
   }
-  return `${t}${e}`;
+  return `${prefix}${name}`;
 };
-class Ei {
+class HTMLRenderer {
   /**
    * Creates a new HTMLRenderer
    *
    * @param {Tree} parseTree - the parse tree (must support `walk` API)
    * @param {{classPrefix: string}} options
    */
-  constructor(t, n) {
-    this.buffer = "", this.classPrefix = n.classPrefix, t.walk(this);
+  constructor(parseTree, options2) {
+    this.buffer = "";
+    this.classPrefix = options2.classPrefix;
+    parseTree.walk(this);
   }
   /**
    * Adds texts to the output stream
    *
    * @param {string} text */
-  addText(t) {
-    this.buffer += vo(t);
+  addText(text) {
+    this.buffer += escapeHTML(text);
   }
   /**
    * Adds a node open to the output stream (if needed)
    *
    * @param {Node} node */
-  openNode(t) {
-    if (!Kn(t)) return;
-    const n = $i(
-      t.scope,
+  openNode(node) {
+    if (!emitsWrappingTags(node)) return;
+    const className = scopeToCSSClass(
+      node.scope,
       { prefix: this.classPrefix }
     );
-    this.span(n);
+    this.span(className);
   }
   /**
    * Adds a node close to the output stream (if needed)
    *
    * @param {Node} node */
-  closeNode(t) {
-    Kn(t) && (this.buffer += Ii);
+  closeNode(node) {
+    if (!emitsWrappingTags(node)) return;
+    this.buffer += SPAN_CLOSE;
   }
   /**
    * returns the accumulated buffer
@@ -605,17 +966,19 @@ class Ei {
    * Builds a span element
    *
    * @param {string} className */
-  span(t) {
-    this.buffer += `<span class="${t}">`;
+  span(className) {
+    this.buffer += `<span class="${className}">`;
   }
 }
-const Zn = (e = {}) => {
-  const t = { children: [] };
-  return Object.assign(t, e), t;
+const newNode = (opts = {}) => {
+  const result = { children: [] };
+  Object.assign(result, opts);
+  return result;
 };
-class Ln {
+class TokenTree {
   constructor() {
-    this.rootNode = Zn(), this.stack = [this.rootNode];
+    this.rootNode = newNode();
+    this.stack = [this.rootNode];
   }
   get top() {
     return this.stack[this.stack.length - 1];
@@ -624,20 +987,23 @@ class Ln {
     return this.rootNode;
   }
   /** @param {Node} node */
-  add(t) {
-    this.top.children.push(t);
+  add(node) {
+    this.top.children.push(node);
   }
   /** @param {string} scope */
-  openNode(t) {
-    const n = Zn({ scope: t });
-    this.add(n), this.stack.push(n);
+  openNode(scope) {
+    const node = newNode({ scope });
+    this.add(node);
+    this.stack.push(node);
   }
   closeNode() {
-    if (this.stack.length > 1)
+    if (this.stack.length > 1) {
       return this.stack.pop();
+    }
+    return void 0;
   }
   closeAllNodes() {
-    for (; this.closeNode(); ) ;
+    while (this.closeNode()) ;
   }
   toJSON() {
     return JSON.stringify(this.rootNode, null, 4);
@@ -646,41 +1012,58 @@ class Ln {
    * @typedef { import("./html_renderer").Renderer } Renderer
    * @param {Renderer} builder
    */
-  walk(t) {
-    return this.constructor._walk(t, this.rootNode);
+  walk(builder) {
+    return this.constructor._walk(builder, this.rootNode);
   }
   /**
    * @param {Renderer} builder
    * @param {Node} node
    */
-  static _walk(t, n) {
-    return typeof n == "string" ? t.addText(n) : n.children && (t.openNode(n), n.children.forEach((o) => this._walk(t, o)), t.closeNode(n)), t;
+  static _walk(builder, node) {
+    if (typeof node === "string") {
+      builder.addText(node);
+    } else if (node.children) {
+      builder.openNode(node);
+      node.children.forEach((child) => this._walk(builder, child));
+      builder.closeNode(node);
+    }
+    return builder;
   }
   /**
    * @param {Node} node
    */
-  static _collapse(t) {
-    typeof t != "string" && t.children && (t.children.every((n) => typeof n == "string") ? t.children = [t.children.join("")] : t.children.forEach((n) => {
-      Ln._collapse(n);
-    }));
+  static _collapse(node) {
+    if (typeof node === "string") return;
+    if (!node.children) return;
+    if (node.children.every((el) => typeof el === "string")) {
+      node.children = [node.children.join("")];
+    } else {
+      node.children.forEach((child) => {
+        TokenTree._collapse(child);
+      });
+    }
   }
 }
-class Si extends Ln {
+class TokenTreeEmitter extends TokenTree {
   /**
    * @param {*} options
    */
-  constructor(t) {
-    super(), this.options = t;
+  constructor(options2) {
+    super();
+    this.options = options2;
   }
   /**
    * @param {string} text
    */
-  addText(t) {
-    t !== "" && this.add(t);
+  addText(text) {
+    if (text === "") {
+      return;
+    }
+    this.add(text);
   }
   /** @param {string} scope */
-  startScope(t) {
-    this.openNode(t);
+  startScope(scope) {
+    this.openNode(scope);
   }
   endScope() {
     this.closeNode();
@@ -689,118 +1072,156 @@ class Si extends Ln {
    * @param {Emitter & {root: DataNode}} emitter
    * @param {string} name
    */
-  __addSublanguage(t, n) {
-    const o = t.root;
-    n && (o.scope = `language:${n}`), this.add(o);
+  __addSublanguage(emitter, name) {
+    const node = emitter.root;
+    if (name) node.scope = `language:${name}`;
+    this.add(node);
   }
   toHTML() {
-    return new Ei(this, this.options).value();
+    const renderer = new HTMLRenderer(this, this.options);
+    return renderer.value();
   }
   finalize() {
-    return this.closeAllNodes(), !0;
+    this.closeAllNodes();
+    return true;
   }
 }
-function yt(e) {
-  return e ? typeof e == "string" ? e : e.source : null;
+function source(re) {
+  if (!re) return null;
+  if (typeof re === "string") return re;
+  return re.source;
 }
-function yo(e) {
-  return Ye("(?=", e, ")");
+function lookahead(re) {
+  return concat("(?=", re, ")");
 }
-function Ti(e) {
-  return Ye("(?:", e, ")*");
+function anyNumberOfTimes(re) {
+  return concat("(?:", re, ")*");
 }
-function Mi(e) {
-  return Ye("(?:", e, ")?");
+function optional(re) {
+  return concat("(?:", re, ")?");
 }
-function Ye(...e) {
-  return e.map((n) => yt(n)).join("");
+function concat(...args) {
+  const joined = args.map((x) => source(x)).join("");
+  return joined;
 }
-function Li(e) {
-  const t = e[e.length - 1];
-  return typeof t == "object" && t.constructor === Object ? (e.splice(e.length - 1, 1), t) : {};
+function stripOptionsFromArgs(args) {
+  const opts = args[args.length - 1];
+  if (typeof opts === "object" && opts.constructor === Object) {
+    args.splice(args.length - 1, 1);
+    return opts;
+  } else {
+    return {};
+  }
 }
-function Dn(...e) {
-  return "(" + (Li(e).capture ? "" : "?:") + e.map((o) => yt(o)).join("|") + ")";
+function either(...args) {
+  const opts = stripOptionsFromArgs(args);
+  const joined = "(" + (opts.capture ? "" : "?:") + args.map((x) => source(x)).join("|") + ")";
+  return joined;
 }
-function _o(e) {
-  return new RegExp(e.toString() + "|").exec("").length - 1;
+function countMatchGroups(re) {
+  return new RegExp(re.toString() + "|").exec("").length - 1;
 }
-function Di(e, t) {
-  const n = e && e.exec(t);
-  return n && n.index === 0;
+function startsWith(re, lexeme) {
+  const match = re && re.exec(lexeme);
+  return match && match.index === 0;
 }
-const Ni = /\[(?:[^\\\]]|\\.)*\]|\(\??|\\([1-9][0-9]*)|\\./;
-function Nn(e, { joinWith: t }) {
-  let n = 0;
-  return e.map((o) => {
-    n += 1;
-    const i = n;
-    let r = yt(o), a = "";
-    for (; r.length > 0; ) {
-      const s = Ni.exec(r);
-      if (!s) {
-        a += r;
+const BACKREF_RE = /\[(?:[^\\\]]|\\.)*\]|\(\??|\\([1-9][0-9]*)|\\./;
+function _rewriteBackreferences(regexps, { joinWith }) {
+  let numCaptures = 0;
+  return regexps.map((regex) => {
+    numCaptures += 1;
+    const offset = numCaptures;
+    let re = source(regex);
+    let out = "";
+    while (re.length > 0) {
+      const match = BACKREF_RE.exec(re);
+      if (!match) {
+        out += re;
         break;
       }
-      a += r.substring(0, s.index), r = r.substring(s.index + s[0].length), s[0][0] === "\\" && s[1] ? a += "\\" + String(Number(s[1]) + i) : (a += s[0], s[0] === "(" && n++);
+      out += re.substring(0, match.index);
+      re = re.substring(match.index + match[0].length);
+      if (match[0][0] === "\\" && match[1]) {
+        out += "\\" + String(Number(match[1]) + offset);
+      } else {
+        out += match[0];
+        if (match[0] === "(") {
+          numCaptures++;
+        }
+      }
     }
-    return a;
-  }).map((o) => `(${o})`).join(t);
+    return out;
+  }).map((re) => `(${re})`).join(joinWith);
 }
-const Ci = /\b\B/, ko = "[a-zA-Z]\\w*", Cn = "[a-zA-Z_]\\w*", Io = "\\b\\d+(\\.\\d+)?", $o = "(-?)(\\b0[xX][a-fA-F0-9]+|(\\b\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)", Eo = "\\b(0b[01]+)", Oi = "!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~", Ri = (e = {}) => {
-  const t = /^#![ ]*\//;
-  return e.binary && (e.begin = Ye(
-    t,
-    /.*\b/,
-    e.binary,
-    /\b.*/
-  )), He({
+const MATCH_NOTHING_RE = /\b\B/;
+const IDENT_RE$2 = "[a-zA-Z]\\w*";
+const UNDERSCORE_IDENT_RE = "[a-zA-Z_]\\w*";
+const NUMBER_RE = "\\b\\d+(\\.\\d+)?";
+const C_NUMBER_RE = "(-?)(\\b0[xX][a-fA-F0-9]+|(\\b\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";
+const BINARY_NUMBER_RE = "\\b(0b[01]+)";
+const RE_STARTERS_RE = "!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";
+const SHEBANG = (opts = {}) => {
+  const beginShebang = /^#![ ]*\//;
+  if (opts.binary) {
+    opts.begin = concat(
+      beginShebang,
+      /.*\b/,
+      opts.binary,
+      /\b.*/
+    );
+  }
+  return inherit$1({
     scope: "meta",
-    begin: t,
+    begin: beginShebang,
     end: /$/,
     relevance: 0,
     /** @type {ModeCallback} */
-    "on:begin": (n, o) => {
-      n.index !== 0 && o.ignoreMatch();
+    "on:begin": (m2, resp) => {
+      if (m2.index !== 0) resp.ignoreMatch();
     }
-  }, e);
-}, _t = {
+  }, opts);
+};
+const BACKSLASH_ESCAPE = {
   begin: "\\\\[\\s\\S]",
   relevance: 0
-}, Ai = {
+};
+const APOS_STRING_MODE = {
   scope: "string",
   begin: "'",
   end: "'",
   illegal: "\\n",
-  contains: [_t]
-}, Pi = {
+  contains: [BACKSLASH_ESCAPE]
+};
+const QUOTE_STRING_MODE = {
   scope: "string",
   begin: '"',
   end: '"',
   illegal: "\\n",
-  contains: [_t]
-}, Bi = {
+  contains: [BACKSLASH_ESCAPE]
+};
+const PHRASAL_WORDS_MODE = {
   begin: /\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/
-}, tn = function(e, t, n = {}) {
-  const o = He(
+};
+const COMMENT = function(begin, end, modeOptions = {}) {
+  const mode = inherit$1(
     {
       scope: "comment",
-      begin: e,
-      end: t,
+      begin,
+      end,
       contains: []
     },
-    n
+    modeOptions
   );
-  o.contains.push({
+  mode.contains.push({
     scope: "doctag",
     // hack to avoid the space from being included. the space is necessary to
     // match here to prevent the plain text rule below from gobbling up doctags
     begin: "[ ]*(?=(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):)",
     end: /(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):/,
-    excludeBegin: !0,
+    excludeBegin: true,
     relevance: 0
   });
-  const i = Dn(
+  const ENGLISH_WORD = either(
     // list of common 1 and 2 letter words in English
     "I",
     "a",
@@ -821,7 +1242,7 @@ const Ci = /\b\B/, ko = "[a-zA-Z]\\w*", Cn = "[a-zA-Z_]\\w*", Io = "\\b\\d+(\\.\
     /[A-Za-z][a-z]{2,}/
     // allow capitalized words at beginning of sentences
   );
-  return o.contains.push(
+  mode.contains.push(
     {
       // TODO: how to include ", (, ) without breaking grammars that use these for
       // comment delimiters?
@@ -836,130 +1257,161 @@ const Ci = /\b\B/, ko = "[a-zA-Z]\\w*", Cn = "[a-zA-Z_]\\w*", Io = "\\b\\d+(\\.\
       //
       // for a visual example please see:
       // https://github.com/highlightjs/highlight.js/issues/2827
-      begin: Ye(
+      begin: concat(
         /[ ]+/,
         // necessary to prevent us gobbling up doctags like /* @author Bob Mcgill */
         "(",
-        i,
+        ENGLISH_WORD,
         /[.]?[:]?([.][ ]|[ ])/,
         "){3}"
       )
       // look for 3 words in a row
     }
-  ), o;
-}, Vi = tn("//", "$"), zi = tn("/\\*", "\\*/"), Fi = tn("#", "$"), Hi = {
+  );
+  return mode;
+};
+const C_LINE_COMMENT_MODE = COMMENT("//", "$");
+const C_BLOCK_COMMENT_MODE = COMMENT("/\\*", "\\*/");
+const HASH_COMMENT_MODE = COMMENT("#", "$");
+const NUMBER_MODE = {
   scope: "number",
-  begin: Io,
+  begin: NUMBER_RE,
   relevance: 0
-}, Ui = {
+};
+const C_NUMBER_MODE = {
   scope: "number",
-  begin: $o,
+  begin: C_NUMBER_RE,
   relevance: 0
-}, ji = {
+};
+const BINARY_NUMBER_MODE = {
   scope: "number",
-  begin: Eo,
+  begin: BINARY_NUMBER_RE,
   relevance: 0
-}, Gi = {
+};
+const REGEXP_MODE = {
   scope: "regexp",
   begin: /\/(?=[^/\n]*\/)/,
   end: /\/[gimuy]*/,
   contains: [
-    _t,
+    BACKSLASH_ESCAPE,
     {
       begin: /\[/,
       end: /\]/,
       relevance: 0,
-      contains: [_t]
+      contains: [BACKSLASH_ESCAPE]
     }
   ]
-}, qi = {
+};
+const TITLE_MODE = {
   scope: "title",
-  begin: ko,
+  begin: IDENT_RE$2,
   relevance: 0
-}, Wi = {
+};
+const UNDERSCORE_TITLE_MODE = {
   scope: "title",
-  begin: Cn,
+  begin: UNDERSCORE_IDENT_RE,
   relevance: 0
-}, Ki = {
+};
+const METHOD_GUARD = {
   // excludes method names from keyword processing
-  begin: "\\.\\s*" + Cn,
+  begin: "\\.\\s*" + UNDERSCORE_IDENT_RE,
   relevance: 0
-}, Zi = function(e) {
+};
+const END_SAME_AS_BEGIN = function(mode) {
   return Object.assign(
-    e,
+    mode,
     {
       /** @type {ModeCallback} */
-      "on:begin": (t, n) => {
-        n.data._beginMatch = t[1];
+      "on:begin": (m2, resp) => {
+        resp.data._beginMatch = m2[1];
       },
       /** @type {ModeCallback} */
-      "on:end": (t, n) => {
-        n.data._beginMatch !== t[1] && n.ignoreMatch();
+      "on:end": (m2, resp) => {
+        if (resp.data._beginMatch !== m2[1]) resp.ignoreMatch();
       }
     }
   );
 };
-var Dt = /* @__PURE__ */ Object.freeze({
+var MODES$1 = /* @__PURE__ */ Object.freeze({
   __proto__: null,
-  APOS_STRING_MODE: Ai,
-  BACKSLASH_ESCAPE: _t,
-  BINARY_NUMBER_MODE: ji,
-  BINARY_NUMBER_RE: Eo,
-  COMMENT: tn,
-  C_BLOCK_COMMENT_MODE: zi,
-  C_LINE_COMMENT_MODE: Vi,
-  C_NUMBER_MODE: Ui,
-  C_NUMBER_RE: $o,
-  END_SAME_AS_BEGIN: Zi,
-  HASH_COMMENT_MODE: Fi,
-  IDENT_RE: ko,
-  MATCH_NOTHING_RE: Ci,
-  METHOD_GUARD: Ki,
-  NUMBER_MODE: Hi,
-  NUMBER_RE: Io,
-  PHRASAL_WORDS_MODE: Bi,
-  QUOTE_STRING_MODE: Pi,
-  REGEXP_MODE: Gi,
-  RE_STARTERS_RE: Oi,
-  SHEBANG: Ri,
-  TITLE_MODE: qi,
-  UNDERSCORE_IDENT_RE: Cn,
-  UNDERSCORE_TITLE_MODE: Wi
+  APOS_STRING_MODE,
+  BACKSLASH_ESCAPE,
+  BINARY_NUMBER_MODE,
+  BINARY_NUMBER_RE,
+  COMMENT,
+  C_BLOCK_COMMENT_MODE,
+  C_LINE_COMMENT_MODE,
+  C_NUMBER_MODE,
+  C_NUMBER_RE,
+  END_SAME_AS_BEGIN,
+  HASH_COMMENT_MODE,
+  IDENT_RE: IDENT_RE$2,
+  MATCH_NOTHING_RE,
+  METHOD_GUARD,
+  NUMBER_MODE,
+  NUMBER_RE,
+  PHRASAL_WORDS_MODE,
+  QUOTE_STRING_MODE,
+  REGEXP_MODE,
+  RE_STARTERS_RE,
+  SHEBANG,
+  TITLE_MODE,
+  UNDERSCORE_IDENT_RE,
+  UNDERSCORE_TITLE_MODE
 });
-function Xi(e, t) {
-  e.input[e.index - 1] === "." && t.ignoreMatch();
-}
-function Yi(e, t) {
-  e.className !== void 0 && (e.scope = e.className, delete e.className);
-}
-function Ji(e, t) {
-  t && e.beginKeywords && (e.begin = "\\b(" + e.beginKeywords.split(" ").join("|") + ")(?!\\.)(?=\\b|\\s)", e.__beforeBegin = Xi, e.keywords = e.keywords || e.beginKeywords, delete e.beginKeywords, e.relevance === void 0 && (e.relevance = 0));
-}
-function Qi(e, t) {
-  Array.isArray(e.illegal) && (e.illegal = Dn(...e.illegal));
-}
-function ea(e, t) {
-  if (e.match) {
-    if (e.begin || e.end) throw new Error("begin & end are not supported with match");
-    e.begin = e.match, delete e.match;
+function skipIfHasPrecedingDot(match, response) {
+  const before = match.input[match.index - 1];
+  if (before === ".") {
+    response.ignoreMatch();
   }
 }
-function ta(e, t) {
-  e.relevance === void 0 && (e.relevance = 1);
+function scopeClassName(mode, _parent) {
+  if (mode.className !== void 0) {
+    mode.scope = mode.className;
+    delete mode.className;
+  }
 }
-const na = (e, t) => {
-  if (!e.beforeMatch) return;
-  if (e.starts) throw new Error("beforeMatch cannot be used with starts");
-  const n = Object.assign({}, e);
-  Object.keys(e).forEach((o) => {
-    delete e[o];
-  }), e.keywords = n.keywords, e.begin = Ye(n.beforeMatch, yo(n.begin)), e.starts = {
+function beginKeywords(mode, parent) {
+  if (!parent) return;
+  if (!mode.beginKeywords) return;
+  mode.begin = "\\b(" + mode.beginKeywords.split(" ").join("|") + ")(?!\\.)(?=\\b|\\s)";
+  mode.__beforeBegin = skipIfHasPrecedingDot;
+  mode.keywords = mode.keywords || mode.beginKeywords;
+  delete mode.beginKeywords;
+  if (mode.relevance === void 0) mode.relevance = 0;
+}
+function compileIllegal(mode, _parent) {
+  if (!Array.isArray(mode.illegal)) return;
+  mode.illegal = either(...mode.illegal);
+}
+function compileMatch(mode, _parent) {
+  if (!mode.match) return;
+  if (mode.begin || mode.end) throw new Error("begin & end are not supported with match");
+  mode.begin = mode.match;
+  delete mode.match;
+}
+function compileRelevance(mode, _parent) {
+  if (mode.relevance === void 0) mode.relevance = 1;
+}
+const beforeMatchExt = (mode, parent) => {
+  if (!mode.beforeMatch) return;
+  if (mode.starts) throw new Error("beforeMatch cannot be used with starts");
+  const originalMode = Object.assign({}, mode);
+  Object.keys(mode).forEach((key) => {
+    delete mode[key];
+  });
+  mode.keywords = originalMode.keywords;
+  mode.begin = concat(originalMode.beforeMatch, lookahead(originalMode.begin));
+  mode.starts = {
     relevance: 0,
     contains: [
-      Object.assign(n, { endsParent: !0 })
+      Object.assign(originalMode, { endsParent: true })
     ]
-  }, e.relevance = 0, delete n.beforeMatch;
-}, oa = [
+  };
+  mode.relevance = 0;
+  delete originalMode.beforeMatch;
+};
+const COMMON_KEYWORDS = [
   "of",
   "and",
   "for",
@@ -974,105 +1426,170 @@ const na = (e, t) => {
   // common variable name
   "value"
   // common variable name
-], ia = "keyword";
-function So(e, t, n = ia) {
-  const o = /* @__PURE__ */ Object.create(null);
-  return typeof e == "string" ? i(n, e.split(" ")) : Array.isArray(e) ? i(n, e) : Object.keys(e).forEach(function(r) {
-    Object.assign(
-      o,
-      So(e[r], t, r)
-    );
-  }), o;
-  function i(r, a) {
-    t && (a = a.map((s) => s.toLowerCase())), a.forEach(function(s) {
-      const l = s.split("|");
-      o[l[0]] = [r, aa(l[0], l[1])];
+];
+const DEFAULT_KEYWORD_SCOPE = "keyword";
+function compileKeywords(rawKeywords, caseInsensitive, scopeName = DEFAULT_KEYWORD_SCOPE) {
+  const compiledKeywords = /* @__PURE__ */ Object.create(null);
+  if (typeof rawKeywords === "string") {
+    compileList(scopeName, rawKeywords.split(" "));
+  } else if (Array.isArray(rawKeywords)) {
+    compileList(scopeName, rawKeywords);
+  } else {
+    Object.keys(rawKeywords).forEach(function(scopeName2) {
+      Object.assign(
+        compiledKeywords,
+        compileKeywords(rawKeywords[scopeName2], caseInsensitive, scopeName2)
+      );
+    });
+  }
+  return compiledKeywords;
+  function compileList(scopeName2, keywordList) {
+    if (caseInsensitive) {
+      keywordList = keywordList.map((x) => x.toLowerCase());
+    }
+    keywordList.forEach(function(keyword) {
+      const pair = keyword.split("|");
+      compiledKeywords[pair[0]] = [scopeName2, scoreForKeyword(pair[0], pair[1])];
     });
   }
 }
-function aa(e, t) {
-  return t ? Number(t) : ra(e) ? 0 : 1;
+function scoreForKeyword(keyword, providedScore) {
+  if (providedScore) {
+    return Number(providedScore);
+  }
+  return commonKeyword(keyword) ? 0 : 1;
 }
-function ra(e) {
-  return oa.includes(e.toLowerCase());
+function commonKeyword(keyword) {
+  return COMMON_KEYWORDS.includes(keyword.toLowerCase());
 }
-const Xn = {}, We = (e) => {
-  console.error(e);
-}, Yn = (e, ...t) => {
-  console.log(`WARN: ${e}`, ...t);
-}, Qe = (e, t) => {
-  Xn[`${e}/${t}`] || (console.log(`Deprecated as of ${e}. ${t}`), Xn[`${e}/${t}`] = !0);
-}, Gt = new Error();
-function To(e, t, { key: n }) {
-  let o = 0;
-  const i = e[n], r = {}, a = {};
-  for (let s = 1; s <= t.length; s++)
-    a[s + o] = i[s], r[s + o] = !0, o += _o(t[s - 1]);
-  e[n] = a, e[n]._emit = r, e[n]._multi = !0;
+const seenDeprecations = {};
+const error = (message) => {
+  console.error(message);
+};
+const warn = (message, ...args) => {
+  console.log(`WARN: ${message}`, ...args);
+};
+const deprecated = (version2, message) => {
+  if (seenDeprecations[`${version2}/${message}`]) return;
+  console.log(`Deprecated as of ${version2}. ${message}`);
+  seenDeprecations[`${version2}/${message}`] = true;
+};
+const MultiClassError = new Error();
+function remapScopeNames(mode, regexes, { key }) {
+  let offset = 0;
+  const scopeNames = mode[key];
+  const emit = {};
+  const positions = {};
+  for (let i = 1; i <= regexes.length; i++) {
+    positions[i + offset] = scopeNames[i];
+    emit[i + offset] = true;
+    offset += countMatchGroups(regexes[i - 1]);
+  }
+  mode[key] = positions;
+  mode[key]._emit = emit;
+  mode[key]._multi = true;
 }
-function sa(e) {
-  if (Array.isArray(e.begin)) {
-    if (e.skip || e.excludeBegin || e.returnBegin)
-      throw We("skip, excludeBegin, returnBegin not compatible with beginScope: {}"), Gt;
-    if (typeof e.beginScope != "object" || e.beginScope === null)
-      throw We("beginScope must be object"), Gt;
-    To(e, e.begin, { key: "beginScope" }), e.begin = Nn(e.begin, { joinWith: "" });
+function beginMultiClass(mode) {
+  if (!Array.isArray(mode.begin)) return;
+  if (mode.skip || mode.excludeBegin || mode.returnBegin) {
+    error("skip, excludeBegin, returnBegin not compatible with beginScope: {}");
+    throw MultiClassError;
+  }
+  if (typeof mode.beginScope !== "object" || mode.beginScope === null) {
+    error("beginScope must be object");
+    throw MultiClassError;
+  }
+  remapScopeNames(mode, mode.begin, { key: "beginScope" });
+  mode.begin = _rewriteBackreferences(mode.begin, { joinWith: "" });
+}
+function endMultiClass(mode) {
+  if (!Array.isArray(mode.end)) return;
+  if (mode.skip || mode.excludeEnd || mode.returnEnd) {
+    error("skip, excludeEnd, returnEnd not compatible with endScope: {}");
+    throw MultiClassError;
+  }
+  if (typeof mode.endScope !== "object" || mode.endScope === null) {
+    error("endScope must be object");
+    throw MultiClassError;
+  }
+  remapScopeNames(mode, mode.end, { key: "endScope" });
+  mode.end = _rewriteBackreferences(mode.end, { joinWith: "" });
+}
+function scopeSugar(mode) {
+  if (mode.scope && typeof mode.scope === "object" && mode.scope !== null) {
+    mode.beginScope = mode.scope;
+    delete mode.scope;
   }
 }
-function la(e) {
-  if (Array.isArray(e.end)) {
-    if (e.skip || e.excludeEnd || e.returnEnd)
-      throw We("skip, excludeEnd, returnEnd not compatible with endScope: {}"), Gt;
-    if (typeof e.endScope != "object" || e.endScope === null)
-      throw We("endScope must be object"), Gt;
-    To(e, e.end, { key: "endScope" }), e.end = Nn(e.end, { joinWith: "" });
+function MultiClass(mode) {
+  scopeSugar(mode);
+  if (typeof mode.beginScope === "string") {
+    mode.beginScope = { _wrap: mode.beginScope };
   }
+  if (typeof mode.endScope === "string") {
+    mode.endScope = { _wrap: mode.endScope };
+  }
+  beginMultiClass(mode);
+  endMultiClass(mode);
 }
-function ca(e) {
-  e.scope && typeof e.scope == "object" && e.scope !== null && (e.beginScope = e.scope, delete e.scope);
-}
-function ua(e) {
-  ca(e), typeof e.beginScope == "string" && (e.beginScope = { _wrap: e.beginScope }), typeof e.endScope == "string" && (e.endScope = { _wrap: e.endScope }), sa(e), la(e);
-}
-function da(e) {
-  function t(a, s) {
+function compileLanguage(language) {
+  function langRe(value, global) {
     return new RegExp(
-      yt(a),
-      "m" + (e.case_insensitive ? "i" : "") + (e.unicodeRegex ? "u" : "") + (s ? "g" : "")
+      source(value),
+      "m" + (language.case_insensitive ? "i" : "") + (language.unicodeRegex ? "u" : "") + (global ? "g" : "")
     );
   }
-  class n {
+  class MultiRegex {
     constructor() {
-      this.matchIndexes = {}, this.regexes = [], this.matchAt = 1, this.position = 0;
+      this.matchIndexes = {};
+      this.regexes = [];
+      this.matchAt = 1;
+      this.position = 0;
     }
     // @ts-ignore
-    addRule(s, l) {
-      l.position = this.position++, this.matchIndexes[this.matchAt] = l, this.regexes.push([l, s]), this.matchAt += _o(s) + 1;
+    addRule(re, opts) {
+      opts.position = this.position++;
+      this.matchIndexes[this.matchAt] = opts;
+      this.regexes.push([opts, re]);
+      this.matchAt += countMatchGroups(re) + 1;
     }
     compile() {
-      this.regexes.length === 0 && (this.exec = () => null);
-      const s = this.regexes.map((l) => l[1]);
-      this.matcherRe = t(Nn(s, { joinWith: "|" }), !0), this.lastIndex = 0;
+      if (this.regexes.length === 0) {
+        this.exec = () => null;
+      }
+      const terminators = this.regexes.map((el) => el[1]);
+      this.matcherRe = langRe(_rewriteBackreferences(terminators, { joinWith: "|" }), true);
+      this.lastIndex = 0;
     }
     /** @param {string} s */
     exec(s) {
       this.matcherRe.lastIndex = this.lastIndex;
-      const l = this.matcherRe.exec(s);
-      if (!l)
+      const match = this.matcherRe.exec(s);
+      if (!match) {
         return null;
-      const c = l.findIndex((d, p) => p > 0 && d !== void 0), u = this.matchIndexes[c];
-      return l.splice(0, c), Object.assign(l, u);
+      }
+      const i = match.findIndex((el, i2) => i2 > 0 && el !== void 0);
+      const matchData = this.matchIndexes[i];
+      match.splice(0, i);
+      return Object.assign(match, matchData);
     }
   }
-  class o {
+  class ResumableMultiRegex {
     constructor() {
-      this.rules = [], this.multiRegexes = [], this.count = 0, this.lastIndex = 0, this.regexIndex = 0;
+      this.rules = [];
+      this.multiRegexes = [];
+      this.count = 0;
+      this.lastIndex = 0;
+      this.regexIndex = 0;
     }
     // @ts-ignore
-    getMatcher(s) {
-      if (this.multiRegexes[s]) return this.multiRegexes[s];
-      const l = new n();
-      return this.rules.slice(s).forEach(([c, u]) => l.addRule(c, u)), l.compile(), this.multiRegexes[s] = l, l;
+    getMatcher(index) {
+      if (this.multiRegexes[index]) return this.multiRegexes[index];
+      const matcher = new MultiRegex();
+      this.rules.slice(index).forEach(([re, opts]) => matcher.addRule(re, opts));
+      matcher.compile();
+      this.multiRegexes[index] = matcher;
+      return matcher;
     }
     resumingScanAtSamePosition() {
       return this.regexIndex !== 0;
@@ -1081,88 +1598,163 @@ function da(e) {
       this.regexIndex = 0;
     }
     // @ts-ignore
-    addRule(s, l) {
-      this.rules.push([s, l]), l.type === "begin" && this.count++;
+    addRule(re, opts) {
+      this.rules.push([re, opts]);
+      if (opts.type === "begin") this.count++;
     }
     /** @param {string} s */
     exec(s) {
-      const l = this.getMatcher(this.regexIndex);
-      l.lastIndex = this.lastIndex;
-      let c = l.exec(s);
-      if (this.resumingScanAtSamePosition() && !(c && c.index === this.lastIndex)) {
-        const u = this.getMatcher(0);
-        u.lastIndex = this.lastIndex + 1, c = u.exec(s);
+      const m2 = this.getMatcher(this.regexIndex);
+      m2.lastIndex = this.lastIndex;
+      let result = m2.exec(s);
+      if (this.resumingScanAtSamePosition()) {
+        if (result && result.index === this.lastIndex) ;
+        else {
+          const m22 = this.getMatcher(0);
+          m22.lastIndex = this.lastIndex + 1;
+          result = m22.exec(s);
+        }
       }
-      return c && (this.regexIndex += c.position + 1, this.regexIndex === this.count && this.considerAll()), c;
+      if (result) {
+        this.regexIndex += result.position + 1;
+        if (this.regexIndex === this.count) {
+          this.considerAll();
+        }
+      }
+      return result;
     }
   }
-  function i(a) {
-    const s = new o();
-    return a.contains.forEach((l) => s.addRule(l.begin, { rule: l, type: "begin" })), a.terminatorEnd && s.addRule(a.terminatorEnd, { type: "end" }), a.illegal && s.addRule(a.illegal, { type: "illegal" }), s;
+  function buildModeRegex(mode) {
+    const mm = new ResumableMultiRegex();
+    mode.contains.forEach((term) => mm.addRule(term.begin, { rule: term, type: "begin" }));
+    if (mode.terminatorEnd) {
+      mm.addRule(mode.terminatorEnd, { type: "end" });
+    }
+    if (mode.illegal) {
+      mm.addRule(mode.illegal, { type: "illegal" });
+    }
+    return mm;
   }
-  function r(a, s) {
-    const l = (
+  function compileMode(mode, parent) {
+    const cmode = (
       /** @type CompiledMode */
-      a
+      mode
     );
-    if (a.isCompiled) return l;
+    if (mode.isCompiled) return cmode;
     [
-      Yi,
+      scopeClassName,
       // do this early so compiler extensions generally don't have to worry about
       // the distinction between match/begin
-      ea,
-      ua,
-      na
-    ].forEach((u) => u(a, s)), e.compilerExtensions.forEach((u) => u(a, s)), a.__beforeBegin = null, [
-      Ji,
+      compileMatch,
+      MultiClass,
+      beforeMatchExt
+    ].forEach((ext) => ext(mode, parent));
+    language.compilerExtensions.forEach((ext) => ext(mode, parent));
+    mode.__beforeBegin = null;
+    [
+      beginKeywords,
       // do this later so compiler extensions that come earlier have access to the
       // raw array if they wanted to perhaps manipulate it, etc.
-      Qi,
+      compileIllegal,
       // default to 1 relevance if not specified
-      ta
-    ].forEach((u) => u(a, s)), a.isCompiled = !0;
-    let c = null;
-    return typeof a.keywords == "object" && a.keywords.$pattern && (a.keywords = Object.assign({}, a.keywords), c = a.keywords.$pattern, delete a.keywords.$pattern), c = c || /\w+/, a.keywords && (a.keywords = So(a.keywords, e.case_insensitive)), l.keywordPatternRe = t(c, !0), s && (a.begin || (a.begin = /\B|\b/), l.beginRe = t(l.begin), !a.end && !a.endsWithParent && (a.end = /\B|\b/), a.end && (l.endRe = t(l.end)), l.terminatorEnd = yt(l.end) || "", a.endsWithParent && s.terminatorEnd && (l.terminatorEnd += (a.end ? "|" : "") + s.terminatorEnd)), a.illegal && (l.illegalRe = t(
+      compileRelevance
+    ].forEach((ext) => ext(mode, parent));
+    mode.isCompiled = true;
+    let keywordPattern = null;
+    if (typeof mode.keywords === "object" && mode.keywords.$pattern) {
+      mode.keywords = Object.assign({}, mode.keywords);
+      keywordPattern = mode.keywords.$pattern;
+      delete mode.keywords.$pattern;
+    }
+    keywordPattern = keywordPattern || /\w+/;
+    if (mode.keywords) {
+      mode.keywords = compileKeywords(mode.keywords, language.case_insensitive);
+    }
+    cmode.keywordPatternRe = langRe(keywordPattern, true);
+    if (parent) {
+      if (!mode.begin) mode.begin = /\B|\b/;
+      cmode.beginRe = langRe(cmode.begin);
+      if (!mode.end && !mode.endsWithParent) mode.end = /\B|\b/;
+      if (mode.end) cmode.endRe = langRe(cmode.end);
+      cmode.terminatorEnd = source(cmode.end) || "";
+      if (mode.endsWithParent && parent.terminatorEnd) {
+        cmode.terminatorEnd += (mode.end ? "|" : "") + parent.terminatorEnd;
+      }
+    }
+    if (mode.illegal) cmode.illegalRe = langRe(
       /** @type {RegExp | string} */
-      a.illegal
-    )), a.contains || (a.contains = []), a.contains = [].concat(...a.contains.map(function(u) {
-      return pa(u === "self" ? a : u);
-    })), a.contains.forEach(function(u) {
-      r(
+      mode.illegal
+    );
+    if (!mode.contains) mode.contains = [];
+    mode.contains = [].concat(...mode.contains.map(function(c) {
+      return expandOrCloneMode(c === "self" ? mode : c);
+    }));
+    mode.contains.forEach(function(c) {
+      compileMode(
         /** @type Mode */
-        u,
-        l
+        c,
+        cmode
       );
-    }), a.starts && r(a.starts, s), l.matcher = i(l), l;
+    });
+    if (mode.starts) {
+      compileMode(mode.starts, parent);
+    }
+    cmode.matcher = buildModeRegex(cmode);
+    return cmode;
   }
-  if (e.compilerExtensions || (e.compilerExtensions = []), e.contains && e.contains.includes("self"))
+  if (!language.compilerExtensions) language.compilerExtensions = [];
+  if (language.contains && language.contains.includes("self")) {
     throw new Error("ERR: contains `self` is not supported at the top-level of a language.  See documentation.");
-  return e.classNameAliases = He(e.classNameAliases || {}), r(
+  }
+  language.classNameAliases = inherit$1(language.classNameAliases || {});
+  return compileMode(
     /** @type Mode */
-    e
+    language
   );
 }
-function Mo(e) {
-  return e ? e.endsWithParent || Mo(e.starts) : !1;
+function dependencyOnParent(mode) {
+  if (!mode) return false;
+  return mode.endsWithParent || dependencyOnParent(mode.starts);
 }
-function pa(e) {
-  return e.variants && !e.cachedVariants && (e.cachedVariants = e.variants.map(function(t) {
-    return He(e, { variants: null }, t);
-  })), e.cachedVariants ? e.cachedVariants : Mo(e) ? He(e, { starts: e.starts ? He(e.starts) : null }) : Object.isFrozen(e) ? He(e) : e;
+function expandOrCloneMode(mode) {
+  if (mode.variants && !mode.cachedVariants) {
+    mode.cachedVariants = mode.variants.map(function(variant) {
+      return inherit$1(mode, { variants: null }, variant);
+    });
+  }
+  if (mode.cachedVariants) {
+    return mode.cachedVariants;
+  }
+  if (dependencyOnParent(mode)) {
+    return inherit$1(mode, { starts: mode.starts ? inherit$1(mode.starts) : null });
+  }
+  if (Object.isFrozen(mode)) {
+    return inherit$1(mode);
+  }
+  return mode;
 }
-var fa = "11.11.1";
-class ma extends Error {
-  constructor(t, n) {
-    super(t), this.name = "HTMLInjectionError", this.html = n;
+var version = "11.11.1";
+class HTMLInjectionError extends Error {
+  constructor(reason, html) {
+    super(reason);
+    this.name = "HTMLInjectionError";
+    this.html = html;
   }
 }
-const wn = vo, Jn = He, Qn = Symbol("nomatch"), ga = 7, Lo = function(e) {
-  const t = /* @__PURE__ */ Object.create(null), n = /* @__PURE__ */ Object.create(null), o = [];
-  let i = !0;
-  const r = "Could not find the language '{}', did you forget to load/include a language module?", a = { disableAutodetect: !0, name: "Plain text", contains: [] };
-  let s = {
-    ignoreUnescapedHTML: !1,
-    throwUnescapedHTML: !1,
+const escape = escapeHTML;
+const inherit = inherit$1;
+const NO_MATCH = Symbol("nomatch");
+const MAX_KEYWORD_HITS = 7;
+const HLJS = function(hljs) {
+  const languages = /* @__PURE__ */ Object.create(null);
+  const aliases = /* @__PURE__ */ Object.create(null);
+  const plugins = [];
+  let SAFE_MODE = true;
+  const LANGUAGE_NOT_FOUND = "Could not find the language '{}', did you forget to load/include a language module?";
+  const PLAINTEXT_LANGUAGE = { disableAutodetect: true, name: "Plain text", contains: [] };
+  let options2 = {
+    ignoreUnescapedHTML: false,
+    throwUnescapedHTML: false,
     noHighlightRe: /^(no-?highlight)$/i,
     languageDetectRe: /\blang(?:uage)?-([\w-]+)\b/i,
     classPrefix: "hljs-",
@@ -1170,440 +1762,662 @@ const wn = vo, Jn = He, Qn = Symbol("nomatch"), ga = 7, Lo = function(e) {
     languages: null,
     // beta configuration options, subject to change, welcome to discuss
     // https://github.com/highlightjs/highlight.js/issues/1086
-    __emitter: Si
+    __emitter: TokenTreeEmitter
   };
-  function l(y) {
-    return s.noHighlightRe.test(y);
+  function shouldNotHighlight(languageName) {
+    return options2.noHighlightRe.test(languageName);
   }
-  function c(y) {
-    let A = y.className + " ";
-    A += y.parentNode ? y.parentNode.className : "";
-    const P = s.languageDetectRe.exec(A);
-    if (P) {
-      const q = _(P[1]);
-      return q || (Yn(r.replace("{}", P[1])), Yn("Falling back to no-highlight mode for this block.", y)), q ? P[1] : "no-highlight";
+  function blockLanguage(block) {
+    let classes = block.className + " ";
+    classes += block.parentNode ? block.parentNode.className : "";
+    const match = options2.languageDetectRe.exec(classes);
+    if (match) {
+      const language = getLanguage(match[1]);
+      if (!language) {
+        warn(LANGUAGE_NOT_FOUND.replace("{}", match[1]));
+        warn("Falling back to no-highlight mode for this block.", block);
+      }
+      return language ? match[1] : "no-highlight";
     }
-    return A.split(/\s+/).find((q) => l(q) || _(q));
+    return classes.split(/\s+/).find((_class) => shouldNotHighlight(_class) || getLanguage(_class));
   }
-  function u(y, A, P) {
-    let q = "", te = "";
-    typeof A == "object" ? (q = y, P = A.ignoreIllegals, te = A.language) : (Qe("10.7.0", "highlight(lang, code, ...args) has been deprecated."), Qe("10.7.0", `Please use highlight(code, options) instead.
-https://github.com/highlightjs/highlight.js/issues/2277`), te = y, q = A), P === void 0 && (P = !0);
-    const ie = {
-      code: q,
-      language: te
+  function highlight2(codeOrLanguageName, optionsOrCode, ignoreIllegals) {
+    let code = "";
+    let languageName = "";
+    if (typeof optionsOrCode === "object") {
+      code = codeOrLanguageName;
+      ignoreIllegals = optionsOrCode.ignoreIllegals;
+      languageName = optionsOrCode.language;
+    } else {
+      deprecated("10.7.0", "highlight(lang, code, ...args) has been deprecated.");
+      deprecated("10.7.0", "Please use highlight(code, options) instead.\nhttps://github.com/highlightjs/highlight.js/issues/2277");
+      languageName = codeOrLanguageName;
+      code = optionsOrCode;
+    }
+    if (ignoreIllegals === void 0) {
+      ignoreIllegals = true;
+    }
+    const context = {
+      code,
+      language: languageName
     };
-    ne("before:highlight", ie);
-    const he = ie.result ? ie.result : d(ie.language, ie.code, P);
-    return he.code = ie.code, ne("after:highlight", he), he;
+    fire("before:highlight", context);
+    const result = context.result ? context.result : _highlight(context.language, context.code, ignoreIllegals);
+    result.code = context.code;
+    fire("after:highlight", result);
+    return result;
   }
-  function d(y, A, P, q) {
-    const te = /* @__PURE__ */ Object.create(null);
-    function ie(L, F) {
-      return L.keywords[F];
+  function _highlight(languageName, codeToHighlight, ignoreIllegals, continuation) {
+    const keywordHits = /* @__PURE__ */ Object.create(null);
+    function keywordData(mode, matchText) {
+      return mode.keywords[matchText];
     }
-    function he() {
-      if (!I.keywords) {
-        be.addText(ae);
+    function processKeywords() {
+      if (!top.keywords) {
+        emitter.addText(modeBuffer);
         return;
       }
-      let L = 0;
-      I.keywordPatternRe.lastIndex = 0;
-      let F = I.keywordPatternRe.exec(ae), J = "";
-      for (; F; ) {
-        J += ae.substring(L, F.index);
-        const oe = Y.case_insensitive ? F[0].toLowerCase() : F[0], ve = ie(I, oe);
-        if (ve) {
-          const [Ae, Jo] = ve;
-          if (be.addText(J), J = "", te[oe] = (te[oe] || 0) + 1, te[oe] <= ga && (Lt += Jo), Ae.startsWith("_"))
-            J += F[0];
-          else {
-            const Qo = Y.classNameAliases[Ae] || Ae;
-            Me(F[0], Qo);
+      let lastIndex = 0;
+      top.keywordPatternRe.lastIndex = 0;
+      let match = top.keywordPatternRe.exec(modeBuffer);
+      let buf = "";
+      while (match) {
+        buf += modeBuffer.substring(lastIndex, match.index);
+        const word = language.case_insensitive ? match[0].toLowerCase() : match[0];
+        const data = keywordData(top, word);
+        if (data) {
+          const [kind, keywordRelevance] = data;
+          emitter.addText(buf);
+          buf = "";
+          keywordHits[word] = (keywordHits[word] || 0) + 1;
+          if (keywordHits[word] <= MAX_KEYWORD_HITS) relevance += keywordRelevance;
+          if (kind.startsWith("_")) {
+            buf += match[0];
+          } else {
+            const cssClass = language.classNameAliases[kind] || kind;
+            emitKeyword(match[0], cssClass);
           }
-        } else
-          J += F[0];
-        L = I.keywordPatternRe.lastIndex, F = I.keywordPatternRe.exec(ae);
+        } else {
+          buf += match[0];
+        }
+        lastIndex = top.keywordPatternRe.lastIndex;
+        match = top.keywordPatternRe.exec(modeBuffer);
       }
-      J += ae.substring(L), be.addText(J);
+      buf += modeBuffer.substring(lastIndex);
+      emitter.addText(buf);
     }
-    function Te() {
-      if (ae === "") return;
-      let L = null;
-      if (typeof I.subLanguage == "string") {
-        if (!t[I.subLanguage]) {
-          be.addText(ae);
+    function processSubLanguage() {
+      if (modeBuffer === "") return;
+      let result2 = null;
+      if (typeof top.subLanguage === "string") {
+        if (!languages[top.subLanguage]) {
+          emitter.addText(modeBuffer);
           return;
         }
-        L = d(I.subLanguage, ae, !0, de[I.subLanguage]), de[I.subLanguage] = /** @type {CompiledMode} */
-        L._top;
-      } else
-        L = m(ae, I.subLanguage.length ? I.subLanguage : null);
-      I.relevance > 0 && (Lt += L.relevance), be.__addSublanguage(L._emitter, L.language);
+        result2 = _highlight(top.subLanguage, modeBuffer, true, continuations[top.subLanguage]);
+        continuations[top.subLanguage] = /** @type {CompiledMode} */
+        result2._top;
+      } else {
+        result2 = highlightAuto(modeBuffer, top.subLanguage.length ? top.subLanguage : null);
+      }
+      if (top.relevance > 0) {
+        relevance += result2.relevance;
+      }
+      emitter.__addSublanguage(result2._emitter, result2.language);
     }
-    function xe() {
-      I.subLanguage != null ? Te() : he(), ae = "";
+    function processBuffer() {
+      if (top.subLanguage != null) {
+        processSubLanguage();
+      } else {
+        processKeywords();
+      }
+      modeBuffer = "";
     }
-    function Me(L, F) {
-      L !== "" && (be.startScope(F), be.addText(L), be.endScope());
+    function emitKeyword(keyword, scope) {
+      if (keyword === "") return;
+      emitter.startScope(scope);
+      emitter.addText(keyword);
+      emitter.endScope();
     }
-    function ft(L, F) {
-      let J = 1;
-      const oe = F.length - 1;
-      for (; J <= oe; ) {
-        if (!L._emit[J]) {
-          J++;
+    function emitMultiClass(scope, match) {
+      let i = 1;
+      const max = match.length - 1;
+      while (i <= max) {
+        if (!scope._emit[i]) {
+          i++;
           continue;
         }
-        const ve = Y.classNameAliases[L[J]] || L[J], Ae = F[J];
-        ve ? Me(Ae, ve) : (ae = Ae, he(), ae = ""), J++;
+        const klass = language.classNameAliases[scope[i]] || scope[i];
+        const text = match[i];
+        if (klass) {
+          emitKeyword(text, klass);
+        } else {
+          modeBuffer = text;
+          processKeywords();
+          modeBuffer = "";
+        }
+        i++;
       }
     }
-    function Et(L, F) {
-      return L.scope && typeof L.scope == "string" && be.openNode(Y.classNameAliases[L.scope] || L.scope), L.beginScope && (L.beginScope._wrap ? (Me(ae, Y.classNameAliases[L.beginScope._wrap] || L.beginScope._wrap), ae = "") : L.beginScope._multi && (ft(L.beginScope, F), ae = "")), I = Object.create(L, { parent: { value: I } }), I;
-    }
-    function St(L, F, J) {
-      let oe = Di(L.endRe, J);
-      if (oe) {
-        if (L["on:end"]) {
-          const ve = new Wn(L);
-          L["on:end"](F, ve), ve.isMatchIgnored && (oe = !1);
-        }
-        if (oe) {
-          for (; L.endsParent && L.parent; )
-            L = L.parent;
-          return L;
+    function startNewMode(mode, match) {
+      if (mode.scope && typeof mode.scope === "string") {
+        emitter.openNode(language.classNameAliases[mode.scope] || mode.scope);
+      }
+      if (mode.beginScope) {
+        if (mode.beginScope._wrap) {
+          emitKeyword(modeBuffer, language.classNameAliases[mode.beginScope._wrap] || mode.beginScope._wrap);
+          modeBuffer = "";
+        } else if (mode.beginScope._multi) {
+          emitMultiClass(mode.beginScope, match);
+          modeBuffer = "";
         }
       }
-      if (L.endsWithParent)
-        return St(L.parent, F, J);
+      top = Object.create(mode, { parent: { value: top } });
+      return top;
     }
-    function Tt(L) {
-      return I.matcher.regexIndex === 0 ? (ae += L[0], 1) : (fn = !0, 0);
+    function endOfMode(mode, match, matchPlusRemainder) {
+      let matched = startsWith(mode.endRe, matchPlusRemainder);
+      if (matched) {
+        if (mode["on:end"]) {
+          const resp = new Response(mode);
+          mode["on:end"](match, resp);
+          if (resp.isMatchIgnored) matched = false;
+        }
+        if (matched) {
+          while (mode.endsParent && mode.parent) {
+            mode = mode.parent;
+          }
+          return mode;
+        }
+      }
+      if (mode.endsWithParent) {
+        return endOfMode(mode.parent, match, matchPlusRemainder);
+      }
     }
-    function Mt(L) {
-      const F = L[0], J = L.rule, oe = new Wn(J), ve = [J.__beforeBegin, J["on:begin"]];
-      for (const Ae of ve)
-        if (Ae && (Ae(L, oe), oe.isMatchIgnored))
-          return Tt(F);
-      return J.skip ? ae += F : (J.excludeBegin && (ae += F), xe(), !J.returnBegin && !J.excludeBegin && (ae = F)), Et(J, L), J.returnBegin ? 0 : F.length;
+    function doIgnore(lexeme) {
+      if (top.matcher.regexIndex === 0) {
+        modeBuffer += lexeme[0];
+        return 1;
+      } else {
+        resumeScanAtSamePosition = true;
+        return 0;
+      }
     }
-    function un(L) {
-      const F = L[0], J = A.substring(L.index), oe = St(I, L, J);
-      if (!oe)
-        return Qn;
-      const ve = I;
-      I.endScope && I.endScope._wrap ? (xe(), Me(F, I.endScope._wrap)) : I.endScope && I.endScope._multi ? (xe(), ft(I.endScope, L)) : ve.skip ? ae += F : (ve.returnEnd || ve.excludeEnd || (ae += F), xe(), ve.excludeEnd && (ae = F));
-      do
-        I.scope && be.closeNode(), !I.skip && !I.subLanguage && (Lt += I.relevance), I = I.parent;
-      while (I !== oe.parent);
-      return oe.starts && Et(oe.starts, L), ve.returnEnd ? 0 : F.length;
+    function doBeginMatch(match) {
+      const lexeme = match[0];
+      const newMode = match.rule;
+      const resp = new Response(newMode);
+      const beforeCallbacks = [newMode.__beforeBegin, newMode["on:begin"]];
+      for (const cb of beforeCallbacks) {
+        if (!cb) continue;
+        cb(match, resp);
+        if (resp.isMatchIgnored) return doIgnore(lexeme);
+      }
+      if (newMode.skip) {
+        modeBuffer += lexeme;
+      } else {
+        if (newMode.excludeBegin) {
+          modeBuffer += lexeme;
+        }
+        processBuffer();
+        if (!newMode.returnBegin && !newMode.excludeBegin) {
+          modeBuffer = lexeme;
+        }
+      }
+      startNewMode(newMode, match);
+      return newMode.returnBegin ? 0 : lexeme.length;
     }
-    function dn() {
-      const L = [];
-      for (let F = I; F !== Y; F = F.parent)
-        F.scope && L.unshift(F.scope);
-      L.forEach((F) => be.openNode(F));
+    function doEndMatch(match) {
+      const lexeme = match[0];
+      const matchPlusRemainder = codeToHighlight.substring(match.index);
+      const endMode = endOfMode(top, match, matchPlusRemainder);
+      if (!endMode) {
+        return NO_MATCH;
+      }
+      const origin = top;
+      if (top.endScope && top.endScope._wrap) {
+        processBuffer();
+        emitKeyword(lexeme, top.endScope._wrap);
+      } else if (top.endScope && top.endScope._multi) {
+        processBuffer();
+        emitMultiClass(top.endScope, match);
+      } else if (origin.skip) {
+        modeBuffer += lexeme;
+      } else {
+        if (!(origin.returnEnd || origin.excludeEnd)) {
+          modeBuffer += lexeme;
+        }
+        processBuffer();
+        if (origin.excludeEnd) {
+          modeBuffer = lexeme;
+        }
+      }
+      do {
+        if (top.scope) {
+          emitter.closeNode();
+        }
+        if (!top.skip && !top.subLanguage) {
+          relevance += top.relevance;
+        }
+        top = top.parent;
+      } while (top !== endMode.parent);
+      if (endMode.starts) {
+        startNewMode(endMode.starts, match);
+      }
+      return origin.returnEnd ? 0 : lexeme.length;
     }
-    let Je = {};
-    function De(L, F) {
-      const J = F && F[0];
-      if (ae += L, J == null)
-        return xe(), 0;
-      if (Je.type === "begin" && F.type === "end" && Je.index === F.index && J === "") {
-        if (ae += A.slice(F.index, F.index + 1), !i) {
-          const oe = new Error(`0 width match regex (${y})`);
-          throw oe.languageName = y, oe.badRule = Je.rule, oe;
+    function processContinuations() {
+      const list = [];
+      for (let current = top; current !== language; current = current.parent) {
+        if (current.scope) {
+          list.unshift(current.scope);
+        }
+      }
+      list.forEach((item) => emitter.openNode(item));
+    }
+    let lastMatch = {};
+    function processLexeme(textBeforeMatch, match) {
+      const lexeme = match && match[0];
+      modeBuffer += textBeforeMatch;
+      if (lexeme == null) {
+        processBuffer();
+        return 0;
+      }
+      if (lastMatch.type === "begin" && match.type === "end" && lastMatch.index === match.index && lexeme === "") {
+        modeBuffer += codeToHighlight.slice(match.index, match.index + 1);
+        if (!SAFE_MODE) {
+          const err = new Error(`0 width match regex (${languageName})`);
+          err.languageName = languageName;
+          err.badRule = lastMatch.rule;
+          throw err;
         }
         return 1;
       }
-      if (Je = F, F.type === "begin")
-        return Mt(F);
-      if (F.type === "illegal" && !P) {
-        const oe = new Error('Illegal lexeme "' + J + '" for mode "' + (I.scope || "<unnamed>") + '"');
-        throw oe.mode = I, oe;
-      } else if (F.type === "end") {
-        const oe = un(F);
-        if (oe !== Qn)
-          return oe;
-      }
-      if (F.type === "illegal" && J === "")
-        return ae += `
-`, 1;
-      if (pn > 1e5 && pn > F.index * 3)
-        throw new Error("potential infinite loop, way more iterations than matches");
-      return ae += J, J.length;
-    }
-    const Y = _(y);
-    if (!Y)
-      throw We(r.replace("{}", y)), new Error('Unknown language: "' + y + '"');
-    const S = da(Y);
-    let z = "", I = q || S;
-    const de = {}, be = new s.__emitter(s);
-    dn();
-    let ae = "", Lt = 0, Ge = 0, pn = 0, fn = !1;
-    try {
-      if (Y.__emitTokens)
-        Y.__emitTokens(A, be);
-      else {
-        for (I.matcher.considerAll(); ; ) {
-          pn++, fn ? fn = !1 : I.matcher.considerAll(), I.matcher.lastIndex = Ge;
-          const L = I.matcher.exec(A);
-          if (!L) break;
-          const F = A.substring(Ge, L.index), J = De(F, L);
-          Ge = L.index + J;
+      lastMatch = match;
+      if (match.type === "begin") {
+        return doBeginMatch(match);
+      } else if (match.type === "illegal" && !ignoreIllegals) {
+        const err = new Error('Illegal lexeme "' + lexeme + '" for mode "' + (top.scope || "<unnamed>") + '"');
+        err.mode = top;
+        throw err;
+      } else if (match.type === "end") {
+        const processed = doEndMatch(match);
+        if (processed !== NO_MATCH) {
+          return processed;
         }
-        De(A.substring(Ge));
       }
-      return be.finalize(), z = be.toHTML(), {
-        language: y,
-        value: z,
-        relevance: Lt,
-        illegal: !1,
-        _emitter: be,
-        _top: I
+      if (match.type === "illegal" && lexeme === "") {
+        modeBuffer += "\n";
+        return 1;
+      }
+      if (iterations > 1e5 && iterations > match.index * 3) {
+        const err = new Error("potential infinite loop, way more iterations than matches");
+        throw err;
+      }
+      modeBuffer += lexeme;
+      return lexeme.length;
+    }
+    const language = getLanguage(languageName);
+    if (!language) {
+      error(LANGUAGE_NOT_FOUND.replace("{}", languageName));
+      throw new Error('Unknown language: "' + languageName + '"');
+    }
+    const md = compileLanguage(language);
+    let result = "";
+    let top = continuation || md;
+    const continuations = {};
+    const emitter = new options2.__emitter(options2);
+    processContinuations();
+    let modeBuffer = "";
+    let relevance = 0;
+    let index = 0;
+    let iterations = 0;
+    let resumeScanAtSamePosition = false;
+    try {
+      if (!language.__emitTokens) {
+        top.matcher.considerAll();
+        for (; ; ) {
+          iterations++;
+          if (resumeScanAtSamePosition) {
+            resumeScanAtSamePosition = false;
+          } else {
+            top.matcher.considerAll();
+          }
+          top.matcher.lastIndex = index;
+          const match = top.matcher.exec(codeToHighlight);
+          if (!match) break;
+          const beforeMatch = codeToHighlight.substring(index, match.index);
+          const processedCount = processLexeme(beforeMatch, match);
+          index = match.index + processedCount;
+        }
+        processLexeme(codeToHighlight.substring(index));
+      } else {
+        language.__emitTokens(codeToHighlight, emitter);
+      }
+      emitter.finalize();
+      result = emitter.toHTML();
+      return {
+        language: languageName,
+        value: result,
+        relevance,
+        illegal: false,
+        _emitter: emitter,
+        _top: top
       };
-    } catch (L) {
-      if (L.message && L.message.includes("Illegal"))
+    } catch (err) {
+      if (err.message && err.message.includes("Illegal")) {
         return {
-          language: y,
-          value: wn(A),
-          illegal: !0,
+          language: languageName,
+          value: escape(codeToHighlight),
+          illegal: true,
           relevance: 0,
           _illegalBy: {
-            message: L.message,
-            index: Ge,
-            context: A.slice(Ge - 100, Ge + 100),
-            mode: L.mode,
-            resultSoFar: z
+            message: err.message,
+            index,
+            context: codeToHighlight.slice(index - 100, index + 100),
+            mode: err.mode,
+            resultSoFar: result
           },
-          _emitter: be
+          _emitter: emitter
         };
-      if (i)
+      } else if (SAFE_MODE) {
         return {
-          language: y,
-          value: wn(A),
-          illegal: !1,
+          language: languageName,
+          value: escape(codeToHighlight),
+          illegal: false,
           relevance: 0,
-          errorRaised: L,
-          _emitter: be,
-          _top: I
+          errorRaised: err,
+          _emitter: emitter,
+          _top: top
         };
-      throw L;
+      } else {
+        throw err;
+      }
     }
   }
-  function p(y) {
-    const A = {
-      value: wn(y),
-      illegal: !1,
+  function justTextHighlightResult(code) {
+    const result = {
+      value: escape(code),
+      illegal: false,
       relevance: 0,
-      _top: a,
-      _emitter: new s.__emitter(s)
+      _top: PLAINTEXT_LANGUAGE,
+      _emitter: new options2.__emitter(options2)
     };
-    return A._emitter.addText(y), A;
+    result._emitter.addText(code);
+    return result;
   }
-  function m(y, A) {
-    A = A || s.languages || Object.keys(t);
-    const P = p(y), q = A.filter(_).filter(v).map(
-      (xe) => d(xe, y, !1)
+  function highlightAuto(code, languageSubset) {
+    languageSubset = languageSubset || options2.languages || Object.keys(languages);
+    const plaintext = justTextHighlightResult(code);
+    const results = languageSubset.filter(getLanguage).filter(autoDetection).map(
+      (name) => _highlight(name, code, false)
     );
-    q.unshift(P);
-    const te = q.sort((xe, Me) => {
-      if (xe.relevance !== Me.relevance) return Me.relevance - xe.relevance;
-      if (xe.language && Me.language) {
-        if (_(xe.language).supersetOf === Me.language)
+    results.unshift(plaintext);
+    const sorted = results.sort((a, b) => {
+      if (a.relevance !== b.relevance) return b.relevance - a.relevance;
+      if (a.language && b.language) {
+        if (getLanguage(a.language).supersetOf === b.language) {
           return 1;
-        if (_(Me.language).supersetOf === xe.language)
+        } else if (getLanguage(b.language).supersetOf === a.language) {
           return -1;
+        }
       }
       return 0;
-    }), [ie, he] = te, Te = ie;
-    return Te.secondBest = he, Te;
+    });
+    const [best, secondBest] = sorted;
+    const result = best;
+    result.secondBest = secondBest;
+    return result;
   }
-  function g(y, A, P) {
-    const q = A && n[A] || P;
-    y.classList.add("hljs"), y.classList.add(`language-${q}`);
+  function updateClassName(element, currentLang, resultLang) {
+    const language = currentLang && aliases[currentLang] || resultLang;
+    element.classList.add("hljs");
+    element.classList.add(`language-${language}`);
   }
-  function f(y) {
-    let A = null;
-    const P = c(y);
-    if (l(P)) return;
-    if (ne(
+  function highlightElement(element) {
+    let node = null;
+    const language = blockLanguage(element);
+    if (shouldNotHighlight(language)) return;
+    fire(
       "before:highlightElement",
-      { el: y, language: P }
-    ), y.dataset.highlighted) {
-      console.log("Element previously highlighted. To highlight again, first unset `dataset.highlighted`.", y);
+      { el: element, language }
+    );
+    if (element.dataset.highlighted) {
+      console.log("Element previously highlighted. To highlight again, first unset `dataset.highlighted`.", element);
       return;
     }
-    if (y.children.length > 0 && (s.ignoreUnescapedHTML || (console.warn("One of your code blocks includes unescaped HTML. This is a potentially serious security risk."), console.warn("https://github.com/highlightjs/highlight.js/wiki/security"), console.warn("The element with unescaped HTML:"), console.warn(y)), s.throwUnescapedHTML))
-      throw new ma(
-        "One of your code blocks includes unescaped HTML.",
-        y.innerHTML
-      );
-    A = y;
-    const q = A.textContent, te = P ? u(q, { language: P, ignoreIllegals: !0 }) : m(q);
-    y.innerHTML = te.value, y.dataset.highlighted = "yes", g(y, P, te.language), y.result = {
-      language: te.language,
+    if (element.children.length > 0) {
+      if (!options2.ignoreUnescapedHTML) {
+        console.warn("One of your code blocks includes unescaped HTML. This is a potentially serious security risk.");
+        console.warn("https://github.com/highlightjs/highlight.js/wiki/security");
+        console.warn("The element with unescaped HTML:");
+        console.warn(element);
+      }
+      if (options2.throwUnescapedHTML) {
+        const err = new HTMLInjectionError(
+          "One of your code blocks includes unescaped HTML.",
+          element.innerHTML
+        );
+        throw err;
+      }
+    }
+    node = element;
+    const text = node.textContent;
+    const result = language ? highlight2(text, { language, ignoreIllegals: true }) : highlightAuto(text);
+    element.innerHTML = result.value;
+    element.dataset.highlighted = "yes";
+    updateClassName(element, language, result.language);
+    element.result = {
+      language: result.language,
       // TODO: remove with version 11.0
-      re: te.relevance,
-      relevance: te.relevance
-    }, te.secondBest && (y.secondBest = {
-      language: te.secondBest.language,
-      relevance: te.secondBest.relevance
-    }), ne("after:highlightElement", { el: y, result: te, text: q });
+      re: result.relevance,
+      relevance: result.relevance
+    };
+    if (result.secondBest) {
+      element.secondBest = {
+        language: result.secondBest.language,
+        relevance: result.secondBest.relevance
+      };
+    }
+    fire("after:highlightElement", { el: element, result, text });
   }
-  function b(y) {
-    s = Jn(s, y);
+  function configure(userOptions) {
+    options2 = inherit(options2, userOptions);
   }
-  const x = () => {
-    O(), Qe("10.6.0", "initHighlighting() deprecated.  Use highlightAll() now.");
+  const initHighlighting = () => {
+    highlightAll();
+    deprecated("10.6.0", "initHighlighting() deprecated.  Use highlightAll() now.");
   };
-  function T() {
-    O(), Qe("10.6.0", "initHighlightingOnLoad() deprecated.  Use highlightAll() now.");
+  function initHighlightingOnLoad() {
+    highlightAll();
+    deprecated("10.6.0", "initHighlightingOnLoad() deprecated.  Use highlightAll() now.");
   }
-  let $ = !1;
-  function O() {
-    function y() {
-      O();
+  let wantsHighlight = false;
+  function highlightAll() {
+    function boot() {
+      highlightAll();
     }
     if (document.readyState === "loading") {
-      $ || window.addEventListener("DOMContentLoaded", y, !1), $ = !0;
+      if (!wantsHighlight) {
+        window.addEventListener("DOMContentLoaded", boot, false);
+      }
+      wantsHighlight = true;
       return;
     }
-    document.querySelectorAll(s.cssSelector).forEach(f);
+    const blocks = document.querySelectorAll(options2.cssSelector);
+    blocks.forEach(highlightElement);
   }
-  function B(y, A) {
-    let P = null;
+  function registerLanguage(languageName, languageDefinition) {
+    let lang = null;
     try {
-      P = A(e);
-    } catch (q) {
-      if (We("Language definition for '{}' could not be registered.".replace("{}", y)), i)
-        We(q);
-      else
-        throw q;
-      P = a;
+      lang = languageDefinition(hljs);
+    } catch (error$1) {
+      error("Language definition for '{}' could not be registered.".replace("{}", languageName));
+      if (!SAFE_MODE) {
+        throw error$1;
+      } else {
+        error(error$1);
+      }
+      lang = PLAINTEXT_LANGUAGE;
     }
-    P.name || (P.name = y), t[y] = P, P.rawDefinition = A.bind(null, e), P.aliases && C(P.aliases, { languageName: y });
+    if (!lang.name) lang.name = languageName;
+    languages[languageName] = lang;
+    lang.rawDefinition = languageDefinition.bind(null, hljs);
+    if (lang.aliases) {
+      registerAliases(lang.aliases, { languageName });
+    }
   }
-  function N(y) {
-    delete t[y];
-    for (const A of Object.keys(n))
-      n[A] === y && delete n[A];
+  function unregisterLanguage(languageName) {
+    delete languages[languageName];
+    for (const alias of Object.keys(aliases)) {
+      if (aliases[alias] === languageName) {
+        delete aliases[alias];
+      }
+    }
   }
-  function k() {
-    return Object.keys(t);
+  function listLanguages() {
+    return Object.keys(languages);
   }
-  function _(y) {
-    return y = (y || "").toLowerCase(), t[y] || t[n[y]];
+  function getLanguage(name) {
+    name = (name || "").toLowerCase();
+    return languages[name] || languages[aliases[name]];
   }
-  function C(y, { languageName: A }) {
-    typeof y == "string" && (y = [y]), y.forEach((P) => {
-      n[P.toLowerCase()] = A;
+  function registerAliases(aliasList, { languageName }) {
+    if (typeof aliasList === "string") {
+      aliasList = [aliasList];
+    }
+    aliasList.forEach((alias) => {
+      aliases[alias.toLowerCase()] = languageName;
     });
   }
-  function v(y) {
-    const A = _(y);
-    return A && !A.disableAutodetect;
+  function autoDetection(name) {
+    const lang = getLanguage(name);
+    return lang && !lang.disableAutodetect;
   }
-  function h(y) {
-    y["before:highlightBlock"] && !y["before:highlightElement"] && (y["before:highlightElement"] = (A) => {
-      y["before:highlightBlock"](
-        Object.assign({ block: A.el }, A)
-      );
-    }), y["after:highlightBlock"] && !y["after:highlightElement"] && (y["after:highlightElement"] = (A) => {
-      y["after:highlightBlock"](
-        Object.assign({ block: A.el }, A)
-      );
+  function upgradePluginAPI(plugin) {
+    if (plugin["before:highlightBlock"] && !plugin["before:highlightElement"]) {
+      plugin["before:highlightElement"] = (data) => {
+        plugin["before:highlightBlock"](
+          Object.assign({ block: data.el }, data)
+        );
+      };
+    }
+    if (plugin["after:highlightBlock"] && !plugin["after:highlightElement"]) {
+      plugin["after:highlightElement"] = (data) => {
+        plugin["after:highlightBlock"](
+          Object.assign({ block: data.el }, data)
+        );
+      };
+    }
+  }
+  function addPlugin(plugin) {
+    upgradePluginAPI(plugin);
+    plugins.push(plugin);
+  }
+  function removePlugin(plugin) {
+    const index = plugins.indexOf(plugin);
+    if (index !== -1) {
+      plugins.splice(index, 1);
+    }
+  }
+  function fire(event, args) {
+    const cb = event;
+    plugins.forEach(function(plugin) {
+      if (plugin[cb]) {
+        plugin[cb](args);
+      }
     });
   }
-  function E(y) {
-    h(y), o.push(y);
+  function deprecateHighlightBlock(el) {
+    deprecated("10.7.0", "highlightBlock will be removed entirely in v12.0");
+    deprecated("10.7.0", "Please use highlightElement now.");
+    return highlightElement(el);
   }
-  function K(y) {
-    const A = o.indexOf(y);
-    A !== -1 && o.splice(A, 1);
-  }
-  function ne(y, A) {
-    const P = y;
-    o.forEach(function(q) {
-      q[P] && q[P](A);
-    });
-  }
-  function ee(y) {
-    return Qe("10.7.0", "highlightBlock will be removed entirely in v12.0"), Qe("10.7.0", "Please use highlightElement now."), f(y);
-  }
-  Object.assign(e, {
-    highlight: u,
-    highlightAuto: m,
-    highlightAll: O,
-    highlightElement: f,
+  Object.assign(hljs, {
+    highlight: highlight2,
+    highlightAuto,
+    highlightAll,
+    highlightElement,
     // TODO: Remove with v12 API
-    highlightBlock: ee,
-    configure: b,
-    initHighlighting: x,
-    initHighlightingOnLoad: T,
-    registerLanguage: B,
-    unregisterLanguage: N,
-    listLanguages: k,
-    getLanguage: _,
-    registerAliases: C,
-    autoDetection: v,
-    inherit: Jn,
-    addPlugin: E,
-    removePlugin: K
-  }), e.debugMode = function() {
-    i = !1;
-  }, e.safeMode = function() {
-    i = !0;
-  }, e.versionString = fa, e.regex = {
-    concat: Ye,
-    lookahead: yo,
-    either: Dn,
-    optional: Mi,
-    anyNumberOfTimes: Ti
+    highlightBlock: deprecateHighlightBlock,
+    configure,
+    initHighlighting,
+    initHighlightingOnLoad,
+    registerLanguage,
+    unregisterLanguage,
+    listLanguages,
+    getLanguage,
+    registerAliases,
+    autoDetection,
+    inherit,
+    addPlugin,
+    removePlugin
+  });
+  hljs.debugMode = function() {
+    SAFE_MODE = false;
   };
-  for (const y in Dt)
-    typeof Dt[y] == "object" && xo(Dt[y]);
-  return Object.assign(e, Dt), e;
-}, lt = Lo({});
-lt.newInstance = () => Lo({});
-var ha = lt;
-lt.HighlightJS = lt;
-lt.default = lt;
-const Ve = /* @__PURE__ */ ki(ha), ba = (e) => ({
-  IMPORTANT: {
-    scope: "meta",
-    begin: "!important"
-  },
-  BLOCK_COMMENT: e.C_BLOCK_COMMENT_MODE,
-  HEXCOLOR: {
-    scope: "number",
-    begin: /#(([0-9a-fA-F]{3,4})|(([0-9a-fA-F]{2}){3,4}))\b/
-  },
-  FUNCTION_DISPATCH: {
-    className: "built_in",
-    begin: /[\w-]+(?=\()/
-  },
-  ATTRIBUTE_SELECTOR_MODE: {
-    scope: "selector-attr",
-    begin: /\[/,
-    end: /\]/,
-    illegal: "$",
-    contains: [
-      e.APOS_STRING_MODE,
-      e.QUOTE_STRING_MODE
-    ]
-  },
-  CSS_NUMBER_MODE: {
-    scope: "number",
-    begin: e.NUMBER_RE + "(%|em|ex|ch|rem|vw|vh|vmin|vmax|cm|mm|in|pt|pc|px|deg|grad|rad|turn|s|ms|Hz|kHz|dpi|dpcm|dppx)?",
-    relevance: 0
-  },
-  CSS_VARIABLE: {
-    className: "attr",
-    begin: /--[A-Za-z_][A-Za-z0-9_-]*/
+  hljs.safeMode = function() {
+    SAFE_MODE = true;
+  };
+  hljs.versionString = version;
+  hljs.regex = {
+    concat,
+    lookahead,
+    either,
+    optional,
+    anyNumberOfTimes
+  };
+  for (const key in MODES$1) {
+    if (typeof MODES$1[key] === "object") {
+      deepFreeze(MODES$1[key]);
+    }
   }
-}), wa = [
+  Object.assign(hljs, MODES$1);
+  return hljs;
+};
+const highlight = HLJS({});
+highlight.newInstance = () => HLJS({});
+var core = highlight;
+highlight.HighlightJS = highlight;
+highlight.default = highlight;
+const HighlightJS = /* @__PURE__ */ getDefaultExportFromCjs(core);
+const MODES = (hljs) => {
+  return {
+    IMPORTANT: {
+      scope: "meta",
+      begin: "!important"
+    },
+    BLOCK_COMMENT: hljs.C_BLOCK_COMMENT_MODE,
+    HEXCOLOR: {
+      scope: "number",
+      begin: /#(([0-9a-fA-F]{3,4})|(([0-9a-fA-F]{2}){3,4}))\b/
+    },
+    FUNCTION_DISPATCH: {
+      className: "built_in",
+      begin: /[\w-]+(?=\()/
+    },
+    ATTRIBUTE_SELECTOR_MODE: {
+      scope: "selector-attr",
+      begin: /\[/,
+      end: /\]/,
+      illegal: "$",
+      contains: [
+        hljs.APOS_STRING_MODE,
+        hljs.QUOTE_STRING_MODE
+      ]
+    },
+    CSS_NUMBER_MODE: {
+      scope: "number",
+      begin: hljs.NUMBER_RE + "(%|em|ex|ch|rem|vw|vh|vmin|vmax|cm|mm|in|pt|pc|px|deg|grad|rad|turn|s|ms|Hz|kHz|dpi|dpcm|dppx)?",
+      relevance: 0
+    },
+    CSS_VARIABLE: {
+      className: "attr",
+      begin: /--[A-Za-z_][A-Za-z0-9_-]*/
+    }
+  };
+};
+const HTML_TAGS = [
   "a",
   "abbr",
   "address",
@@ -1681,7 +2495,8 @@ const Ve = /* @__PURE__ */ ki(ha), ba = (e) => ({
   "ul",
   "var",
   "video"
-], xa = [
+];
+const SVG_TAGS = [
   "defs",
   "g",
   "marker",
@@ -1723,10 +2538,12 @@ const Ve = /* @__PURE__ */ ki(ha), ba = (e) => ({
   "tspan",
   "foreignObject",
   "clipPath"
-], va = [
-  ...wa,
-  ...xa
-], ya = [
+];
+const TAGS = [
+  ...HTML_TAGS,
+  ...SVG_TAGS
+];
+const MEDIA_FEATURES = [
   "any-hover",
   "any-pointer",
   "aspect-ratio",
@@ -1761,7 +2578,8 @@ const Ve = /* @__PURE__ */ ki(ha), ba = (e) => ({
   "max-width",
   "min-height",
   "max-height"
-].sort().reverse(), _a = [
+].sort().reverse();
+const PSEUDO_CLASSES = [
   "active",
   "any-link",
   "blank",
@@ -1835,7 +2653,8 @@ const Ve = /* @__PURE__ */ ki(ha), ba = (e) => ({
   "visited",
   "where"
   // where()
-].sort().reverse(), ka = [
+].sort().reverse();
+const PSEUDO_ELEMENTS = [
   "after",
   "backdrop",
   "before",
@@ -1850,7 +2669,8 @@ const Ve = /* @__PURE__ */ ki(ha), ba = (e) => ({
   "selection",
   "slotted",
   "spelling-error"
-].sort().reverse(), Ia = [
+].sort().reverse();
+const ATTRIBUTES = [
   "accent-color",
   "align-content",
   "align-items",
@@ -2367,14 +3187,20 @@ const Ve = /* @__PURE__ */ ki(ha), ba = (e) => ({
   "z-index",
   "zoom"
 ].sort().reverse();
-function $a(e) {
-  const t = e.regex, n = ba(e), o = { begin: /-(webkit|moz|ms|o)-(?=[a-z])/ }, i = "and or not only", r = /@-?\w[\w]*(-\w+)*/, a = "[a-zA-Z-][a-zA-Z0-9_-]*", s = [
-    e.APOS_STRING_MODE,
-    e.QUOTE_STRING_MODE
+function css(hljs) {
+  const regex = hljs.regex;
+  const modes = MODES(hljs);
+  const VENDOR_PREFIX = { begin: /-(webkit|moz|ms|o)-(?=[a-z])/ };
+  const AT_MODIFIERS = "and or not only";
+  const AT_PROPERTY_RE = /@-?\w[\w]*(-\w+)*/;
+  const IDENT_RE2 = "[a-zA-Z-][a-zA-Z0-9_-]*";
+  const STRINGS = [
+    hljs.APOS_STRING_MODE,
+    hljs.QUOTE_STRING_MODE
   ];
   return {
     name: "CSS",
-    case_insensitive: !0,
+    case_insensitive: true,
     illegal: /[=|'\$]/,
     keywords: { keyframePosition: "from to" },
     classNameAliases: {
@@ -2383,11 +3209,11 @@ function $a(e) {
       keyframePosition: "selector-tag"
     },
     contains: [
-      n.BLOCK_COMMENT,
-      o,
+      modes.BLOCK_COMMENT,
+      VENDOR_PREFIX,
       // to recognize keyframe 40% etc which are outside the scope of our
       // attribute value mode
-      n.CSS_NUMBER_MODE,
+      modes.CSS_NUMBER_MODE,
       {
         className: "selector-id",
         begin: /#[A-Za-z0-9_-]+/,
@@ -2395,15 +3221,15 @@ function $a(e) {
       },
       {
         className: "selector-class",
-        begin: "\\." + a,
+        begin: "\\." + IDENT_RE2,
         relevance: 0
       },
-      n.ATTRIBUTE_SELECTOR_MODE,
+      modes.ATTRIBUTE_SELECTOR_MODE,
       {
         className: "selector-pseudo",
         variants: [
-          { begin: ":(" + _a.join("|") + ")" },
-          { begin: ":(:)?(" + ka.join("|") + ")" }
+          { begin: ":(" + PSEUDO_CLASSES.join("|") + ")" },
+          { begin: ":(:)?(" + PSEUDO_ELEMENTS.join("|") + ")" }
         ]
       },
       // we may actually need this (12/2020)
@@ -2412,21 +3238,21 @@ function $a(e) {
       //   end: /\)/,
       //   contains: [ hljs.CSS_NUMBER_MODE ]
       // },
-      n.CSS_VARIABLE,
+      modes.CSS_VARIABLE,
       {
         className: "attribute",
-        begin: "\\b(" + Ia.join("|") + ")\\b"
+        begin: "\\b(" + ATTRIBUTES.join("|") + ")\\b"
       },
       // attribute values
       {
         begin: /:/,
         end: /[;}{]/,
         contains: [
-          n.BLOCK_COMMENT,
-          n.HEXCOLOR,
-          n.IMPORTANT,
-          n.CSS_NUMBER_MODE,
-          ...s,
+          modes.BLOCK_COMMENT,
+          modes.HEXCOLOR,
+          modes.IMPORTANT,
+          modes.CSS_NUMBER_MODE,
+          ...STRINGS,
           // needed to highlight these as strings and to avoid issues with
           // illegal characters that might be inside urls that would tigger the
           // languages illegal stack
@@ -2437,22 +3263,22 @@ function $a(e) {
             // from keywords
             keywords: { built_in: "url data-uri" },
             contains: [
-              ...s,
+              ...STRINGS,
               {
                 className: "string",
                 // any character other than `)` as in `url()` will be the start
                 // of a string, which ends with `)` (from the parent mode)
                 begin: /[^)]/,
-                endsWithParent: !0,
-                excludeEnd: !0
+                endsWithParent: true,
+                excludeEnd: true
               }
             ]
           },
-          n.FUNCTION_DISPATCH
+          modes.FUNCTION_DISPATCH
         ]
       },
       {
-        begin: t.lookahead(/@/),
+        begin: regex.lookahead(/@/),
         end: "[{;]",
         relevance: 0,
         illegal: /:/,
@@ -2460,37 +3286,38 @@ function $a(e) {
         contains: [
           {
             className: "keyword",
-            begin: r
+            begin: AT_PROPERTY_RE
           },
           {
             begin: /\s/,
-            endsWithParent: !0,
-            excludeEnd: !0,
+            endsWithParent: true,
+            excludeEnd: true,
             relevance: 0,
             keywords: {
               $pattern: /[a-z-]+/,
-              keyword: i,
-              attribute: ya.join(" ")
+              keyword: AT_MODIFIERS,
+              attribute: MEDIA_FEATURES.join(" ")
             },
             contains: [
               {
                 begin: /[a-z-]+(?=:)/,
                 className: "attribute"
               },
-              ...s,
-              n.CSS_NUMBER_MODE
+              ...STRINGS,
+              modes.CSS_NUMBER_MODE
             ]
           }
         ]
       },
       {
         className: "selector-tag",
-        begin: "\\b(" + va.join("|") + ")\\b"
+        begin: "\\b(" + TAGS.join("|") + ")\\b"
       }
     ]
   };
 }
-const eo = "[A-Za-z$_][0-9A-Za-z$_]*", Ea = [
+const IDENT_RE$1 = "[A-Za-z$_][0-9A-Za-z$_]*";
+const KEYWORDS$1 = [
   "as",
   // for exports
   "in",
@@ -2535,14 +3362,16 @@ const eo = "[A-Za-z$_][0-9A-Za-z$_]*", Ea = [
   "extends",
   // It's reached stage 3, which is "recommended for implementation":
   "using"
-], Sa = [
+];
+const LITERALS$1 = [
   "true",
   "false",
   "null",
   "undefined",
   "NaN",
   "Infinity"
-], Do = [
+];
+const TYPES$1 = [
   // Fundamental objects
   "Object",
   "Function",
@@ -2592,7 +3421,8 @@ const eo = "[A-Za-z$_][0-9A-Za-z$_]*", Ea = [
   "Intl",
   // WebAssembly
   "WebAssembly"
-], No = [
+];
+const ERROR_TYPES$1 = [
   "Error",
   "EvalError",
   "InternalError",
@@ -2601,7 +3431,8 @@ const eo = "[A-Za-z$_][0-9A-Za-z$_]*", Ea = [
   "SyntaxError",
   "TypeError",
   "URIError"
-], Co = [
+];
+const BUILT_IN_GLOBALS$1 = [
   "setInterval",
   "setTimeout",
   "clearInterval",
@@ -2619,7 +3450,8 @@ const eo = "[A-Za-z$_][0-9A-Za-z$_]*", Ea = [
   "encodeURIComponent",
   "escape",
   "unescape"
-], Ta = [
+];
+const BUILT_IN_VARIABLES$1 = [
   "arguments",
   "this",
   "super",
@@ -2631,64 +3463,83 @@ const eo = "[A-Za-z$_][0-9A-Za-z$_]*", Ea = [
   "module",
   "global"
   // Node.js
-], Ma = [].concat(
-  Co,
-  Do,
-  No
+];
+const BUILT_INS$1 = [].concat(
+  BUILT_IN_GLOBALS$1,
+  TYPES$1,
+  ERROR_TYPES$1
 );
-function La(e) {
-  const t = e.regex, n = (P, { after: q }) => {
-    const te = "</" + P[0].slice(1);
-    return P.input.indexOf(te, q) !== -1;
-  }, o = eo, i = {
+function javascript$1(hljs) {
+  const regex = hljs.regex;
+  const hasClosingTag = (match, { after }) => {
+    const tag = "</" + match[0].slice(1);
+    const pos = match.input.indexOf(tag, after);
+    return pos !== -1;
+  };
+  const IDENT_RE$1$1 = IDENT_RE$1;
+  const FRAGMENT = {
     begin: "<>",
     end: "</>"
-  }, r = /<[A-Za-z0-9\\._:-]+\s*\/>/, a = {
+  };
+  const XML_SELF_CLOSING = /<[A-Za-z0-9\\._:-]+\s*\/>/;
+  const XML_TAG = {
     begin: /<[A-Za-z0-9\\._:-]+/,
     end: /\/[A-Za-z0-9\\._:-]+>|\/>/,
     /**
      * @param {RegExpMatchArray} match
      * @param {CallbackResponse} response
      */
-    isTrulyOpeningTag: (P, q) => {
-      const te = P[0].length + P.index, ie = P.input[te];
+    isTrulyOpeningTag: (match, response) => {
+      const afterMatchIndex = match[0].length + match.index;
+      const nextChar = match.input[afterMatchIndex];
       if (
         // HTML should not include another raw `<` inside a tag
         // nested type?
         // `<Array<Array<number>>`, etc.
-        ie === "<" || // the , gives away that this is not HTML
+        nextChar === "<" || // the , gives away that this is not HTML
         // `<T, A extends keyof T, V>`
-        ie === ","
+        nextChar === ","
       ) {
-        q.ignoreMatch();
+        response.ignoreMatch();
         return;
       }
-      ie === ">" && (n(P, { after: te }) || q.ignoreMatch());
-      let he;
-      const Te = P.input.substring(te);
-      if (he = Te.match(/^\s*=/)) {
-        q.ignoreMatch();
+      if (nextChar === ">") {
+        if (!hasClosingTag(match, { after: afterMatchIndex })) {
+          response.ignoreMatch();
+        }
+      }
+      let m2;
+      const afterMatch = match.input.substring(afterMatchIndex);
+      if (m2 = afterMatch.match(/^\s*=/)) {
+        response.ignoreMatch();
         return;
       }
-      if ((he = Te.match(/^\s+extends\s+/)) && he.index === 0) {
-        q.ignoreMatch();
-        return;
+      if (m2 = afterMatch.match(/^\s+extends\s+/)) {
+        if (m2.index === 0) {
+          response.ignoreMatch();
+          return;
+        }
       }
     }
-  }, s = {
-    $pattern: eo,
-    keyword: Ea,
-    literal: Sa,
-    built_in: Ma,
-    "variable.language": Ta
-  }, l = "[0-9](_?[0-9])*", c = `\\.(${l})`, u = "0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*", d = {
+  };
+  const KEYWORDS$1$1 = {
+    $pattern: IDENT_RE$1,
+    keyword: KEYWORDS$1,
+    literal: LITERALS$1,
+    built_in: BUILT_INS$1,
+    "variable.language": BUILT_IN_VARIABLES$1
+  };
+  const decimalDigits2 = "[0-9](_?[0-9])*";
+  const frac2 = `\\.(${decimalDigits2})`;
+  const decimalInteger = `0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*`;
+  const NUMBER = {
     className: "number",
     variants: [
       // DecimalLiteral
-      { begin: `(\\b(${u})((${c})|\\.)?|(${c}))[eE][+-]?(${l})\\b` },
-      { begin: `\\b(${u})\\b((${c})\\b|\\.)?|(${c})\\b` },
+      { begin: `(\\b(${decimalInteger})((${frac2})|\\.)?|(${frac2}))[eE][+-]?(${decimalDigits2})\\b` },
+      { begin: `\\b(${decimalInteger})\\b((${frac2})\\b|\\.)?|(${frac2})\\b` },
       // DecimalBigIntegerLiteral
-      { begin: "\\b(0|[1-9](_?[0-9])*)n\\b" },
+      { begin: `\\b(0|[1-9](_?[0-9])*)n\\b` },
       // NonDecimalIntegerLiteral
       { begin: "\\b0[xX][0-9a-fA-F](_?[0-9a-fA-F])*n?\\b" },
       { begin: "\\b0[bB][0-1](_?[0-1])*n?\\b" },
@@ -2698,156 +3549,167 @@ function La(e) {
       { begin: "\\b0[0-7]+n?\\b" }
     ],
     relevance: 0
-  }, p = {
+  };
+  const SUBST = {
     className: "subst",
     begin: "\\$\\{",
     end: "\\}",
-    keywords: s,
+    keywords: KEYWORDS$1$1,
     contains: []
     // defined later
-  }, m = {
+  };
+  const HTML_TEMPLATE = {
     begin: ".?html`",
     end: "",
     starts: {
       end: "`",
-      returnEnd: !1,
+      returnEnd: false,
       contains: [
-        e.BACKSLASH_ESCAPE,
-        p
+        hljs.BACKSLASH_ESCAPE,
+        SUBST
       ],
       subLanguage: "xml"
     }
-  }, g = {
+  };
+  const CSS_TEMPLATE = {
     begin: ".?css`",
     end: "",
     starts: {
       end: "`",
-      returnEnd: !1,
+      returnEnd: false,
       contains: [
-        e.BACKSLASH_ESCAPE,
-        p
+        hljs.BACKSLASH_ESCAPE,
+        SUBST
       ],
       subLanguage: "css"
     }
-  }, f = {
+  };
+  const GRAPHQL_TEMPLATE = {
     begin: ".?gql`",
     end: "",
     starts: {
       end: "`",
-      returnEnd: !1,
+      returnEnd: false,
       contains: [
-        e.BACKSLASH_ESCAPE,
-        p
+        hljs.BACKSLASH_ESCAPE,
+        SUBST
       ],
       subLanguage: "graphql"
     }
-  }, b = {
+  };
+  const TEMPLATE_STRING = {
     className: "string",
     begin: "`",
     end: "`",
     contains: [
-      e.BACKSLASH_ESCAPE,
-      p
+      hljs.BACKSLASH_ESCAPE,
+      SUBST
     ]
-  }, T = {
-    className: "comment",
-    variants: [
-      e.COMMENT(
-        /\/\*\*(?!\/)/,
-        "\\*/",
+  };
+  const JSDOC_COMMENT = hljs.COMMENT(
+    /\/\*\*(?!\/)/,
+    "\\*/",
+    {
+      relevance: 0,
+      contains: [
         {
+          begin: "(?=@[A-Za-z]+)",
           relevance: 0,
           contains: [
             {
-              begin: "(?=@[A-Za-z]+)",
-              relevance: 0,
-              contains: [
-                {
-                  className: "doctag",
-                  begin: "@[A-Za-z]+"
-                },
-                {
-                  className: "type",
-                  begin: "\\{",
-                  end: "\\}",
-                  excludeEnd: !0,
-                  excludeBegin: !0,
-                  relevance: 0
-                },
-                {
-                  className: "variable",
-                  begin: o + "(?=\\s*(-)|$)",
-                  endsParent: !0,
-                  relevance: 0
-                },
-                // eat spaces (not newlines) so we can find
-                // types or variables
-                {
-                  begin: /(?=[^\n])\s/,
-                  relevance: 0
-                }
-              ]
+              className: "doctag",
+              begin: "@[A-Za-z]+"
+            },
+            {
+              className: "type",
+              begin: "\\{",
+              end: "\\}",
+              excludeEnd: true,
+              excludeBegin: true,
+              relevance: 0
+            },
+            {
+              className: "variable",
+              begin: IDENT_RE$1$1 + "(?=\\s*(-)|$)",
+              endsParent: true,
+              relevance: 0
+            },
+            // eat spaces (not newlines) so we can find
+            // types or variables
+            {
+              begin: /(?=[^\n])\s/,
+              relevance: 0
             }
           ]
         }
-      ),
-      e.C_BLOCK_COMMENT_MODE,
-      e.C_LINE_COMMENT_MODE
+      ]
+    }
+  );
+  const COMMENT2 = {
+    className: "comment",
+    variants: [
+      JSDOC_COMMENT,
+      hljs.C_BLOCK_COMMENT_MODE,
+      hljs.C_LINE_COMMENT_MODE
     ]
-  }, $ = [
-    e.APOS_STRING_MODE,
-    e.QUOTE_STRING_MODE,
-    m,
-    g,
-    f,
-    b,
+  };
+  const SUBST_INTERNALS = [
+    hljs.APOS_STRING_MODE,
+    hljs.QUOTE_STRING_MODE,
+    HTML_TEMPLATE,
+    CSS_TEMPLATE,
+    GRAPHQL_TEMPLATE,
+    TEMPLATE_STRING,
     // Skip numbers when they are part of a variable name
     { match: /\$\d+/ },
-    d
+    NUMBER
     // This is intentional:
     // See https://github.com/highlightjs/highlight.js/issues/3288
     // hljs.REGEXP_MODE
   ];
-  p.contains = $.concat({
+  SUBST.contains = SUBST_INTERNALS.concat({
     // we need to pair up {} inside our subst to prevent
     // it from ending too early by matching another }
     begin: /\{/,
     end: /\}/,
-    keywords: s,
+    keywords: KEYWORDS$1$1,
     contains: [
       "self"
-    ].concat($)
+    ].concat(SUBST_INTERNALS)
   });
-  const O = [].concat(T, p.contains), B = O.concat([
+  const SUBST_AND_COMMENTS = [].concat(COMMENT2, SUBST.contains);
+  const PARAMS_CONTAINS = SUBST_AND_COMMENTS.concat([
     // eat recursive parens in sub expressions
     {
       begin: /(\s*)\(/,
       end: /\)/,
-      keywords: s,
-      contains: ["self"].concat(O)
+      keywords: KEYWORDS$1$1,
+      contains: ["self"].concat(SUBST_AND_COMMENTS)
     }
-  ]), N = {
+  ]);
+  const PARAMS = {
     className: "params",
     // convert this to negative lookbehind in v12
     begin: /(\s*)\(/,
     // to match the parms with
     end: /\)/,
-    excludeBegin: !0,
-    excludeEnd: !0,
-    keywords: s,
-    contains: B
-  }, k = {
+    excludeBegin: true,
+    excludeEnd: true,
+    keywords: KEYWORDS$1$1,
+    contains: PARAMS_CONTAINS
+  };
+  const CLASS_OR_EXTENDS = {
     variants: [
       // class Car extends vehicle
       {
         match: [
           /class/,
           /\s+/,
-          o,
+          IDENT_RE$1$1,
           /\s+/,
           /extends/,
           /\s+/,
-          t.concat(o, "(", t.concat(/\./, o), ")*")
+          regex.concat(IDENT_RE$1$1, "(", regex.concat(/\./, IDENT_RE$1$1), ")*")
         ],
         scope: {
           1: "keyword",
@@ -2861,7 +3723,7 @@ function La(e) {
         match: [
           /class/,
           /\s+/,
-          o
+          IDENT_RE$1$1
         ],
         scope: {
           1: "keyword",
@@ -2869,9 +3731,10 @@ function La(e) {
         }
       }
     ]
-  }, _ = {
+  };
+  const CLASS_REFERENCE = {
     relevance: 0,
-    match: t.either(
+    match: regex.either(
       // Hard coded exceptions
       /\bJSON/,
       // Float32Array, OutT
@@ -2889,22 +3752,24 @@ function La(e) {
     keywords: {
       _: [
         // se we still get relevance credit for JS library classes
-        ...Do,
-        ...No
+        ...TYPES$1,
+        ...ERROR_TYPES$1
       ]
     }
-  }, C = {
+  };
+  const USE_STRICT = {
     label: "use_strict",
     className: "meta",
     relevance: 10,
     begin: /^\s*['"]use (strict|asm)['"]/
-  }, v = {
+  };
+  const FUNCTION_DEFINITION = {
     variants: [
       {
         match: [
           /function/,
           /\s+/,
-          o,
+          IDENT_RE$1$1,
           /(?=\s*\()/
         ]
       },
@@ -2921,43 +3786,46 @@ function La(e) {
       3: "title.function"
     },
     label: "func.def",
-    contains: [N],
+    contains: [PARAMS],
     illegal: /%/
-  }, h = {
+  };
+  const UPPER_CASE_CONSTANT = {
     relevance: 0,
     match: /\b[A-Z][A-Z_0-9]+\b/,
     className: "variable.constant"
   };
-  function E(P) {
-    return t.concat("(?!", P.join("|"), ")");
+  function noneOf(list) {
+    return regex.concat("(?!", list.join("|"), ")");
   }
-  const K = {
-    match: t.concat(
+  const FUNCTION_CALL = {
+    match: regex.concat(
       /\b/,
-      E([
-        ...Co,
+      noneOf([
+        ...BUILT_IN_GLOBALS$1,
         "super",
         "import"
-      ].map((P) => `${P}\\s*\\(`)),
-      o,
-      t.lookahead(/\s*\(/)
+      ].map((x) => `${x}\\s*\\(`)),
+      IDENT_RE$1$1,
+      regex.lookahead(/\s*\(/)
     ),
     className: "title.function",
     relevance: 0
-  }, ne = {
-    begin: t.concat(/\./, t.lookahead(
-      t.concat(o, /(?![0-9A-Za-z$_(])/)
+  };
+  const PROPERTY_ACCESS = {
+    begin: regex.concat(/\./, regex.lookahead(
+      regex.concat(IDENT_RE$1$1, /(?![0-9A-Za-z$_(])/)
     )),
-    end: o,
-    excludeBegin: !0,
+    end: IDENT_RE$1$1,
+    excludeBegin: true,
     keywords: "prototype",
     className: "property",
     relevance: 0
-  }, ee = {
+  };
+  const GETTER_OR_SETTER = {
     match: [
       /get|set/,
       /\s+/,
-      o,
+      IDENT_RE$1$1,
       /(?=\()/
     ],
     className: {
@@ -2969,18 +3837,20 @@ function La(e) {
         // eat to avoid empty params
         begin: /\(\)/
       },
-      N
+      PARAMS
     ]
-  }, y = "(\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)|" + e.UNDERSCORE_IDENT_RE + ")\\s*=>", A = {
+  };
+  const FUNC_LEAD_IN_RE = "(\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)|" + hljs.UNDERSCORE_IDENT_RE + ")\\s*=>";
+  const FUNCTION_VARIABLE = {
     match: [
       /const|var|let/,
       /\s+/,
-      o,
+      IDENT_RE$1$1,
       /\s*/,
       /=\s*/,
       /(async\s*)?/,
       // async is optional
-      t.lookahead(y)
+      regex.lookahead(FUNC_LEAD_IN_RE)
     ],
     keywords: "async",
     className: {
@@ -2988,76 +3858,76 @@ function La(e) {
       3: "title.function"
     },
     contains: [
-      N
+      PARAMS
     ]
   };
   return {
     name: "JavaScript",
     aliases: ["js", "jsx", "mjs", "cjs"],
-    keywords: s,
+    keywords: KEYWORDS$1$1,
     // this will be extended by TypeScript
-    exports: { PARAMS_CONTAINS: B, CLASS_REFERENCE: _ },
+    exports: { PARAMS_CONTAINS, CLASS_REFERENCE },
     illegal: /#(?![$_A-z])/,
     contains: [
-      e.SHEBANG({
+      hljs.SHEBANG({
         label: "shebang",
         binary: "node",
         relevance: 5
       }),
-      C,
-      e.APOS_STRING_MODE,
-      e.QUOTE_STRING_MODE,
-      m,
-      g,
-      f,
-      b,
-      T,
+      USE_STRICT,
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
+      HTML_TEMPLATE,
+      CSS_TEMPLATE,
+      GRAPHQL_TEMPLATE,
+      TEMPLATE_STRING,
+      COMMENT2,
       // Skip numbers when they are part of a variable name
       { match: /\$\d+/ },
-      d,
-      _,
+      NUMBER,
+      CLASS_REFERENCE,
       {
         scope: "attr",
-        match: o + t.lookahead(":"),
+        match: IDENT_RE$1$1 + regex.lookahead(":"),
         relevance: 0
       },
-      A,
+      FUNCTION_VARIABLE,
       {
         // "value" container
-        begin: "(" + e.RE_STARTERS_RE + "|\\b(case|return|throw)\\b)\\s*",
+        begin: "(" + hljs.RE_STARTERS_RE + "|\\b(case|return|throw)\\b)\\s*",
         keywords: "return throw case",
         relevance: 0,
         contains: [
-          T,
-          e.REGEXP_MODE,
+          COMMENT2,
+          hljs.REGEXP_MODE,
           {
             className: "function",
             // we have to count the parens to make sure we actually have the
             // correct bounding ( ) before the =>.  There could be any number of
             // sub-expressions inside also surrounded by parens.
-            begin: y,
-            returnBegin: !0,
+            begin: FUNC_LEAD_IN_RE,
+            returnBegin: true,
             end: "\\s*=>",
             contains: [
               {
                 className: "params",
                 variants: [
                   {
-                    begin: e.UNDERSCORE_IDENT_RE,
+                    begin: hljs.UNDERSCORE_IDENT_RE,
                     relevance: 0
                   },
                   {
                     className: null,
                     begin: /\(\s*\)/,
-                    skip: !0
+                    skip: true
                   },
                   {
                     begin: /(\s*)\(/,
                     end: /\)/,
-                    excludeBegin: !0,
-                    excludeEnd: !0,
-                    keywords: s,
-                    contains: B
+                    excludeBegin: true,
+                    excludeEnd: true,
+                    keywords: KEYWORDS$1$1,
+                    contains: PARAMS_CONTAINS
                   }
                 ]
               }
@@ -3075,29 +3945,29 @@ function La(e) {
           {
             // JSX
             variants: [
-              { begin: i.begin, end: i.end },
-              { match: r },
+              { begin: FRAGMENT.begin, end: FRAGMENT.end },
+              { match: XML_SELF_CLOSING },
               {
-                begin: a.begin,
+                begin: XML_TAG.begin,
                 // we carefully check the opening tag to see if it truly
                 // is a tag and not a false positive
-                "on:begin": a.isTrulyOpeningTag,
-                end: a.end
+                "on:begin": XML_TAG.isTrulyOpeningTag,
+                end: XML_TAG.end
               }
             ],
             subLanguage: "xml",
             contains: [
               {
-                begin: a.begin,
-                end: a.end,
-                skip: !0,
+                begin: XML_TAG.begin,
+                end: XML_TAG.end,
+                skip: true,
                 contains: ["self"]
               }
             ]
           }
         ]
       },
-      v,
+      FUNCTION_DEFINITION,
       {
         // prevent this from getting swallowed up by function
         // since they appear "function like"
@@ -3107,13 +3977,13 @@ function La(e) {
         // we have to count the parens to make sure we actually have the correct
         // bounding ( ).  There could be any number of sub-expressions inside
         // also surrounded by parens.
-        begin: "\\b(?!function)" + e.UNDERSCORE_IDENT_RE + "\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)\\s*\\{",
+        begin: "\\b(?!function)" + hljs.UNDERSCORE_IDENT_RE + "\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)\\s*\\{",
         // end parens
-        returnBegin: !0,
+        returnBegin: true,
         label: "func.def",
         contains: [
-          N,
-          e.inherit(e.TITLE_MODE, { begin: o, className: "title.function" })
+          PARAMS,
+          hljs.inherit(hljs.TITLE_MODE, { begin: IDENT_RE$1$1, className: "title.function" })
         ]
       },
       // catch ... so it won't trigger the property rule below
@@ -3121,23 +3991,23 @@ function La(e) {
         match: /\.\.\./,
         relevance: 0
       },
-      ne,
+      PROPERTY_ACCESS,
       // hack: prevents detection of keywords in some circumstances
       // .keyword()
       // $keyword = x
       {
-        match: "\\$" + o,
+        match: "\\$" + IDENT_RE$1$1,
         relevance: 0
       },
       {
         match: [/\bconstructor(?=\s*\()/],
         className: { 1: "title.function" },
-        contains: [N]
+        contains: [PARAMS]
       },
-      K,
-      h,
-      k,
-      ee,
+      FUNCTION_CALL,
+      UPPER_CASE_CONSTANT,
+      CLASS_OR_EXTENDS,
+      GETTER_OR_SETTER,
       {
         match: /\$[(.]/
         // relevance booster for a pattern common to JS libs: `$(something)` and `$.something`
@@ -3145,22 +4015,25 @@ function La(e) {
     ]
   };
 }
-var tt = "[0-9](_*[0-9])*", Nt = `\\.(${tt})`, Ct = "[0-9a-fA-F](_*[0-9a-fA-F])*", to = {
+var decimalDigits = "[0-9](_*[0-9])*";
+var frac = `\\.(${decimalDigits})`;
+var hexDigits = "[0-9a-fA-F](_*[0-9a-fA-F])*";
+var NUMERIC = {
   className: "number",
   variants: [
     // DecimalFloatingPointLiteral
     // including ExponentPart
-    { begin: `(\\b(${tt})((${Nt})|\\.)?|(${Nt}))[eE][+-]?(${tt})[fFdD]?\\b` },
+    { begin: `(\\b(${decimalDigits})((${frac})|\\.)?|(${frac}))[eE][+-]?(${decimalDigits})[fFdD]?\\b` },
     // excluding ExponentPart
-    { begin: `\\b(${tt})((${Nt})[fFdD]?\\b|\\.([fFdD]\\b)?)` },
-    { begin: `(${Nt})[fFdD]?\\b` },
-    { begin: `\\b(${tt})[fFdD]\\b` },
+    { begin: `\\b(${decimalDigits})((${frac})[fFdD]?\\b|\\.([fFdD]\\b)?)` },
+    { begin: `(${frac})[fFdD]?\\b` },
+    { begin: `\\b(${decimalDigits})[fFdD]\\b` },
     // HexadecimalFloatingPointLiteral
-    { begin: `\\b0[xX]((${Ct})\\.?|(${Ct})?\\.(${Ct}))[pP][+-]?(${tt})[fFdD]?\\b` },
+    { begin: `\\b0[xX]((${hexDigits})\\.?|(${hexDigits})?\\.(${hexDigits}))[pP][+-]?(${decimalDigits})[fFdD]?\\b` },
     // DecimalIntegerLiteral
     { begin: "\\b(0|[1-9](_*[0-9])*)[lL]?\\b" },
     // HexIntegerLiteral
-    { begin: `\\b0[xX](${Ct})[lL]?\\b` },
+    { begin: `\\b0[xX](${hexDigits})[lL]?\\b` },
     // OctalIntegerLiteral
     { begin: "\\b0(_*[0-7])*[lL]?\\b" },
     // BinaryIntegerLiteral
@@ -3168,79 +4041,90 @@ var tt = "[0-9](_*[0-9])*", Nt = `\\.(${tt})`, Ct = "[0-9a-fA-F](_*[0-9a-fA-F])*
   ],
   relevance: 0
 };
-function Oo(e, t, n) {
-  return n === -1 ? "" : e.replace(t, (o) => Oo(e, t, n - 1));
+function recurRegex(re, substitution, depth) {
+  if (depth === -1) return "";
+  return re.replace(substitution, (_) => {
+    return recurRegex(re, substitution, depth - 1);
+  });
 }
-function Da(e) {
-  const t = e.regex, n = "[À-ʸa-zA-Z_$][À-ʸa-zA-Z_$0-9]*", o = n + Oo("(?:<" + n + "~~~(?:\\s*,\\s*" + n + "~~~)*>)?", /~~~/g, 2), l = {
-    keyword: [
-      "synchronized",
-      "abstract",
-      "private",
-      "var",
-      "static",
-      "if",
-      "const ",
-      "for",
-      "while",
-      "strictfp",
-      "finally",
-      "protected",
-      "import",
-      "native",
-      "final",
-      "void",
-      "enum",
-      "else",
-      "break",
-      "transient",
-      "catch",
-      "instanceof",
-      "volatile",
-      "case",
-      "assert",
-      "package",
-      "default",
-      "public",
-      "try",
-      "switch",
-      "continue",
-      "throws",
-      "protected",
-      "public",
-      "private",
-      "module",
-      "requires",
-      "exports",
-      "do",
-      "sealed",
-      "yield",
-      "permits",
-      "goto",
-      "when"
-    ],
-    literal: [
-      "false",
-      "true",
-      "null"
-    ],
-    type: [
-      "char",
-      "boolean",
-      "long",
-      "float",
-      "int",
-      "byte",
-      "short",
-      "double"
-    ],
-    built_in: [
-      "super",
-      "this"
-    ]
-  }, c = {
+function java(hljs) {
+  const regex = hljs.regex;
+  const JAVA_IDENT_RE = "[À-ʸa-zA-Z_$][À-ʸa-zA-Z_$0-9]*";
+  const GENERIC_IDENT_RE = JAVA_IDENT_RE + recurRegex("(?:<" + JAVA_IDENT_RE + "~~~(?:\\s*,\\s*" + JAVA_IDENT_RE + "~~~)*>)?", /~~~/g, 2);
+  const MAIN_KEYWORDS = [
+    "synchronized",
+    "abstract",
+    "private",
+    "var",
+    "static",
+    "if",
+    "const ",
+    "for",
+    "while",
+    "strictfp",
+    "finally",
+    "protected",
+    "import",
+    "native",
+    "final",
+    "void",
+    "enum",
+    "else",
+    "break",
+    "transient",
+    "catch",
+    "instanceof",
+    "volatile",
+    "case",
+    "assert",
+    "package",
+    "default",
+    "public",
+    "try",
+    "switch",
+    "continue",
+    "throws",
+    "protected",
+    "public",
+    "private",
+    "module",
+    "requires",
+    "exports",
+    "do",
+    "sealed",
+    "yield",
+    "permits",
+    "goto",
+    "when"
+  ];
+  const BUILT_INS2 = [
+    "super",
+    "this"
+  ];
+  const LITERALS2 = [
+    "false",
+    "true",
+    "null"
+  ];
+  const TYPES2 = [
+    "char",
+    "boolean",
+    "long",
+    "float",
+    "int",
+    "byte",
+    "short",
+    "double"
+  ];
+  const KEYWORDS2 = {
+    keyword: MAIN_KEYWORDS,
+    literal: LITERALS2,
+    type: TYPES2,
+    built_in: BUILT_INS2
+  };
+  const ANNOTATION = {
     className: "meta",
-    begin: "@" + n,
+    begin: "@" + JAVA_IDENT_RE,
     contains: [
       {
         begin: /\(/,
@@ -3249,22 +4133,23 @@ function Da(e) {
         // allow nested () inside our annotation
       }
     ]
-  }, u = {
+  };
+  const PARAMS = {
     className: "params",
     begin: /\(/,
     end: /\)/,
-    keywords: l,
+    keywords: KEYWORDS2,
     relevance: 0,
-    contains: [e.C_BLOCK_COMMENT_MODE],
-    endsParent: !0
+    contains: [hljs.C_BLOCK_COMMENT_MODE],
+    endsParent: true
   };
   return {
     name: "Java",
     aliases: ["jsp"],
-    keywords: l,
+    keywords: KEYWORDS2,
     illegal: /<\/|#/,
     contains: [
-      e.COMMENT(
+      hljs.COMMENT(
         "/\\*\\*",
         "\\*/",
         {
@@ -3288,21 +4173,21 @@ function Da(e) {
         keywords: "import",
         relevance: 2
       },
-      e.C_LINE_COMMENT_MODE,
-      e.C_BLOCK_COMMENT_MODE,
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
       {
         begin: /"""/,
         end: /"""/,
         className: "string",
-        contains: [e.BACKSLASH_ESCAPE]
+        contains: [hljs.BACKSLASH_ESCAPE]
       },
-      e.APOS_STRING_MODE,
-      e.QUOTE_STRING_MODE,
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
       {
         match: [
           /\b(?:class|interface|enum|extends|implements|new)/,
           /\s+/,
-          n
+          JAVA_IDENT_RE
         ],
         className: {
           1: "keyword",
@@ -3316,9 +4201,9 @@ function Da(e) {
       },
       {
         begin: [
-          t.concat(/(?!else)/, n),
+          regex.concat(/(?!else)/, JAVA_IDENT_RE),
           /\s+/,
-          n,
+          JAVA_IDENT_RE,
           /\s+/,
           /=(?!=)/
         ],
@@ -3332,16 +4217,16 @@ function Da(e) {
         begin: [
           /record/,
           /\s+/,
-          n
+          JAVA_IDENT_RE
         ],
         className: {
           1: "keyword",
           3: "title.class"
         },
         contains: [
-          u,
-          e.C_LINE_COMMENT_MODE,
-          e.C_BLOCK_COMMENT_MODE
+          PARAMS,
+          hljs.C_LINE_COMMENT_MODE,
+          hljs.C_BLOCK_COMMENT_MODE
         ]
       },
       {
@@ -3352,72 +4237,76 @@ function Da(e) {
       },
       {
         begin: [
-          "(?:" + o + "\\s+)",
-          e.UNDERSCORE_IDENT_RE,
+          "(?:" + GENERIC_IDENT_RE + "\\s+)",
+          hljs.UNDERSCORE_IDENT_RE,
           /\s*(?=\()/
         ],
         className: { 2: "title.function" },
-        keywords: l,
+        keywords: KEYWORDS2,
         contains: [
           {
             className: "params",
             begin: /\(/,
             end: /\)/,
-            keywords: l,
+            keywords: KEYWORDS2,
             relevance: 0,
             contains: [
-              c,
-              e.APOS_STRING_MODE,
-              e.QUOTE_STRING_MODE,
-              to,
-              e.C_BLOCK_COMMENT_MODE
+              ANNOTATION,
+              hljs.APOS_STRING_MODE,
+              hljs.QUOTE_STRING_MODE,
+              NUMERIC,
+              hljs.C_BLOCK_COMMENT_MODE
             ]
           },
-          e.C_LINE_COMMENT_MODE,
-          e.C_BLOCK_COMMENT_MODE
+          hljs.C_LINE_COMMENT_MODE,
+          hljs.C_BLOCK_COMMENT_MODE
         ]
       },
-      to,
-      c
+      NUMERIC,
+      ANNOTATION
     ]
   };
 }
-function Na(e) {
-  const t = {
+function json(hljs) {
+  const ATTRIBUTE = {
     className: "attr",
     begin: /"(\\.|[^\\"\r\n])*"(?=\s*:)/,
     relevance: 1.01
-  }, n = {
+  };
+  const PUNCTUATION = {
     match: /[{}[\],:]/,
     className: "punctuation",
     relevance: 0
-  }, o = [
+  };
+  const LITERALS2 = [
     "true",
     "false",
     "null"
-  ], i = {
+  ];
+  const LITERALS_MODE = {
     scope: "literal",
-    beginKeywords: o.join(" ")
+    beginKeywords: LITERALS2.join(" ")
   };
   return {
     name: "JSON",
     aliases: ["jsonc"],
     keywords: {
-      literal: o
+      literal: LITERALS2
     },
     contains: [
-      t,
-      n,
-      e.QUOTE_STRING_MODE,
-      i,
-      e.C_NUMBER_MODE,
-      e.C_LINE_COMMENT_MODE,
-      e.C_BLOCK_COMMENT_MODE
+      ATTRIBUTE,
+      PUNCTUATION,
+      hljs.QUOTE_STRING_MODE,
+      LITERALS_MODE,
+      hljs.C_NUMBER_MODE,
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE
     ],
     illegal: "\\S"
   };
 }
-const qt = "[A-Za-z$_][0-9A-Za-z$_]*", Ro = [
+const IDENT_RE = "[A-Za-z$_][0-9A-Za-z$_]*";
+const KEYWORDS = [
   "as",
   // for exports
   "in",
@@ -3462,14 +4351,16 @@ const qt = "[A-Za-z$_][0-9A-Za-z$_]*", Ro = [
   "extends",
   // It's reached stage 3, which is "recommended for implementation":
   "using"
-], Ao = [
+];
+const LITERALS = [
   "true",
   "false",
   "null",
   "undefined",
   "NaN",
   "Infinity"
-], Po = [
+];
+const TYPES = [
   // Fundamental objects
   "Object",
   "Function",
@@ -3519,7 +4410,8 @@ const qt = "[A-Za-z$_][0-9A-Za-z$_]*", Ro = [
   "Intl",
   // WebAssembly
   "WebAssembly"
-], Bo = [
+];
+const ERROR_TYPES = [
   "Error",
   "EvalError",
   "InternalError",
@@ -3528,7 +4420,8 @@ const qt = "[A-Za-z$_][0-9A-Za-z$_]*", Ro = [
   "SyntaxError",
   "TypeError",
   "URIError"
-], Vo = [
+];
+const BUILT_IN_GLOBALS = [
   "setInterval",
   "setTimeout",
   "clearInterval",
@@ -3546,7 +4439,8 @@ const qt = "[A-Za-z$_][0-9A-Za-z$_]*", Ro = [
   "encodeURIComponent",
   "escape",
   "unescape"
-], zo = [
+];
+const BUILT_IN_VARIABLES = [
   "arguments",
   "this",
   "super",
@@ -3558,64 +4452,83 @@ const qt = "[A-Za-z$_][0-9A-Za-z$_]*", Ro = [
   "module",
   "global"
   // Node.js
-], Fo = [].concat(
-  Vo,
-  Po,
-  Bo
+];
+const BUILT_INS = [].concat(
+  BUILT_IN_GLOBALS,
+  TYPES,
+  ERROR_TYPES
 );
-function Ca(e) {
-  const t = e.regex, n = (P, { after: q }) => {
-    const te = "</" + P[0].slice(1);
-    return P.input.indexOf(te, q) !== -1;
-  }, o = qt, i = {
+function javascript(hljs) {
+  const regex = hljs.regex;
+  const hasClosingTag = (match, { after }) => {
+    const tag = "</" + match[0].slice(1);
+    const pos = match.input.indexOf(tag, after);
+    return pos !== -1;
+  };
+  const IDENT_RE$12 = IDENT_RE;
+  const FRAGMENT = {
     begin: "<>",
     end: "</>"
-  }, r = /<[A-Za-z0-9\\._:-]+\s*\/>/, a = {
+  };
+  const XML_SELF_CLOSING = /<[A-Za-z0-9\\._:-]+\s*\/>/;
+  const XML_TAG = {
     begin: /<[A-Za-z0-9\\._:-]+/,
     end: /\/[A-Za-z0-9\\._:-]+>|\/>/,
     /**
      * @param {RegExpMatchArray} match
      * @param {CallbackResponse} response
      */
-    isTrulyOpeningTag: (P, q) => {
-      const te = P[0].length + P.index, ie = P.input[te];
+    isTrulyOpeningTag: (match, response) => {
+      const afterMatchIndex = match[0].length + match.index;
+      const nextChar = match.input[afterMatchIndex];
       if (
         // HTML should not include another raw `<` inside a tag
         // nested type?
         // `<Array<Array<number>>`, etc.
-        ie === "<" || // the , gives away that this is not HTML
+        nextChar === "<" || // the , gives away that this is not HTML
         // `<T, A extends keyof T, V>`
-        ie === ","
+        nextChar === ","
       ) {
-        q.ignoreMatch();
+        response.ignoreMatch();
         return;
       }
-      ie === ">" && (n(P, { after: te }) || q.ignoreMatch());
-      let he;
-      const Te = P.input.substring(te);
-      if (he = Te.match(/^\s*=/)) {
-        q.ignoreMatch();
+      if (nextChar === ">") {
+        if (!hasClosingTag(match, { after: afterMatchIndex })) {
+          response.ignoreMatch();
+        }
+      }
+      let m2;
+      const afterMatch = match.input.substring(afterMatchIndex);
+      if (m2 = afterMatch.match(/^\s*=/)) {
+        response.ignoreMatch();
         return;
       }
-      if ((he = Te.match(/^\s+extends\s+/)) && he.index === 0) {
-        q.ignoreMatch();
-        return;
+      if (m2 = afterMatch.match(/^\s+extends\s+/)) {
+        if (m2.index === 0) {
+          response.ignoreMatch();
+          return;
+        }
       }
     }
-  }, s = {
-    $pattern: qt,
-    keyword: Ro,
-    literal: Ao,
-    built_in: Fo,
-    "variable.language": zo
-  }, l = "[0-9](_?[0-9])*", c = `\\.(${l})`, u = "0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*", d = {
+  };
+  const KEYWORDS$12 = {
+    $pattern: IDENT_RE,
+    keyword: KEYWORDS,
+    literal: LITERALS,
+    built_in: BUILT_INS,
+    "variable.language": BUILT_IN_VARIABLES
+  };
+  const decimalDigits2 = "[0-9](_?[0-9])*";
+  const frac2 = `\\.(${decimalDigits2})`;
+  const decimalInteger = `0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*`;
+  const NUMBER = {
     className: "number",
     variants: [
       // DecimalLiteral
-      { begin: `(\\b(${u})((${c})|\\.)?|(${c}))[eE][+-]?(${l})\\b` },
-      { begin: `\\b(${u})\\b((${c})\\b|\\.)?|(${c})\\b` },
+      { begin: `(\\b(${decimalInteger})((${frac2})|\\.)?|(${frac2}))[eE][+-]?(${decimalDigits2})\\b` },
+      { begin: `\\b(${decimalInteger})\\b((${frac2})\\b|\\.)?|(${frac2})\\b` },
       // DecimalBigIntegerLiteral
-      { begin: "\\b(0|[1-9](_?[0-9])*)n\\b" },
+      { begin: `\\b(0|[1-9](_?[0-9])*)n\\b` },
       // NonDecimalIntegerLiteral
       { begin: "\\b0[xX][0-9a-fA-F](_?[0-9a-fA-F])*n?\\b" },
       { begin: "\\b0[bB][0-1](_?[0-1])*n?\\b" },
@@ -3625,156 +4538,167 @@ function Ca(e) {
       { begin: "\\b0[0-7]+n?\\b" }
     ],
     relevance: 0
-  }, p = {
+  };
+  const SUBST = {
     className: "subst",
     begin: "\\$\\{",
     end: "\\}",
-    keywords: s,
+    keywords: KEYWORDS$12,
     contains: []
     // defined later
-  }, m = {
+  };
+  const HTML_TEMPLATE = {
     begin: ".?html`",
     end: "",
     starts: {
       end: "`",
-      returnEnd: !1,
+      returnEnd: false,
       contains: [
-        e.BACKSLASH_ESCAPE,
-        p
+        hljs.BACKSLASH_ESCAPE,
+        SUBST
       ],
       subLanguage: "xml"
     }
-  }, g = {
+  };
+  const CSS_TEMPLATE = {
     begin: ".?css`",
     end: "",
     starts: {
       end: "`",
-      returnEnd: !1,
+      returnEnd: false,
       contains: [
-        e.BACKSLASH_ESCAPE,
-        p
+        hljs.BACKSLASH_ESCAPE,
+        SUBST
       ],
       subLanguage: "css"
     }
-  }, f = {
+  };
+  const GRAPHQL_TEMPLATE = {
     begin: ".?gql`",
     end: "",
     starts: {
       end: "`",
-      returnEnd: !1,
+      returnEnd: false,
       contains: [
-        e.BACKSLASH_ESCAPE,
-        p
+        hljs.BACKSLASH_ESCAPE,
+        SUBST
       ],
       subLanguage: "graphql"
     }
-  }, b = {
+  };
+  const TEMPLATE_STRING = {
     className: "string",
     begin: "`",
     end: "`",
     contains: [
-      e.BACKSLASH_ESCAPE,
-      p
+      hljs.BACKSLASH_ESCAPE,
+      SUBST
     ]
-  }, T = {
-    className: "comment",
-    variants: [
-      e.COMMENT(
-        /\/\*\*(?!\/)/,
-        "\\*/",
+  };
+  const JSDOC_COMMENT = hljs.COMMENT(
+    /\/\*\*(?!\/)/,
+    "\\*/",
+    {
+      relevance: 0,
+      contains: [
         {
+          begin: "(?=@[A-Za-z]+)",
           relevance: 0,
           contains: [
             {
-              begin: "(?=@[A-Za-z]+)",
-              relevance: 0,
-              contains: [
-                {
-                  className: "doctag",
-                  begin: "@[A-Za-z]+"
-                },
-                {
-                  className: "type",
-                  begin: "\\{",
-                  end: "\\}",
-                  excludeEnd: !0,
-                  excludeBegin: !0,
-                  relevance: 0
-                },
-                {
-                  className: "variable",
-                  begin: o + "(?=\\s*(-)|$)",
-                  endsParent: !0,
-                  relevance: 0
-                },
-                // eat spaces (not newlines) so we can find
-                // types or variables
-                {
-                  begin: /(?=[^\n])\s/,
-                  relevance: 0
-                }
-              ]
+              className: "doctag",
+              begin: "@[A-Za-z]+"
+            },
+            {
+              className: "type",
+              begin: "\\{",
+              end: "\\}",
+              excludeEnd: true,
+              excludeBegin: true,
+              relevance: 0
+            },
+            {
+              className: "variable",
+              begin: IDENT_RE$12 + "(?=\\s*(-)|$)",
+              endsParent: true,
+              relevance: 0
+            },
+            // eat spaces (not newlines) so we can find
+            // types or variables
+            {
+              begin: /(?=[^\n])\s/,
+              relevance: 0
             }
           ]
         }
-      ),
-      e.C_BLOCK_COMMENT_MODE,
-      e.C_LINE_COMMENT_MODE
+      ]
+    }
+  );
+  const COMMENT2 = {
+    className: "comment",
+    variants: [
+      JSDOC_COMMENT,
+      hljs.C_BLOCK_COMMENT_MODE,
+      hljs.C_LINE_COMMENT_MODE
     ]
-  }, $ = [
-    e.APOS_STRING_MODE,
-    e.QUOTE_STRING_MODE,
-    m,
-    g,
-    f,
-    b,
+  };
+  const SUBST_INTERNALS = [
+    hljs.APOS_STRING_MODE,
+    hljs.QUOTE_STRING_MODE,
+    HTML_TEMPLATE,
+    CSS_TEMPLATE,
+    GRAPHQL_TEMPLATE,
+    TEMPLATE_STRING,
     // Skip numbers when they are part of a variable name
     { match: /\$\d+/ },
-    d
+    NUMBER
     // This is intentional:
     // See https://github.com/highlightjs/highlight.js/issues/3288
     // hljs.REGEXP_MODE
   ];
-  p.contains = $.concat({
+  SUBST.contains = SUBST_INTERNALS.concat({
     // we need to pair up {} inside our subst to prevent
     // it from ending too early by matching another }
     begin: /\{/,
     end: /\}/,
-    keywords: s,
+    keywords: KEYWORDS$12,
     contains: [
       "self"
-    ].concat($)
+    ].concat(SUBST_INTERNALS)
   });
-  const O = [].concat(T, p.contains), B = O.concat([
+  const SUBST_AND_COMMENTS = [].concat(COMMENT2, SUBST.contains);
+  const PARAMS_CONTAINS = SUBST_AND_COMMENTS.concat([
     // eat recursive parens in sub expressions
     {
       begin: /(\s*)\(/,
       end: /\)/,
-      keywords: s,
-      contains: ["self"].concat(O)
+      keywords: KEYWORDS$12,
+      contains: ["self"].concat(SUBST_AND_COMMENTS)
     }
-  ]), N = {
+  ]);
+  const PARAMS = {
     className: "params",
     // convert this to negative lookbehind in v12
     begin: /(\s*)\(/,
     // to match the parms with
     end: /\)/,
-    excludeBegin: !0,
-    excludeEnd: !0,
-    keywords: s,
-    contains: B
-  }, k = {
+    excludeBegin: true,
+    excludeEnd: true,
+    keywords: KEYWORDS$12,
+    contains: PARAMS_CONTAINS
+  };
+  const CLASS_OR_EXTENDS = {
     variants: [
       // class Car extends vehicle
       {
         match: [
           /class/,
           /\s+/,
-          o,
+          IDENT_RE$12,
           /\s+/,
           /extends/,
           /\s+/,
-          t.concat(o, "(", t.concat(/\./, o), ")*")
+          regex.concat(IDENT_RE$12, "(", regex.concat(/\./, IDENT_RE$12), ")*")
         ],
         scope: {
           1: "keyword",
@@ -3788,7 +4712,7 @@ function Ca(e) {
         match: [
           /class/,
           /\s+/,
-          o
+          IDENT_RE$12
         ],
         scope: {
           1: "keyword",
@@ -3796,9 +4720,10 @@ function Ca(e) {
         }
       }
     ]
-  }, _ = {
+  };
+  const CLASS_REFERENCE = {
     relevance: 0,
-    match: t.either(
+    match: regex.either(
       // Hard coded exceptions
       /\bJSON/,
       // Float32Array, OutT
@@ -3816,22 +4741,24 @@ function Ca(e) {
     keywords: {
       _: [
         // se we still get relevance credit for JS library classes
-        ...Po,
-        ...Bo
+        ...TYPES,
+        ...ERROR_TYPES
       ]
     }
-  }, C = {
+  };
+  const USE_STRICT = {
     label: "use_strict",
     className: "meta",
     relevance: 10,
     begin: /^\s*['"]use (strict|asm)['"]/
-  }, v = {
+  };
+  const FUNCTION_DEFINITION = {
     variants: [
       {
         match: [
           /function/,
           /\s+/,
-          o,
+          IDENT_RE$12,
           /(?=\s*\()/
         ]
       },
@@ -3848,43 +4775,46 @@ function Ca(e) {
       3: "title.function"
     },
     label: "func.def",
-    contains: [N],
+    contains: [PARAMS],
     illegal: /%/
-  }, h = {
+  };
+  const UPPER_CASE_CONSTANT = {
     relevance: 0,
     match: /\b[A-Z][A-Z_0-9]+\b/,
     className: "variable.constant"
   };
-  function E(P) {
-    return t.concat("(?!", P.join("|"), ")");
+  function noneOf(list) {
+    return regex.concat("(?!", list.join("|"), ")");
   }
-  const K = {
-    match: t.concat(
+  const FUNCTION_CALL = {
+    match: regex.concat(
       /\b/,
-      E([
-        ...Vo,
+      noneOf([
+        ...BUILT_IN_GLOBALS,
         "super",
         "import"
-      ].map((P) => `${P}\\s*\\(`)),
-      o,
-      t.lookahead(/\s*\(/)
+      ].map((x) => `${x}\\s*\\(`)),
+      IDENT_RE$12,
+      regex.lookahead(/\s*\(/)
     ),
     className: "title.function",
     relevance: 0
-  }, ne = {
-    begin: t.concat(/\./, t.lookahead(
-      t.concat(o, /(?![0-9A-Za-z$_(])/)
+  };
+  const PROPERTY_ACCESS = {
+    begin: regex.concat(/\./, regex.lookahead(
+      regex.concat(IDENT_RE$12, /(?![0-9A-Za-z$_(])/)
     )),
-    end: o,
-    excludeBegin: !0,
+    end: IDENT_RE$12,
+    excludeBegin: true,
     keywords: "prototype",
     className: "property",
     relevance: 0
-  }, ee = {
+  };
+  const GETTER_OR_SETTER = {
     match: [
       /get|set/,
       /\s+/,
-      o,
+      IDENT_RE$12,
       /(?=\()/
     ],
     className: {
@@ -3896,18 +4826,20 @@ function Ca(e) {
         // eat to avoid empty params
         begin: /\(\)/
       },
-      N
+      PARAMS
     ]
-  }, y = "(\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)|" + e.UNDERSCORE_IDENT_RE + ")\\s*=>", A = {
+  };
+  const FUNC_LEAD_IN_RE = "(\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)|" + hljs.UNDERSCORE_IDENT_RE + ")\\s*=>";
+  const FUNCTION_VARIABLE = {
     match: [
       /const|var|let/,
       /\s+/,
-      o,
+      IDENT_RE$12,
       /\s*/,
       /=\s*/,
       /(async\s*)?/,
       // async is optional
-      t.lookahead(y)
+      regex.lookahead(FUNC_LEAD_IN_RE)
     ],
     keywords: "async",
     className: {
@@ -3915,76 +4847,76 @@ function Ca(e) {
       3: "title.function"
     },
     contains: [
-      N
+      PARAMS
     ]
   };
   return {
     name: "JavaScript",
     aliases: ["js", "jsx", "mjs", "cjs"],
-    keywords: s,
+    keywords: KEYWORDS$12,
     // this will be extended by TypeScript
-    exports: { PARAMS_CONTAINS: B, CLASS_REFERENCE: _ },
+    exports: { PARAMS_CONTAINS, CLASS_REFERENCE },
     illegal: /#(?![$_A-z])/,
     contains: [
-      e.SHEBANG({
+      hljs.SHEBANG({
         label: "shebang",
         binary: "node",
         relevance: 5
       }),
-      C,
-      e.APOS_STRING_MODE,
-      e.QUOTE_STRING_MODE,
-      m,
-      g,
-      f,
-      b,
-      T,
+      USE_STRICT,
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
+      HTML_TEMPLATE,
+      CSS_TEMPLATE,
+      GRAPHQL_TEMPLATE,
+      TEMPLATE_STRING,
+      COMMENT2,
       // Skip numbers when they are part of a variable name
       { match: /\$\d+/ },
-      d,
-      _,
+      NUMBER,
+      CLASS_REFERENCE,
       {
         scope: "attr",
-        match: o + t.lookahead(":"),
+        match: IDENT_RE$12 + regex.lookahead(":"),
         relevance: 0
       },
-      A,
+      FUNCTION_VARIABLE,
       {
         // "value" container
-        begin: "(" + e.RE_STARTERS_RE + "|\\b(case|return|throw)\\b)\\s*",
+        begin: "(" + hljs.RE_STARTERS_RE + "|\\b(case|return|throw)\\b)\\s*",
         keywords: "return throw case",
         relevance: 0,
         contains: [
-          T,
-          e.REGEXP_MODE,
+          COMMENT2,
+          hljs.REGEXP_MODE,
           {
             className: "function",
             // we have to count the parens to make sure we actually have the
             // correct bounding ( ) before the =>.  There could be any number of
             // sub-expressions inside also surrounded by parens.
-            begin: y,
-            returnBegin: !0,
+            begin: FUNC_LEAD_IN_RE,
+            returnBegin: true,
             end: "\\s*=>",
             contains: [
               {
                 className: "params",
                 variants: [
                   {
-                    begin: e.UNDERSCORE_IDENT_RE,
+                    begin: hljs.UNDERSCORE_IDENT_RE,
                     relevance: 0
                   },
                   {
                     className: null,
                     begin: /\(\s*\)/,
-                    skip: !0
+                    skip: true
                   },
                   {
                     begin: /(\s*)\(/,
                     end: /\)/,
-                    excludeBegin: !0,
-                    excludeEnd: !0,
-                    keywords: s,
-                    contains: B
+                    excludeBegin: true,
+                    excludeEnd: true,
+                    keywords: KEYWORDS$12,
+                    contains: PARAMS_CONTAINS
                   }
                 ]
               }
@@ -4002,29 +4934,29 @@ function Ca(e) {
           {
             // JSX
             variants: [
-              { begin: i.begin, end: i.end },
-              { match: r },
+              { begin: FRAGMENT.begin, end: FRAGMENT.end },
+              { match: XML_SELF_CLOSING },
               {
-                begin: a.begin,
+                begin: XML_TAG.begin,
                 // we carefully check the opening tag to see if it truly
                 // is a tag and not a false positive
-                "on:begin": a.isTrulyOpeningTag,
-                end: a.end
+                "on:begin": XML_TAG.isTrulyOpeningTag,
+                end: XML_TAG.end
               }
             ],
             subLanguage: "xml",
             contains: [
               {
-                begin: a.begin,
-                end: a.end,
-                skip: !0,
+                begin: XML_TAG.begin,
+                end: XML_TAG.end,
+                skip: true,
                 contains: ["self"]
               }
             ]
           }
         ]
       },
-      v,
+      FUNCTION_DEFINITION,
       {
         // prevent this from getting swallowed up by function
         // since they appear "function like"
@@ -4034,13 +4966,13 @@ function Ca(e) {
         // we have to count the parens to make sure we actually have the correct
         // bounding ( ).  There could be any number of sub-expressions inside
         // also surrounded by parens.
-        begin: "\\b(?!function)" + e.UNDERSCORE_IDENT_RE + "\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)\\s*\\{",
+        begin: "\\b(?!function)" + hljs.UNDERSCORE_IDENT_RE + "\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)\\s*\\{",
         // end parens
-        returnBegin: !0,
+        returnBegin: true,
         label: "func.def",
         contains: [
-          N,
-          e.inherit(e.TITLE_MODE, { begin: o, className: "title.function" })
+          PARAMS,
+          hljs.inherit(hljs.TITLE_MODE, { begin: IDENT_RE$12, className: "title.function" })
         ]
       },
       // catch ... so it won't trigger the property rule below
@@ -4048,23 +4980,23 @@ function Ca(e) {
         match: /\.\.\./,
         relevance: 0
       },
-      ne,
+      PROPERTY_ACCESS,
       // hack: prevents detection of keywords in some circumstances
       // .keyword()
       // $keyword = x
       {
-        match: "\\$" + o,
+        match: "\\$" + IDENT_RE$12,
         relevance: 0
       },
       {
         match: [/\bconstructor(?=\s*\()/],
         className: { 1: "title.function" },
-        contains: [N]
+        contains: [PARAMS]
       },
-      K,
-      h,
-      k,
-      ee,
+      FUNCTION_CALL,
+      UPPER_CASE_CONSTANT,
+      CLASS_OR_EXTENDS,
+      GETTER_OR_SETTER,
       {
         match: /\$[(.]/
         // relevance booster for a pattern common to JS libs: `$(something)` and `$.something`
@@ -4072,8 +5004,11 @@ function Ca(e) {
     ]
   };
 }
-function Oa(e) {
-  const t = e.regex, n = Ca(e), o = qt, i = [
+function typescript(hljs) {
+  const regex = hljs.regex;
+  const tsLanguage = javascript(hljs);
+  const IDENT_RE$12 = IDENT_RE;
+  const TYPES2 = [
     "any",
     "void",
     "number",
@@ -4084,30 +5019,34 @@ function Oa(e) {
     "symbol",
     "bigint",
     "unknown"
-  ], r = {
+  ];
+  const NAMESPACE = {
     begin: [
       /namespace/,
       /\s+/,
-      e.IDENT_RE
+      hljs.IDENT_RE
     ],
     beginScope: {
       1: "keyword",
       3: "title.class"
     }
-  }, a = {
+  };
+  const INTERFACE = {
     beginKeywords: "interface",
     end: /\{/,
-    excludeEnd: !0,
+    excludeEnd: true,
     keywords: {
       keyword: "interface extends",
-      built_in: i
+      built_in: TYPES2
     },
-    contains: [n.exports.CLASS_REFERENCE]
-  }, s = {
+    contains: [tsLanguage.exports.CLASS_REFERENCE]
+  };
+  const USE_STRICT = {
     className: "meta",
     relevance: 10,
     begin: /^\s*['"]use strict['"]/
-  }, l = [
+  };
+  const TS_SPECIFIC_KEYWORDS = [
     "type",
     // "namespace",
     "interface",
@@ -4121,43 +5060,53 @@ function Oa(e) {
     "enum",
     "override",
     "satisfies"
-  ], c = {
-    $pattern: qt,
-    keyword: Ro.concat(l),
-    literal: Ao,
-    built_in: Fo.concat(i),
-    "variable.language": zo
-  }, u = {
-    className: "meta",
-    begin: "@" + o
-  }, d = (f, b, x) => {
-    const T = f.contains.findIndex(($) => $.label === b);
-    if (T === -1)
-      throw new Error("can not find mode to replace");
-    f.contains.splice(T, 1, x);
+  ];
+  const KEYWORDS$12 = {
+    $pattern: IDENT_RE,
+    keyword: KEYWORDS.concat(TS_SPECIFIC_KEYWORDS),
+    literal: LITERALS,
+    built_in: BUILT_INS.concat(TYPES2),
+    "variable.language": BUILT_IN_VARIABLES
   };
-  Object.assign(n.keywords, c), n.exports.PARAMS_CONTAINS.push(u);
-  const p = n.contains.find((f) => f.scope === "attr"), m = Object.assign(
+  const DECORATOR = {
+    className: "meta",
+    begin: "@" + IDENT_RE$12
+  };
+  const swapMode = (mode, label, replacement) => {
+    const indx = mode.contains.findIndex((m2) => m2.label === label);
+    if (indx === -1) {
+      throw new Error("can not find mode to replace");
+    }
+    mode.contains.splice(indx, 1, replacement);
+  };
+  Object.assign(tsLanguage.keywords, KEYWORDS$12);
+  tsLanguage.exports.PARAMS_CONTAINS.push(DECORATOR);
+  const ATTRIBUTE_HIGHLIGHT = tsLanguage.contains.find((c) => c.scope === "attr");
+  const OPTIONAL_KEY_OR_ARGUMENT = Object.assign(
     {},
-    p,
-    { match: t.concat(o, t.lookahead(/\s*\?:/)) }
+    ATTRIBUTE_HIGHLIGHT,
+    { match: regex.concat(IDENT_RE$12, regex.lookahead(/\s*\?:/)) }
   );
-  n.exports.PARAMS_CONTAINS.push([
-    n.exports.CLASS_REFERENCE,
+  tsLanguage.exports.PARAMS_CONTAINS.push([
+    tsLanguage.exports.CLASS_REFERENCE,
     // class reference for highlighting the params types
-    p,
+    ATTRIBUTE_HIGHLIGHT,
     // highlight the params key
-    m
+    OPTIONAL_KEY_OR_ARGUMENT
     // Added for optional property assignment highlighting
-  ]), n.contains = n.contains.concat([
-    u,
-    r,
-    a,
-    m
+  ]);
+  tsLanguage.contains = tsLanguage.contains.concat([
+    DECORATOR,
+    NAMESPACE,
+    INTERFACE,
+    OPTIONAL_KEY_OR_ARGUMENT
     // Added for optional property assignment highlighting
-  ]), d(n, "shebang", e.SHEBANG()), d(n, "use_strict", s);
-  const g = n.contains.find((f) => f.label === "func.def");
-  return g.relevance = 0, Object.assign(n, {
+  ]);
+  swapMode(tsLanguage, "shebang", hljs.SHEBANG());
+  swapMode(tsLanguage, "use_strict", USE_STRICT);
+  const functionDeclaration = tsLanguage.contains.find((m2) => m2.label === "func.def");
+  functionDeclaration.relevance = 0;
+  Object.assign(tsLanguage, {
     name: "TypeScript",
     aliases: [
       "ts",
@@ -4165,13 +5114,18 @@ function Oa(e) {
       "mts",
       "cts"
     ]
-  }), n;
+  });
+  return tsLanguage;
 }
-function Ho(e) {
-  const t = e.regex, n = t.concat(/[\p{L}_]/u, t.optional(/[\p{L}0-9_.-]*:/u), /[\p{L}0-9_.-]*/u), o = /[\p{L}0-9._:-]+/u, i = {
+function xml(hljs) {
+  const regex = hljs.regex;
+  const TAG_NAME_RE = regex.concat(/[\p{L}_]/u, regex.optional(/[\p{L}0-9_.-]*:/u), /[\p{L}0-9_.-]*/u);
+  const XML_IDENT_RE = /[\p{L}0-9._:-]+/u;
+  const XML_ENTITIES = {
     className: "symbol",
     begin: /&[a-z]+;|&#[0-9]+;|&#x[a-f0-9]+;/
-  }, r = {
+  };
+  const XML_META_KEYWORDS = {
     begin: /\s/,
     contains: [
       {
@@ -4180,17 +5134,21 @@ function Ho(e) {
         illegal: /\n/
       }
     ]
-  }, a = e.inherit(r, {
+  };
+  const XML_META_PAR_KEYWORDS = hljs.inherit(XML_META_KEYWORDS, {
     begin: /\(/,
     end: /\)/
-  }), s = e.inherit(e.APOS_STRING_MODE, { className: "string" }), l = e.inherit(e.QUOTE_STRING_MODE, { className: "string" }), c = {
-    endsWithParent: !0,
+  });
+  const APOS_META_STRING_MODE = hljs.inherit(hljs.APOS_STRING_MODE, { className: "string" });
+  const QUOTE_META_STRING_MODE = hljs.inherit(hljs.QUOTE_STRING_MODE, { className: "string" });
+  const TAG_INTERNALS = {
+    endsWithParent: true,
     illegal: /</,
     relevance: 0,
     contains: [
       {
         className: "attr",
-        begin: o,
+        begin: XML_IDENT_RE,
         relevance: 0
       },
       {
@@ -4199,17 +5157,17 @@ function Ho(e) {
         contains: [
           {
             className: "string",
-            endsParent: !0,
+            endsParent: true,
             variants: [
               {
                 begin: /"/,
                 end: /"/,
-                contains: [i]
+                contains: [XML_ENTITIES]
               },
               {
                 begin: /'/,
                 end: /'/,
-                contains: [i]
+                contains: [XML_ENTITIES]
               },
               { begin: /[^\s"'=<>`]+/ }
             ]
@@ -4232,8 +5190,8 @@ function Ho(e) {
       "wsf",
       "svg"
     ],
-    case_insensitive: !0,
-    unicodeRegex: !0,
+    case_insensitive: true,
+    unicodeRegex: true,
     contains: [
       {
         className: "meta",
@@ -4241,10 +5199,10 @@ function Ho(e) {
         end: />/,
         relevance: 10,
         contains: [
-          r,
-          l,
-          s,
-          a,
+          XML_META_KEYWORDS,
+          QUOTE_META_STRING_MODE,
+          APOS_META_STRING_MODE,
+          XML_META_PAR_KEYWORDS,
           {
             begin: /\[/,
             end: /\]/,
@@ -4254,17 +5212,17 @@ function Ho(e) {
                 begin: /<![a-z]/,
                 end: />/,
                 contains: [
-                  r,
-                  a,
-                  l,
-                  s
+                  XML_META_KEYWORDS,
+                  XML_META_PAR_KEYWORDS,
+                  QUOTE_META_STRING_MODE,
+                  APOS_META_STRING_MODE
                 ]
               }
             ]
           }
         ]
       },
-      e.COMMENT(
+      hljs.COMMENT(
         /<!--/,
         /-->/,
         { relevance: 10 }
@@ -4274,7 +5232,7 @@ function Ho(e) {
         end: /\]\]>/,
         relevance: 10
       },
-      i,
+      XML_ENTITIES,
       // xml processing instructions
       {
         className: "meta",
@@ -4284,7 +5242,7 @@ function Ho(e) {
             begin: /<\?xml/,
             relevance: 10,
             contains: [
-              l
+              QUOTE_META_STRING_MODE
             ]
           },
           {
@@ -4302,10 +5260,10 @@ function Ho(e) {
         begin: /<style(?=\s|>)/,
         end: />/,
         keywords: { name: "style" },
-        contains: [c],
+        contains: [TAG_INTERNALS],
         starts: {
           end: /<\/style>/,
-          returnEnd: !0,
+          returnEnd: true,
           subLanguage: [
             "css",
             "xml"
@@ -4318,10 +5276,10 @@ function Ho(e) {
         begin: /<script(?=\s|>)/,
         end: />/,
         keywords: { name: "script" },
-        contains: [c],
+        contains: [TAG_INTERNALS],
         starts: {
           end: /<\/script>/,
-          returnEnd: !0,
+          returnEnd: true,
           subLanguage: [
             "javascript",
             "handlebars",
@@ -4337,168 +5295,182 @@ function Ho(e) {
       // open tag
       {
         className: "tag",
-        begin: t.concat(
+        begin: regex.concat(
           /</,
-          t.lookahead(t.concat(
-            n,
+          regex.lookahead(regex.concat(
+            TAG_NAME_RE,
             // <tag/>
             // <tag>
             // <tag ...
-            t.either(/\/>/, />/, /\s/)
+            regex.either(/\/>/, />/, /\s/)
           ))
         ),
         end: /\/?>/,
         contains: [
           {
             className: "name",
-            begin: n,
+            begin: TAG_NAME_RE,
             relevance: 0,
-            starts: c
+            starts: TAG_INTERNALS
           }
         ]
       },
       // close tag
       {
         className: "tag",
-        begin: t.concat(
+        begin: regex.concat(
           /<\//,
-          t.lookahead(t.concat(
-            n,
+          regex.lookahead(regex.concat(
+            TAG_NAME_RE,
             />/
           ))
         ),
         contains: [
           {
             className: "name",
-            begin: n,
+            begin: TAG_NAME_RE,
             relevance: 0
           },
           {
             begin: />/,
             relevance: 0,
-            endsParent: !0
+            endsParent: true
           }
         ]
       }
     ]
   };
 }
-const Wt = ce;
-Ve.registerLanguage("css", $a);
-Ve.registerLanguage("javascript", La);
-Ve.registerLanguage("java", Da);
-Ve.registerLanguage("json", Na);
-Ve.registerLanguage("typescript", Oa);
-Ve.registerLanguage("html", Ho);
-Ve.registerLanguage("xml", Ho);
-const Ra = "/", yn = Ra + "icons/", Q = { Placeholder: "(empty)", disabled: !1 }, Aa = { Placeholder: "(no Selection)", disabled: !0 }, Pa = { Placeholder: "(multiple Values)", disabled: !1 };
-function Z(e) {
-  return e === Q || e === Aa || e === Pa;
+const ValueIsPhoneNumber = ValueIsTextline;
+HighlightJS.registerLanguage("css", css);
+HighlightJS.registerLanguage("javascript", javascript$1);
+HighlightJS.registerLanguage("java", java);
+HighlightJS.registerLanguage("json", json);
+HighlightJS.registerLanguage("typescript", typescript);
+HighlightJS.registerLanguage("html", xml);
+HighlightJS.registerLanguage("xml", xml);
+const AssetsBase = "/";
+const IconFolder = AssetsBase + "icons/";
+const SIM_empty = { Placeholder: "(empty)", disabled: false };
+const SIM_noSelection = { Placeholder: "(no Selection)", disabled: true };
+const SIM_multipleValues = { Placeholder: "(multiple Values)", disabled: false };
+function ValueIsSpecial(Value) {
+  return Value === SIM_empty || Value === SIM_noSelection || Value === SIM_multipleValues;
 }
-function Ie(e) {
+function throwError(Message) {
   debugger;
-  let t = /^([$a-zA-Z][$a-zA-Z0-9]*):\s*(\S.+)\s*$/.exec(e);
-  if (t == null)
-    throw new Error(e);
-  {
-    let n = new Error(t[2]);
-    throw n.name = t[1], n;
+  let Match = /^([$a-zA-Z][$a-zA-Z0-9]*):\s*(\S.+)\s*$/.exec(Message);
+  if (Match == null) {
+    throw new Error(Message);
+  } else {
+    let namedError = new Error(Match[2]);
+    namedError.name = Match[1];
+    throw namedError;
   }
 }
-function Nr(e) {
-  Ie(
-    "ReadOnlyProperty: property " + it(e) + " must not be set"
+function throwReadOnlyError(Name) {
+  throwError(
+    "ReadOnlyProperty: property " + quoted(Name) + " must not be set"
   );
 }
-const Ba = /^[-._\p{L}\d](?:[-._ \p{L}\d]*[-._\p{L}\d])?$/u;
-function nn(e) {
-  return Ne(e, Ba);
+const SIM_NamePattern = /^[-._\p{L}\d](?:[-._ \p{L}\d]*[-._\p{L}\d])?$/u;
+function ValueIsName(Value) {
+  return ValueIsStringMatching(Value, SIM_NamePattern);
 }
-const Va = _e(
-  nn,
-  Ue,
+const allowName = ValidatorForClassifier(
+  ValueIsName,
+  acceptNil,
   "SIM name"
-), Cr = Va, Uo = _e(
-  nn,
-  je,
+), allowedName = allowName;
+const expectName = ValidatorForClassifier(
+  ValueIsName,
+  rejectNil,
   "SIM name"
-), Or = Uo, za = /^[-._\p{L}](?:[-._ \p{L}]*[-._\p{L}])?(?:\/[-._\p{L}](?:[-._ \p{L}]*[-._\p{L}])?)*$/u;
-function on(e) {
-  return Ne(e, za);
+), expectedName = expectName;
+const SIM_PathPattern = /^[-._\p{L}](?:[-._ \p{L}]*[-._\p{L}])?(?:\/[-._\p{L}](?:[-._ \p{L}]*[-._\p{L}])?)*$/u;
+function ValueIsPath(Value) {
+  return ValueIsStringMatching(Value, SIM_PathPattern);
 }
-const Fa = _e(
-  on,
-  Ue,
+const allowPath = ValidatorForClassifier(
+  ValueIsPath,
+  acceptNil,
   "SIM name path"
-), Rr = Fa, an = _e(
-  on,
-  je,
+), allowedPath = allowPath;
+const expectPath = ValidatorForClassifier(
+  ValueIsPath,
+  rejectNil,
   "SIM name path"
-), Ar = an;
-function ct(e) {
-  return no(e);
+), expectedPath = expectPath;
+function ValueIsLocation(Value) {
+  return ValueIsFiniteNumber(Value);
 }
-const Ha = _e(
-  ct,
-  Ue,
+const allowLocation = ValidatorForClassifier(
+  ValueIsLocation,
+  acceptNil,
   "SIM coordinate"
-), Pr = Ha, Ua = _e(
-  ct,
-  je,
+), allowedLocation = allowLocation;
+const expectLocation = ValidatorForClassifier(
+  ValueIsLocation,
+  rejectNil,
   "SIM coordinate"
-), Br = Ua;
-function ut(e) {
-  return no(e) && e >= 0;
+), expectedLocation = expectLocation;
+function ValueIsDimension(Value) {
+  return ValueIsFiniteNumber(Value) && Value >= 0;
 }
-const ja = _e(
-  ut,
-  Ue,
+const allowDimension = ValidatorForClassifier(
+  ValueIsDimension,
+  acceptNil,
   "SIM dimension"
-), Vr = ja, Ga = _e(
-  ut,
-  je,
+), allowedDimension = allowDimension;
+const expectDimension = ValidatorForClassifier(
+  ValueIsDimension,
+  rejectNil,
   "SIM dimension"
-), zr = Ga;
-function jo(e) {
-  return Re(e) && ct(e.x) && ct(e.y);
+), expectedDimension = expectDimension;
+function ValueIsPosition(Value) {
+  return ValueIsPlainObject(Value) && (ValueIsLocation(Value.x) && ValueIsLocation(Value.y));
 }
-const qa = _e(
-  jo,
-  Ue,
+const allowPosition = ValidatorForClassifier(
+  ValueIsPosition,
+  acceptNil,
   "SIM position"
-), Fr = qa, Wa = _e(
-  jo,
-  je,
+), allowedPosition = allowPosition;
+const expectPosition = ValidatorForClassifier(
+  ValueIsPosition,
+  rejectNil,
   "SIM position"
-), Hr = Wa;
-function Go(e) {
-  return Re(e) && ut(e.Width) && ut(e.Height);
+), expectedPosition = expectPosition;
+function ValueIsSize(Value) {
+  return ValueIsPlainObject(Value) && (ValueIsDimension(Value.Width) && ValueIsDimension(Value.Height));
 }
-const Ka = _e(
-  Go,
-  Ue,
+const allowSize = ValidatorForClassifier(
+  ValueIsSize,
+  acceptNil,
   "SIM size"
-), Ur = Ka, Za = _e(
-  Go,
-  je,
+), allowedSize = allowSize;
+const expectSize = ValidatorForClassifier(
+  ValueIsSize,
+  rejectNil,
   "SIM size"
-), jr = Za;
-function qo(e) {
-  return Re(e) && ct(e.x) && ut(e.Width) && ct(e.y) && ut(e.Height);
+), expectedSize = expectSize;
+function ValueIsGeometry(Value) {
+  return ValueIsPlainObject(Value) && (ValueIsLocation(Value.x) && ValueIsDimension(Value.Width) && ValueIsLocation(Value.y) && ValueIsDimension(Value.Height));
 }
-const Xa = _e(
-  qo,
-  Ue,
+const allowGeometry = ValidatorForClassifier(
+  ValueIsGeometry,
+  acceptNil,
   "SIM geometry"
-), Gr = Xa, Ya = _e(
-  qo,
-  je,
+), allowedGeometry = allowGeometry;
+const expectGeometry = ValidatorForClassifier(
+  ValueIsGeometry,
+  rejectNil,
   "SIM geometry"
-), qr = Ya, Ja = /^[a-z0-9]+([._+-][a-z0-9]+)*\/[a-z0-9]+([._+-][a-z0-9]+)*(\s*;\s*[a-z0-9-]+=[a-z0-9.+-]+)*$/i;
-function Wr(e) {
-  return Ne(e, Ja);
+), expectedGeometry = expectGeometry;
+const MIMEPattern = /^[a-z0-9]+([._+-][a-z0-9]+)*\/[a-z0-9]+([._+-][a-z0-9]+)*(\s*;\s*[a-z0-9-]+=[a-z0-9.+-]+)*$/i;
+function ValueIsMIMEType(Value) {
+  return ValueIsStringMatching(Value, MIMEPattern);
 }
-const Qa = [
+const SIM_supportedTextFormats = [
   "application/javascript",
   "application/typescript",
   "application/json",
@@ -4508,27 +5480,27 @@ const Qa = [
   "text/markdown",
   "text/plain"
 ];
-function Kr(e) {
-  return ze(e, Qa);
+function ValueIsTextFormat(Value) {
+  return ValueIsOneOf(Value, SIM_supportedTextFormats);
 }
-const er = [
+const SIM_supportedHTMLFormats = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "text/html",
   "text/markdown",
   "text/plain"
 ];
-function Zr(e) {
-  return ze(e, er);
+function ValueIsHTMLFormat(Value) {
+  return ValueIsOneOf(Value, SIM_supportedHTMLFormats);
 }
-const tr = [
+const SIM_supportedMarkdownFormats = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   "text/markdown",
   "text/plain"
 ];
-function Xr(e) {
-  return ze(e, tr);
+function ValueIsMarkdownFormat(Value) {
+  return ValueIsOneOf(Value, SIM_supportedMarkdownFormats);
 }
-const nr = [
+const SIM_supportedImageFormats = [
   "image/apng",
   "image/avif",
   "image/bmp",
@@ -4538,451 +5510,645 @@ const nr = [
   "image/svg+xml",
   "image/webp"
 ];
-function Yr(e) {
-  return ze(e, nr);
+function ValueIsImageFormat(Value) {
+  return ValueIsOneOf(Value, SIM_supportedImageFormats);
 }
-const or = /^[a-z$_][a-z$_0-9]*$/i;
-function Wo(e) {
-  return Ne(e, or);
+const SIM_IdentifierPattern = /^[a-z$_][a-z$_0-9]*$/i;
+function ValueIsIdentifier(Value) {
+  return ValueIsStringMatching(Value, SIM_IdentifierPattern);
 }
-const ir = _e(
-  Wo,
-  Ue,
+const allowIdentifier = ValidatorForClassifier(
+  ValueIsIdentifier,
+  acceptNil,
   "SIM identifier"
-), Jr = ir, ar = _e(
-  Wo,
-  je,
+), allowedIdentifier = allowIdentifier;
+const expectIdentifier = ValidatorForClassifier(
+  ValueIsIdentifier,
+  rejectNil,
   "SIM identifier"
-), Qr = ar;
-function es(e) {
-  return ue(e, dt);
+), expectedIdentifier = expectIdentifier;
+function ValueIsIndexPath(Value) {
+  return ValueIsListSatisfying(Value, ValueIsOrdinal);
 }
-function j(e, ...t) {
-  Kt("PropSet", e), t.forEach((r, a) => {
-    Ke(r) || Ie(
-      `InvalidArgument: PropSet parser argument #${a + 1} is not a function`
+function parsedPropSet(PropSet, ...ParserList) {
+  expectPlainObject("PropSet", PropSet);
+  ParserList.forEach((Parser, Index) => {
+    if (!ValueIsFunction(Parser)) throwError(
+      `InvalidArgument: PropSet parser argument #${Index + 1} is not a function`
     );
   });
-  const n = [], o = {};
-  Array.from(Object.keys(e)).forEach((r) => {
-    let a = r.replace(/[-_]/g, "").trim().toLowerCase();
-    o[a] = e[r];
+  const Result = [];
+  const normalizedPropSet = {};
+  Array.from(Object.keys(PropSet)).forEach((Key) => {
+    let normalizedKey = Key.replace(/[-_]/g, "").trim().toLowerCase();
+    normalizedPropSet[normalizedKey] = PropSet[Key];
   });
-  const i = o.children;
-  return delete o.children, delete o["aim:rendercount"], t.forEach(
-    (r) => n.push(r(o))
-  ), n.push(o, i), n;
+  const ContentList = normalizedPropSet.children;
+  delete normalizedPropSet.children;
+  delete normalizedPropSet["aim:rendercount"];
+  ParserList.forEach(
+    (Parser) => Result.push(Parser(normalizedPropSet))
+  );
+  Result.push(normalizedPropSet, ContentList);
+  return Result;
 }
-function ts(e, t) {
-  Kt("PropSet", e), Zt("PropSet parser", t);
-  const n = {};
-  return Array.from(Object.keys(e)).forEach((o) => {
-    let i = o.replace(/[-_]/g, "").trim().toLowerCase();
-    n[i] = e[o];
-  }), delete n.children, t(n);
+function parsedProp(PropSet, Parser) {
+  expectPlainObject("PropSet", PropSet);
+  expectFunction("PropSet parser", Parser);
+  const normalizedPropSet = {};
+  Array.from(Object.keys(PropSet)).forEach((Key) => {
+    let normalizedKey = Key.replace(/[-_]/g, "").trim().toLowerCase();
+    normalizedPropSet[normalizedKey] = PropSet[Key];
+  });
+  delete normalizedPropSet.children;
+  return Parser(normalizedPropSet);
 }
-function me(e, t, n, o) {
-  Kt("PropSet", e), Zt("validator function", n), oo("PropSet name", o);
-  const i = e[t];
-  if (i != null) {
-    if (n(i) == !0)
-      return delete e[t], i;
-    Ie(
-      (o == null ? "" : o + " ") + "attribute " + it(t) + " is invalid"
+function optionalAttribute(PropSet, PropName, Validator, PropSetName) {
+  expectPlainObject("PropSet", PropSet);
+  expectFunction("validator function", Validator);
+  allowTextline("PropSet name", PropSetName);
+  const Value = PropSet[PropName];
+  if (Value == null) {
+    return void 0;
+  }
+  if (Validator(Value) == true) {
+    delete PropSet[PropName];
+    return Value;
+  } else {
+    throwError(
+      (PropSetName == null ? "" : PropSetName + " ") + "attribute " + quoted(PropName) + " is invalid"
     );
   }
 }
-function ge(e, t, n, o) {
-  Kt("PropSet", e), Zt("validator function", n), oo("PropSet name", o);
-  const i = e[t];
-  if (i == null && Ie(
-    "attribute " + it(t) + " is missing"
-  ), n(i) == !0)
-    return delete e[t], i;
-  Ie(
-    (o == null ? "" : o + " ") + "attribute " + it(t) + " is invalid"
+function mandatoryAttribute(PropSet, PropName, Validator, PropSetName) {
+  expectPlainObject("PropSet", PropSet);
+  expectFunction("validator function", Validator);
+  allowTextline("PropSet name", PropSetName);
+  const Value = PropSet[PropName];
+  if (Value == null) throwError(
+    "attribute " + quoted(PropName) + " is missing"
+  );
+  if (Validator(Value) == true) {
+    delete PropSet[PropName];
+    return Value;
+  } else {
+    throwError(
+      (PropSetName == null ? "" : PropSetName + " ") + "attribute " + quoted(PropName) + " is invalid"
+    );
+  }
+}
+function optionalValue(PropName, Validator) {
+  return (PropSet) => optionalAttribute(PropSet, PropName, Validator);
+}
+function mandatoryValue(PropName, Validator) {
+  return (PropSet) => mandatoryAttribute(PropSet, PropName, Validator);
+}
+function optionalBoolean(PropName) {
+  return (PropSet) => optionalAttribute(PropSet, PropName, ValueIsBoolean);
+}
+function mandatoryBoolean(PropName) {
+  return (PropSet) => mandatoryAttribute(PropSet, PropName, ValueIsBoolean);
+}
+function optionalNumber(PropName) {
+  return (PropSet) => optionalAttribute(PropSet, PropName, ValueIsNumber);
+}
+function mandatoryNumber(PropName) {
+  return (PropSet) => mandatoryAttribute(PropSet, PropName, ValueIsNumber);
+}
+function optionalNumberInRange(PropName, Minimum, Maximum, withMinimum, withMaximum) {
+  return (PropSet) => optionalAttribute(
+    PropSet,
+    PropName,
+    (Value) => ValueIsNumberInRange(Value, Minimum, Maximum, withMinimum, withMaximum)
   );
 }
-function H(e, t) {
-  return (n) => me(n, e, t);
-}
-function rn(e, t) {
-  return (n) => ge(n, e, t);
-}
-function V(e) {
-  return (t) => me(t, e, Xt);
-}
-function ns(e) {
-  return (t) => ge(t, e, Xt);
-}
-function Le(e) {
-  return (t) => me(t, e, ht);
-}
-function os(e) {
-  return (t) => ge(t, e, ht);
-}
-function is(e, t, n, o, i) {
-  return (r) => me(
-    r,
-    e,
-    (a) => Yt(a, t, n, o, i)
+function mandatoryNumberInRange(PropName, Minimum, Maximum, withMinimum, withMaximum) {
+  return (PropSet) => mandatoryAttribute(
+    PropSet,
+    PropName,
+    (Value) => ValueIsNumberInRange(Value, Minimum, Maximum, withMinimum, withMaximum)
   );
 }
-function as(e, t, n, o, i) {
-  return (r) => ge(
-    r,
-    e,
-    (a) => Yt(a, t, n, o, i)
+function optionalInteger(PropName) {
+  return (PropSet) => optionalAttribute(PropSet, PropName, ValueIsInteger);
+}
+function mandatoryInteger(PropName) {
+  return (PropSet) => mandatoryAttribute(PropSet, PropName, ValueIsInteger);
+}
+function optionalIntegerInRange(PropName, Minimum, Maximum) {
+  return (PropSet) => optionalAttribute(
+    PropSet,
+    PropName,
+    (Value) => ValueIsIntegerInRange(Value, Minimum, Maximum)
   );
 }
-function rs(e) {
-  return (t) => me(t, e, io);
-}
-function ss(e) {
-  return (t) => ge(t, e, io);
-}
-function ls(e, t, n) {
-  return (o) => me(
-    o,
-    e,
-    (i) => ao(i, t, n)
+function mandatoryIntegerInRange(PropName, Minimum, Maximum) {
+  return (PropSet) => mandatoryAttribute(
+    PropSet,
+    PropName,
+    (Value) => ValueIsIntegerInRange(Value, Minimum, Maximum)
   );
 }
-function cs(e, t, n) {
-  return (o) => ge(
-    o,
-    e,
-    (i) => ao(i, t, n)
+function optionalOrdinal(PropName) {
+  return (PropSet) => optionalAttribute(PropSet, PropName, ValueIsOrdinal);
+}
+function mandatoryOrdinal(PropName) {
+  return (PropSet) => mandatoryAttribute(PropSet, PropName, ValueIsOrdinal);
+}
+function optionalCardinal(PropName) {
+  return (PropSet) => optionalAttribute(PropSet, PropName, ValueIsCardinal);
+}
+function mandatoryCardinal(PropName) {
+  return (PropSet) => mandatoryAttribute(PropSet, PropName, ValueIsCardinal);
+}
+function optionalString(PropName) {
+  return (PropSet) => optionalAttribute(PropSet, PropName, ValueIsString);
+}
+function mandatoryString(PropName) {
+  return (PropSet) => mandatoryAttribute(PropSet, PropName, ValueIsString);
+}
+function optionalStringMatching(PropName, Pattern) {
+  return (PropSet) => optionalAttribute(
+    PropSet,
+    PropName,
+    (Value) => ValueIsStringMatching(Value, Pattern)
   );
 }
-function re(e) {
-  return (t) => me(t, e, dt);
-}
-function us(e) {
-  return (t) => ge(t, e, dt);
-}
-function rr(e) {
-  return (t) => me(t, e, ro);
-}
-function ds(e) {
-  return (t) => ge(t, e, ro);
-}
-function ps(e) {
-  return (t) => me(t, e, so);
-}
-function fs(e) {
-  return (t) => ge(t, e, so);
-}
-function ms(e, t) {
-  return (n) => me(
-    n,
-    e,
-    (o) => Ne(o, t)
+function mandatoryStringMatching(PropName, Pattern) {
+  return (PropSet) => mandatoryAttribute(
+    PropSet,
+    PropName,
+    (Value) => ValueIsStringMatching(Value, Pattern)
   );
 }
-function gs(e, t) {
-  return (n) => ge(
-    n,
-    e,
-    (o) => Ne(o, t)
+function optionalText(PropName) {
+  return (PropSet) => optionalAttribute(PropSet, PropName, ValueIsText);
+}
+function mandatoryText(PropName) {
+  return (PropSet) => mandatoryAttribute(PropSet, PropName, ValueIsText);
+}
+function optionalTextline(PropName) {
+  return (PropSet) => optionalAttribute(PropSet, PropName, ValueIsTextline);
+}
+function mandatoryTextline(PropName) {
+  return (PropSet) => mandatoryAttribute(PropSet, PropName, ValueIsTextline);
+}
+function optionalFunction(PropName) {
+  return (PropSet) => optionalAttribute(PropSet, PropName, ValueIsFunction);
+}
+function mandatoryFunction(PropName) {
+  return (PropSet) => mandatoryAttribute(PropSet, PropName, ValueIsFunction);
+}
+function optionalColor(PropName) {
+  return (PropSet) => optionalAttribute(PropSet, PropName, ValueIsColor);
+}
+function mandatoryColor(PropName) {
+  return (PropSet) => mandatoryAttribute(PropSet, PropName, ValueIsColor);
+}
+function optionalEMailAddress(PropName) {
+  return (PropSet) => optionalAttribute(PropSet, PropName, ValueIsEMailAddress);
+}
+function mandatoryEMailAddress(PropName) {
+  return (PropSet) => mandatoryAttribute(PropSet, PropName, ValueIsEMailAddress);
+}
+function optionalPhoneNumber(PropName) {
+  return (PropSet) => optionalAttribute(PropSet, PropName, ValueIsPhoneNumber);
+}
+function mandatoryPhoneNumber(PropName) {
+  return (PropSet) => mandatoryAttribute(PropSet, PropName, ValueIsPhoneNumber);
+}
+function optionalURL(PropName) {
+  return (PropSet) => optionalAttribute(PropSet, PropName, ValueIsURL);
+}
+function mandatoryURL(PropName) {
+  return (PropSet) => mandatoryAttribute(PropSet, PropName, ValueIsURL);
+}
+function optionalPath(PropName) {
+  return (PropSet) => optionalAttribute(
+    PropSet,
+    PropName,
+    (Value) => ValueIsPath(Value)
   );
 }
-function fe(e) {
-  return (t) => me(t, e, kn);
-}
-function hs(e) {
-  return (t) => ge(t, e, kn);
-}
-function D(e) {
-  return (t) => me(t, e, ce);
-}
-function sr(e) {
-  return (t) => ge(t, e, ce);
-}
-function M(e) {
-  return (t) => me(t, e, Ke);
-}
-function bs(e) {
-  return (t) => ge(t, e, Ke);
-}
-function sn(e) {
-  return (t) => me(t, e, Ft);
-}
-function ws(e) {
-  return (t) => ge(t, e, Ft);
-}
-function xs(e) {
-  return (t) => me(t, e, Ht);
-}
-function vs(e) {
-  return (t) => ge(t, e, Ht);
-}
-function ys(e) {
-  return (t) => me(t, e, Wt);
-}
-function _s(e) {
-  return (t) => ge(t, e, Wt);
-}
-function ln(e) {
-  return (t) => me(t, e, Ut);
-}
-function Ko(e) {
-  return (t) => ge(t, e, Ut);
-}
-function ks(e) {
-  return (t) => me(
-    t,
-    e,
-    (n) => on(n)
+function mandatoryPath(PropName) {
+  return (PropSet) => mandatoryAttribute(
+    PropSet,
+    PropName,
+    (Value) => ValueIsPath(Value)
   );
 }
-function Is(e) {
-  return (t) => ge(
-    t,
-    e,
-    (n) => on(n)
+function optionalNameOrIndex(PropName) {
+  return (PropSet) => optionalAttribute(
+    PropSet,
+    PropName,
+    (Value) => ValueIsName(Value) || ValueIsOrdinal(Value)
   );
 }
-function $s(e) {
-  return (t) => me(
-    t,
-    e,
-    (n) => nn(n) || dt(n)
+function mandatoryNameOrIndex(PropName) {
+  return (PropSet) => mandatoryAttribute(
+    PropSet,
+    PropName,
+    (Value) => ValueIsName(Value) || ValueIsOrdinal(Value)
   );
 }
-function Es(e) {
-  return (t) => ge(
-    t,
-    e,
-    (n) => nn(n) || dt(n)
-  );
-}
-function Ss() {
-  const [e, t] = pt(navigator.onLine);
-  return rt(() => {
-    const n = () => t(!0), o = () => t(!1);
-    return window.addEventListener("online", n), window.addEventListener("offline", o), () => {
-      window.removeEventListener("online", n), window.removeEventListener("offline", o);
+function useOnlineStatus() {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
     };
-  }, []), e;
+  }, []);
+  return isOnline;
 }
-function Ts() {
-  const [e, t] = pt({
+function useWindowSize() {
+  const [Size, setSize] = useState({
     Width: window.innerWidth,
     Height: window.innerHeight
   });
-  return rt(() => {
-    const n = () => t({
+  useEffect(() => {
+    const handleResize = () => setSize({
       Width: window.innerWidth,
       Height: window.innerHeight
     });
-    return window.addEventListener("resize", n), () => window.removeEventListener("resize", n);
-  }, []), e;
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  return Size;
 }
-function ke() {
-  const [e, t] = pt({});
-  function n() {
-    t({});
+function useRerenderer() {
+  const [State, setState] = useState({});
+  function rerender() {
+    setState({});
   }
-  return n;
+  return rerender;
 }
-function Ms(e = {}) {
-  An("initial configuration", e);
-  const t = W();
-  t.current == null && (t.current = _n(e));
-  const n = X((o) => {
-    if (An("configuration change set", o), o != null)
-      for (const [i, r] of Object.entries(o))
-        r === void 0 ? delete o[i] : Re(r) ? Re(t.current[i]) ? Object.assign(t.current[i], r) : t.current[i] = { ...r } : Ie(
-          "InvalidArgument: configuration[" + it(i) + "] is no plain JavaScript onject"
-        );
-  }, [e]);
-  return [t.current, n];
+function useConfiguration(initialConfiguration = {}) {
+  allowPlainObject("initial configuration", initialConfiguration);
+  const ConfigurationRef = useRef();
+  if (ConfigurationRef.current == null) {
+    ConfigurationRef.current = deepCopyOf(initialConfiguration);
+  }
+  const configure = useCallback((ChangeSet) => {
+    allowPlainObject("configuration change set", ChangeSet);
+    if (ChangeSet == null) {
+      return;
+    }
+    for (const [Key, Value] of Object.entries(ChangeSet)) {
+      if (Value === void 0) {
+        delete ChangeSet[Key];
+      } else {
+        if (ValueIsPlainObject(Value)) {
+          if (ValueIsPlainObject(ConfigurationRef.current[Key])) {
+            Object.assign(ConfigurationRef.current[Key], Value);
+          } else {
+            ConfigurationRef.current[Key] = { ...Value };
+          }
+        } else {
+          throwError(
+            "InvalidArgument: configuration[" + quoted(Key) + "] is no plain JavaScript onject"
+          );
+        }
+      }
+    }
+  }, [initialConfiguration]);
+  return [ConfigurationRef.current, configure];
 }
-function Ls({
-  ViewRef: e,
-  Container: t,
-  onlyFrom: n,
-  neverFrom: o,
-  onDragStart: i,
-  onDragContinuation: r,
-  onDragFinish: a,
-  onDragCancellation: s
+function useDragging({
+  ViewRef,
+  Container,
+  onlyFrom,
+  neverFrom,
+  onDragStart,
+  onDragContinuation,
+  onDragFinish,
+  onDragCancellation
 }) {
-  lo("preact component reference", e), t != null && !ce(t) && !(t instanceof HTMLElement) && !Ke(t) && Ie(
+  expectValue("preact component reference", ViewRef);
+  if (Container != null && !ValueIsTextline(Container) && !(Container instanceof HTMLElement) && !ValueIsFunction(Container)) throwError(
     'InvalidArgument: "Container" is neither a CSS selector nor an HTML element or a function'
-  ), n != null && !ce(n) && !(n instanceof HTMLElement) && Ie(
+  );
+  if (onlyFrom != null && !ValueIsTextline(onlyFrom) && !(onlyFrom instanceof HTMLElement)) throwError(
     'InvalidArgument: "onlyFrom" is neither a CSS selector nor an HTML element'
-  ), o != null && !ce(o) && !(o instanceof HTMLElement) && Ie(
+  );
+  if (neverFrom != null && !ValueIsTextline(neverFrom) && !(neverFrom instanceof HTMLElement)) throwError(
     'InvalidArgument: "neverFrom" is neither a CSS selector nor an HTML element'
-  ), Oe('"onDragStart" callback', i), Oe('"onDragContinuation" callback', r), Oe('"onDragFinish" callback', a), Oe('"onDragCancellation" callback', s);
-  const l = i != null && r != null && a != null && s != null;
-  let c;
-  const u = W(), d = W(!1), p = ($) => {
-    if (e.current == null || !($.target instanceof HTMLElement) || $.pointerType === "mouse" && $.buttons !== 1 || $.pointerType === "touch" && !$.isPrimary || $.pointerType === "pen" && $.buttons !== 1 || !l)
+  );
+  allowFunction('"onDragStart" callback', onDragStart);
+  allowFunction('"onDragContinuation" callback', onDragContinuation);
+  allowFunction('"onDragFinish" callback', onDragFinish);
+  allowFunction('"onDragCancellation" callback', onDragCancellation);
+  const RecognizerMayDrag = onDragStart != null && onDragContinuation != null && onDragFinish != null && onDragCancellation != null;
+  let ContainerElement;
+  const StartPosition = useRef();
+  const isDragging = useRef(false);
+  const onPointerDown = (Event) => {
+    if (ViewRef.current == null || !(Event.target instanceof HTMLElement)) {
       return;
-    switch (!0) {
-      case t == null:
-        c = e.current.parentElement;
+    }
+    if (Event.pointerType === "mouse" && Event.buttons !== 1) {
+      return;
+    }
+    if (Event.pointerType === "touch" && !Event.isPrimary) {
+      return;
+    }
+    if (Event.pointerType === "pen" && Event.buttons !== 1) {
+      return;
+    }
+    if (!RecognizerMayDrag) {
+      return;
+    }
+    switch (true) {
+      case Container == null:
+        ContainerElement = ViewRef.current.parentElement;
         break;
-      case ce(t):
-        c = e.current.parentElement.closest(t);
+      case ValueIsTextline(Container):
+        ContainerElement = ViewRef.current.parentElement.closest(Container);
         break;
-      case Ke(t):
-        c = t(), c instanceof HTMLElement || (c = void 0);
+      case ValueIsFunction(Container):
+        ContainerElement = Container();
+        if (!(ContainerElement instanceof HTMLElement)) {
+          ContainerElement = void 0;
+        }
         break;
       default:
-        c = t;
+        ContainerElement = Container;
     }
-    if (c == null || n != null && !T($.target, n) || o != null && T($.target, o))
+    if (ContainerElement == null) {
       return;
-    window.addEventListener("pointermove", m), window.addEventListener("pointerup", f), window.addEventListener("pointercancel", b), e.current.setPointerCapture?.($.pointerId);
-    const O = c.getBoundingClientRect(), B = $.clientX - O.left + c.scrollLeft, N = $.clientY - O.top + c.scrollTop;
-    u.current = { x: B, y: N }, d.current = !0, i?.(0, 0, B, N, $);
-  }, m = ($) => {
-    d.current !== !1 && c != null && r?.apply(null, x(c, $));
-  }, g = ($, O) => {
-    if (d.current !== !1) {
-      if (d.current = !1, window.removeEventListener("pointermove", m), window.removeEventListener("pointerup", f), window.removeEventListener("pointercancel", b), O) {
-        r?.(0, 0, u.current.x, u.current.y, $);
-        return;
-      }
-      c != null && l && a?.apply(null, x(c, $));
     }
-  }, f = ($) => {
-    g($, !1);
-  }, b = ($) => {
-    g($, !0);
-  }, x = ($, O) => {
-    const B = $.getBoundingClientRect(), N = O.clientX - B.left + $.scrollLeft, k = O.clientY - B.top + $.scrollTop, _ = N - u.current.x, C = k - u.current.y;
-    return [_, C, N, k, O];
+    if (onlyFrom != null && !matchesSelector(Event.target, onlyFrom)) {
+      return;
+    }
+    if (neverFrom != null && matchesSelector(Event.target, neverFrom)) {
+      return;
+    }
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("pointercancel", onPointerCancel);
+    ViewRef.current.setPointerCapture?.(Event.pointerId);
+    const ContainerBox = ContainerElement.getBoundingClientRect();
+    const StartX = Event.clientX - ContainerBox.left + ContainerElement.scrollLeft;
+    const StartY = Event.clientY - ContainerBox.top + ContainerElement.scrollTop;
+    StartPosition.current = { x: StartX, y: StartY };
+    isDragging.current = true;
+    onDragStart?.(0, 0, StartX, StartY, Event);
   };
-  function T($, O) {
-    switch (!0) {
-      case O == null:
-        return !0;
-      case typeof O == "string":
-        return $.matches(O);
+  const onPointerMove = (Event) => {
+    if (isDragging.current === false) {
+      return;
+    }
+    if (ContainerElement == null) {
+      return;
+    }
+    onDragContinuation?.apply(null, CallbackArguments(ContainerElement, Event));
+  };
+  const finishDragging = (Event, cancelled) => {
+    if (isDragging.current === false) {
+      return;
+    }
+    isDragging.current = false;
+    window.removeEventListener("pointermove", onPointerMove);
+    window.removeEventListener("pointerup", onPointerUp);
+    window.removeEventListener("pointercancel", onPointerCancel);
+    if (cancelled) {
+      onDragContinuation?.(0, 0, StartPosition.current.x, StartPosition.current.y, Event);
+      return;
+    }
+    if (ContainerElement != null && RecognizerMayDrag) {
+      onDragFinish?.apply(null, CallbackArguments(ContainerElement, Event));
+    }
+  };
+  const onPointerUp = (Event) => {
+    finishDragging(Event, false);
+  };
+  const onPointerCancel = (Event) => {
+    finishDragging(Event, true);
+  };
+  const CallbackArguments = (Container2, Event) => {
+    const ContainerBox = Container2.getBoundingClientRect();
+    const x = Event.clientX - ContainerBox.left + Container2.scrollLeft;
+    const y = Event.clientY - ContainerBox.top + Container2.scrollTop;
+    const dx = x - StartPosition.current.x;
+    const dy = y - StartPosition.current.y;
+    return [dx, dy, x, y, Event];
+  };
+  function matchesSelector(Element2, Selector) {
+    switch (true) {
+      case Selector == null:
+        return true;
+      case typeof Selector === "string":
+        return Element2.matches(Selector);
       default:
-        return $ === O;
+        return Element2 === Selector;
     }
   }
-  return p;
+  return onPointerDown;
 }
-function Ds({
-  ViewRef: e,
-  Container: t,
-  onlyFrom: n,
-  neverFrom: o,
-  ClickRadius: i,
-  MultiClickLimit: r,
-  MultiClickTimeSpan: a,
-  onClick: s,
-  onDragStart: l,
-  onDragContinuation: c,
-  onDragFinish: u,
-  onDragCancellation: d
+function useClickDragging({
+  ViewRef,
+  Container,
+  onlyFrom,
+  neverFrom,
+  ClickRadius,
+  MultiClickLimit,
+  MultiClickTimeSpan,
+  onClick,
+  onDragStart,
+  onDragContinuation,
+  onDragFinish,
+  onDragCancellation
 }) {
-  lo("preact component reference", e), t != null && !ce(t) && !(t instanceof HTMLElement) && !Ke(t) && Ie(
+  expectValue("preact component reference", ViewRef);
+  if (Container != null && !ValueIsTextline(Container) && !(Container instanceof HTMLElement) && !ValueIsFunction(Container)) throwError(
     'InvalidArgument: "Container" is neither a CSS selector nor an HTML element or a function'
-  ), n != null && !ce(n) && !(n instanceof HTMLElement) && Ie(
+  );
+  if (onlyFrom != null && !ValueIsTextline(onlyFrom) && !(onlyFrom instanceof HTMLElement)) throwError(
     'InvalidArgument: "onlyFrom" is neither a CSS selector nor an HTML element'
-  ), o != null && !ce(o) && !(o instanceof HTMLElement) && Ie(
+  );
+  if (neverFrom != null && !ValueIsTextline(neverFrom) && !(neverFrom instanceof HTMLElement)) throwError(
     'InvalidArgument: "neverFrom" is neither a CSS selector nor an HTML element'
-  ), mn("click radius", i), mn("multi-click limit", r), mn("multi-click timespan", a), Oe('"onClick" callback', s), Oe('"onDragStart" callback', l), Oe('"onDragContinuation" callback', c), Oe('"onDragFinish" callback', u), Oe('"onDragCancellation" callback', d), i == null && (i = 4), a == null && (a = 300), r == null && (r = s == null ? 0 : 1);
-  const p = r > 0 && s != null, m = l != null && c != null && u != null;
-  let g;
-  const f = W(), b = W(!1), x = W({ Count: 0, Time: 0 }), T = (C) => {
-    if (e.current == null || !(C.target instanceof HTMLElement) || !p && !m)
+  );
+  allowOrdinal("click radius", ClickRadius);
+  allowOrdinal("multi-click limit", MultiClickLimit);
+  allowOrdinal("multi-click timespan", MultiClickTimeSpan);
+  allowFunction('"onClick" callback', onClick);
+  allowFunction('"onDragStart" callback', onDragStart);
+  allowFunction('"onDragContinuation" callback', onDragContinuation);
+  allowFunction('"onDragFinish" callback', onDragFinish);
+  allowFunction('"onDragCancellation" callback', onDragCancellation);
+  if (ClickRadius == null) {
+    ClickRadius = 4;
+  }
+  if (MultiClickTimeSpan == null) {
+    MultiClickTimeSpan = 300;
+  }
+  if (MultiClickLimit == null) {
+    MultiClickLimit = onClick == null ? 0 : 1;
+  }
+  const RecognizerMayClick = MultiClickLimit > 0 && onClick != null;
+  const RecognizerMayDrag = onDragStart != null && onDragContinuation != null && onDragFinish != null;
+  let ContainerElement;
+  const StartPosition = useRef();
+  const isDragging = useRef(false);
+  const lastClick = useRef({ Count: 0, Time: 0 });
+  const onPointerDown = (Event) => {
+    if (ViewRef.current == null || !(Event.target instanceof HTMLElement)) {
       return;
-    switch (!0) {
-      case t == null:
-        g = e.current.parentElement;
+    }
+    if (!RecognizerMayClick && !RecognizerMayDrag) {
+      return;
+    }
+    switch (true) {
+      case Container == null:
+        ContainerElement = ViewRef.current.parentElement;
         break;
-      case ce(t):
-        g = e.current.parentElement.closest(t);
+      case ValueIsTextline(Container):
+        ContainerElement = ViewRef.current.parentElement.closest(Container);
         break;
-      case Ke(t):
-        g = t(), g instanceof HTMLElement || (g = void 0);
+      case ValueIsFunction(Container):
+        ContainerElement = Container();
+        if (!(ContainerElement instanceof HTMLElement)) {
+          ContainerElement = void 0;
+        }
         break;
       default:
-        g = t;
+        ContainerElement = Container;
     }
-    if (g == null || n != null && !_(C.target, n) || o != null && _(C.target, o))
+    if (ContainerElement == null) {
       return;
-    window.addEventListener("pointermove", $), window.addEventListener("pointerup", B), window.addEventListener("pointercancel", N), e.current.setPointerCapture?.(C.pointerId);
-    const v = g.getBoundingClientRect(), h = C.clientX - v.left + g.scrollLeft, E = C.clientY - v.top + g.scrollTop;
-    f.current = { x: h, y: E }, p ? b.current = !1 : (b.current = m, m && i === 0 && l?.(0, 0, h, E, C));
-  }, $ = (C) => {
-    if (!m || g == null)
+    }
+    if (onlyFrom != null && !matchesSelector(Event.target, onlyFrom)) {
       return;
-    const [v, h, E, K] = k(g, C);
-    if (b.current === !1) {
-      if (v * v + h * h < i * i)
-        return;
-      b.current = !0, l?.(v, h, E, K, C);
     }
-    c?.apply(null, [v, h, E, K, C]);
-  }, O = (C, v) => {
-    if (window.removeEventListener("pointermove", $), window.removeEventListener("pointerup", B), window.removeEventListener("pointercancel", N), b.current) {
-      if (b.current = !1, m && v) {
-        c?.(0, 0, f.current.x, f.current.y, C);
-        return;
-      }
-      g != null && m && u?.apply(null, k(g, C));
+    if (neverFrom != null && matchesSelector(Event.target, neverFrom)) {
+      return;
     }
-  }, B = (C) => {
-    if (b.current === !1 && p) {
-      let { ClickCount: v, Time: h } = x.current;
-      const E = Date.now();
-      if (v = E - h > a ? 1 : Math.min(v + 1, r), x.current = { ClickCount: v, Time: E }, g != null) {
-        const [K, ne, ee, y] = k(g, C);
-        s?.apply(null, [v, K, ne, ee, y, C]);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("pointercancel", onPointerCancel);
+    ViewRef.current.setPointerCapture?.(Event.pointerId);
+    const ContainerBox = ContainerElement.getBoundingClientRect();
+    const StartX = Event.clientX - ContainerBox.left + ContainerElement.scrollLeft;
+    const StartY = Event.clientY - ContainerBox.top + ContainerElement.scrollTop;
+    StartPosition.current = { x: StartX, y: StartY };
+    if (RecognizerMayClick) {
+      isDragging.current = false;
+    } else {
+      isDragging.current = RecognizerMayDrag;
+      if (RecognizerMayDrag && ClickRadius === 0) {
+        onDragStart?.(0, 0, StartX, StartY, Event);
       }
     }
-    O(C, !1);
-  }, N = (C) => {
-    b.current === !0 && O(C, !0);
-  }, k = (C, v) => {
-    const h = C.getBoundingClientRect(), E = v.clientX - h.left + C.scrollLeft, K = v.clientY - h.top + C.scrollTop, ne = E - f.current.x, ee = K - f.current.y;
-    return [ne, ee, E, K, v];
   };
-  function _(C, v) {
-    switch (!0) {
-      case v == null:
-        return !0;
-      case typeof v == "string":
-        return C.matches(v);
+  const onPointerMove = (Event) => {
+    if (!RecognizerMayDrag) {
+      return;
+    }
+    if (ContainerElement == null) {
+      return;
+    }
+    const [dx, dy, x, y] = CallbackArguments(ContainerElement, Event);
+    if (isDragging.current === false) {
+      if (dx * dx + dy * dy < ClickRadius * ClickRadius) {
+        return;
+      } else {
+        isDragging.current = true;
+        onDragStart?.(dx, dy, x, y, Event);
+      }
+    }
+    onDragContinuation?.apply(null, [dx, dy, x, y, Event]);
+  };
+  const finishDragging = (Event, cancelled) => {
+    window.removeEventListener("pointermove", onPointerMove);
+    window.removeEventListener("pointerup", onPointerUp);
+    window.removeEventListener("pointercancel", onPointerCancel);
+    if (isDragging.current) {
+      isDragging.current = false;
+      if (RecognizerMayDrag && cancelled) {
+        onDragContinuation?.(0, 0, StartPosition.current.x, StartPosition.current.y, Event);
+        return;
+      }
+      if (ContainerElement != null && RecognizerMayDrag) {
+        onDragFinish?.apply(null, CallbackArguments(ContainerElement, Event));
+      }
+    }
+  };
+  const onPointerUp = (Event) => {
+    if (isDragging.current === false) {
+      if (RecognizerMayClick) {
+        let { ClickCount, Time } = lastClick.current;
+        const now = Date.now();
+        ClickCount = now - Time > MultiClickTimeSpan ? 1 : Math.min(ClickCount + 1, MultiClickLimit);
+        lastClick.current = { ClickCount, Time: now };
+        if (ContainerElement != null) {
+          const [dx, dy, x, y] = CallbackArguments(ContainerElement, Event);
+          onClick?.apply(null, [ClickCount, dx, dy, x, y, Event]);
+        }
+      }
+    }
+    finishDragging(Event, false);
+  };
+  const onPointerCancel = (Event) => {
+    if (isDragging.current === true) {
+      finishDragging(Event, true);
+    }
+  };
+  const CallbackArguments = (Container2, Event) => {
+    const ContainerBox = Container2.getBoundingClientRect();
+    const x = Event.clientX - ContainerBox.left + Container2.scrollLeft;
+    const y = Event.clientY - ContainerBox.top + Container2.scrollTop;
+    const dx = x - StartPosition.current.x;
+    const dy = y - StartPosition.current.y;
+    return [dx, dy, x, y, Event];
+  };
+  function matchesSelector(Element2, Selector) {
+    switch (true) {
+      case Selector == null:
+        return true;
+      case typeof Selector === "string":
+        return Element2.matches(Selector);
       default:
-        return C === v;
+        return Element2 === Selector;
     }
   }
-  return T;
+  return onPointerDown;
 }
-function Ns(e) {
-  let t = Math.round(Math.random() * 1e4).toString();
-  return t += "0000".slice(t.length), e = (e || "This operation can not be undone.") + `
-
-Please, enter the following number if you want to proceed:
-
-   ` + t + `
-
-Otherwise, the operation will be cancelled`, window.prompt(e, "") === t ? !0 : (window.alert("Operation will be cancelled"), !1);
+function OperationWasConfirmed(Message) {
+  let ConfirmationCode = Math.round(Math.random() * 1e4).toString();
+  ConfirmationCode += "0000".slice(ConfirmationCode.length);
+  Message = (Message || "This operation can not be undone.") + "\n\nPlease, enter the following number if you want to proceed:\n\n   " + ConfirmationCode + "\n\nOtherwise, the operation will be cancelled";
+  let UserInput = window.prompt(Message, "");
+  if (UserInput === ConfirmationCode) {
+    return true;
+  } else {
+    window.alert("Operation will be cancelled");
+    return false;
+  }
 }
-function Cs(e) {
-  return Uo("name", e), On(e);
+function normalizedName(Name) {
+  expectName("name", Name);
+  return _normalizedName(Name);
 }
-function On(e) {
-  return e.trim().replace(/\s+/g, " ").replace(/[.]+/g, ".").replace(/[-]+/g, "-").replace(/[_]+/g, "_").toLowerCase();
+function _normalizedName(Name) {
+  return Name.trim().replace(/\s+/g, " ").replace(/[.]+/g, ".").replace(/[-]+/g, "-").replace(/[_]+/g, "_").toLowerCase();
 }
-function Os(e) {
-  return an("path", e), lr(e);
+function normalizedPath(Path) {
+  expectPath("path", Path);
+  return _normalizedPath(Path);
 }
-function lr(e) {
-  return e.trim().replace(/\s*(\/+\s*)+/g, "/").replace(/\s+/g, " ").replace(/[.]+/g, ".").replace(/[-]+/g, "-").replace(/[_]+/g, "_").toLowerCase();
+function _normalizedPath(Path) {
+  return Path.trim().replace(/\s*(\/+\s*)+/g, "/").replace(/\s+/g, " ").replace(/[.]+/g, ".").replace(/[-]+/g, "-").replace(/[_]+/g, "_").toLowerCase();
 }
-let mt = document.getElementById("SIM-Components-Stylesheet");
-mt == null && (mt = document.createElement("style"), mt.id = "SIM-Components-Stylesheet", mt.textContent = `
+let StyleElement = document.getElementById("SIM-Components-Stylesheet");
+if (StyleElement == null) {
+  StyleElement = document.createElement("style");
+  StyleElement.id = "SIM-Components-Stylesheet";
+  StyleElement.textContent = `
 /*******************************************************************************
 *                                                                              *
 *              Components for the Smart Information Manager (SIM)              *
@@ -5007,31 +6173,50 @@ mt == null && (mt = document.createElement("style"), mt.id = "SIM-Components-Sty
   .pointer-unaware      { pointer-events:none }
 
 
-    `.trim(), document.head.prepend(mt));
-function U(e, t, n = !1) {
-  an("stylesheet name", e), ei("stylesheet", t), ti("mode flag", n);
-  const o = "Stylesheet-for-" + On(e);
-  let i = document.head.querySelector('style[id="' + o + '"]');
-  i == null ? (i = document.createElement("style"), i.id = o, i.textContent = t, document.head.append(i)) : n ? i.textContent = t : console.warn('multiple definitions for stylesheet "' + e + '"');
+    `.trim();
+  document.head.prepend(StyleElement);
 }
-function Rs(e) {
-  an("stylesheet name", e);
-  const t = "Stylesheet-for-" + On(e);
-  let n = document.head.querySelector('style[id="' + t + '"]');
-  n?.remove();
+function installStylesheetFor(Name, Stylesheet, overwrite = false) {
+  expectPath("stylesheet name", Name);
+  expectText("stylesheet", Stylesheet);
+  expectBoolean("mode flag", overwrite);
+  const StylesheetId = "Stylesheet-for-" + _normalizedName(Name);
+  let StyleElement2 = document.head.querySelector('style[id="' + StylesheetId + '"]');
+  if (StyleElement2 == null) {
+    StyleElement2 = document.createElement("style");
+    StyleElement2.id = StylesheetId;
+    StyleElement2.textContent = Stylesheet;
+    document.head.append(StyleElement2);
+  } else {
+    if (overwrite) {
+      StyleElement2.textContent = Stylesheet;
+    } else {
+      console.warn('multiple definitions for stylesheet "' + Name + '"');
+    }
+  }
 }
-function cr(e) {
-  return G(() => {
-    let [t] = j(
-      e,
-      H("error", (o) => o instanceof Error)
+function uninstallStylesheetFor(Name) {
+  expectPath("stylesheet name", Name);
+  const StylesheetId = "Stylesheet-for-" + _normalizedName(Name);
+  let StyleElement2 = document.head.querySelector('style[id="' + StylesheetId + '"]');
+  if (StyleElement2 != null) {
+    StyleElement2.remove();
+  }
+}
+function SIM_ErrorIndicator(PropSet) {
+  return safelyRendered(() => {
+    let [ErrorToShow] = parsedPropSet(
+      PropSet,
+      optionalValue("error", (Value) => Value instanceof Error)
     );
-    return w`<div class="sim-error-indicator" onClick=${() => {
-      console.warn(t), window.alert(ur(t));
-    }}/>`;
+    const onClick = () => {
+      console.warn(ErrorToShow);
+      window.alert(ErrorMessageFor(ErrorToShow));
+    };
+    return m`<div class="sim-error-indicator" onClick=${onClick}/>`;
   });
 }
-U("sim-error-indicator", `
+installStylesheetFor("sim-error-indicator", `
     .sim-error-indicator {
       display:inline-block; position:relative;
       width:24px; height:24px;
@@ -5045,57 +6230,69 @@ U("sim-error-indicator", `
       pointer-events:auto;
     }
   `);
-function ur(e) {
-  let t = e.name ?? "", n = e.message, o = e.stack ?? "";
-  const i = t.replace(/([a-z])([A-Z])/g, "$1 $2"), r = n[0].toUpperCase() + n.slice(1);
-  return o === "" ? `${i}
+function ErrorMessageFor(ErrorToShow) {
+  let ErrorName = ErrorToShow.name ?? "";
+  let ErrorMessage = ErrorToShow.message;
+  let StackTrace = ErrorToShow.stack ?? "";
+  const Title2 = ErrorName.replace(/([a-z])([A-Z])/g, "$1 $2");
+  const Message = ErrorMessage[0].toUpperCase() + ErrorMessage.slice(1);
+  if (StackTrace === "") {
+    return `${Title2}
 
-${r}` : `${i}
+${Message}`;
+  } else {
+    return `${Title2}
 
-${r}
+${Message}
 
-${o}`;
-}
-function G(e) {
-  Zt("rendering function", e);
-  try {
-    return e();
-  } catch (t) {
-    const n = e.name ?? "";
-    return n.trim() === "" ? console.warn("error while rendering a preact component: " + t) : console.warn(
-      "error while rendering component " + it(n) + ": " + t
-    ), w`<${cr} error=${t}/>`;
+${StackTrace}`;
   }
 }
-function As(e) {
-  return G(() => {
-    let [t, n, o] = j(
-      e,
-      D("class")
+function safelyRendered(Renderer) {
+  expectFunction("rendering function", Renderer);
+  try {
+    return Renderer();
+  } catch (Signal) {
+    const ComponentName = Renderer.name ?? "";
+    if (ComponentName.trim() === "") {
+      console.warn("error while rendering a preact component: " + Signal);
+    } else {
+      console.warn(
+        "error while rendering component " + quoted(ComponentName) + ": " + Signal
+      );
+    }
+    return m`<${SIM_ErrorIndicator} error=${Signal}/>`;
+  }
+}
+function fullsized(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, RestProps, ContentList] = parsedPropSet(
+      PropSet,
+      optionalTextline("class")
     );
-    return w`<div class="sim-component fullsized ${t ?? ""}" ...${n}>
-        ${o}
+    return m`<div class="sim-component fullsized ${Classes ?? ""}" ...${RestProps}>
+        ${ContentList}
       </>`;
   });
 }
-U("sim-component.fullsized", `
+installStylesheetFor("sim-component.fullsized", `
     .sim-component.fullsized > * {
       display:block; position:relative;
       left:0px; top:0px; width:100% !important; height:100% !important;
     }
   `);
-function Ps(e) {
-  return G(() => {
-    let [t, n, o] = j(
-      e,
-      D("class")
+function centered(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, RestProps, ContentList] = parsedPropSet(
+      PropSet,
+      optionalTextline("class")
     );
-    return w`<div class="sim-component centered ${t ?? ""}" ...${n}>
-        ${o}
+    return m`<div class="sim-component centered ${Classes ?? ""}" ...${RestProps}>
+        ${ContentList}
       </>`;
   });
 }
-U("sim-component.centered", `
+installStylesheetFor("sim-component.centered", `
     .sim-component.centered {
       display:flex ! important; flex-flow:column nowrap; align-items:center; justify-content:center;
       left:0px; top:0px; width:100% !important; height:100% !important;
@@ -5105,20 +6302,21 @@ U("sim-component.centered", `
       left:0px; top:0px; right:auto; bottom:auto; width:auto; height:auto;
     }
   `);
-function Bs(e) {
-  return G(() => {
-    let [t, n, o, i, r] = j(
-      e,
-      D("class"),
-      fe("style"),
-      re("gap")
+function horizontal(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, Style, Gap, RestProps, ContentList] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("style"),
+      optionalOrdinal("gap")
     );
-    return o = o ?? 0, w`<div class="sim-component horizontal ${t ?? ""}"
-        style="gap:${o}px; ${n ?? ""}" ...${i}
-      >${r}</>`;
+    Gap = Gap ?? 0;
+    return m`<div class="sim-component horizontal ${Classes ?? ""}"
+        style="gap:${Gap}px; ${Style ?? ""}" ...${RestProps}
+      >${ContentList}</>`;
   });
 }
-U("sim-component.horizontal", `
+installStylesheetFor("sim-component.horizontal", `
     .sim-component.horizontal {
       display:flex ! important; flex-flow:row nowrap; align-items:center;
       position:relative; left:0px; top:0px; width:100% !important; height:auto;
@@ -5128,20 +6326,21 @@ U("sim-component.horizontal", `
       left:0px; top:0px; right:auto; bottom:auto; width:auto; height:auto;
     }
   `);
-function Vs(e) {
-  return G(() => {
-    let [t, n, o, i, r] = j(
-      e,
-      D("class"),
-      fe("style"),
-      re("gap")
+function vertical(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, Style, Gap, RestProps, ContentList] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("style"),
+      optionalOrdinal("gap")
     );
-    return o = o ?? 0, w`<div class="sim-component vertical ${t ?? ""}"
-        style="gap:${o}px; ${n ?? ""}" ...${i}
-      >${r}</>`;
+    Gap = Gap ?? 0;
+    return m`<div class="sim-component vertical ${Classes ?? ""}"
+        style="gap:${Gap}px; ${Style ?? ""}" ...${RestProps}
+      >${ContentList}</>`;
   });
 }
-U("sim-component.vertical", `
+installStylesheetFor("sim-component.vertical", `
     .sim-component.vertical {
       display:flex ! important; flex-flow:column nowrap; align-items:start;
       position:relative; left:0px; top:0px; width:auto; height:100% !important;
@@ -5151,60 +6350,70 @@ U("sim-component.vertical", `
       left:0px; top:0px; right:auto; bottom:auto; width:auto; height:auto;
     }
   `);
-function zs(e) {
-  return G(() => {
+function tabular(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l
-    ] = j(
-      e,
-      D("class"),
-      fe("style"),
-      rr("columns"),
-      re("rowgap"),
-      re("colgap"),
-      D("columnclasses")
+      Classes,
+      Style,
+      Columns,
+      RowGap,
+      ColGap,
+      ColClasses,
+      RestProps,
+      ContentList
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("style"),
+      optionalCardinal("columns"),
+      optionalOrdinal("rowgap"),
+      optionalOrdinal("colgap"),
+      optionalTextline("columnclasses")
       // space-separated
     );
-    o = o ?? 2, i = i ?? 0, r = r ?? 0, a = a ?? "";
-    function c(f) {
-      if (typeof f == "string")
+    Columns = Columns ?? 2;
+    RowGap = RowGap ?? 0;
+    ColGap = ColGap ?? 0;
+    ColClasses = ColClasses ?? "";
+    function ColSpanOfCell(TableCell) {
+      if (typeof TableCell === "string") {
         return 1;
-      {
-        let b = f.props.colspan;
-        return dt(b) ? b : 1;
+      } else {
+        let ColSpan = TableCell.props["colspan"];
+        return ValueIsOrdinal(ColSpan) ? ColSpan : 1;
       }
     }
-    l = In(l).filter(
-      (f) => f.type != null || f.trim() !== ""
+    ContentList = toChildArray(ContentList).filter(
+      (Cell) => Cell.type != null || Cell.trim() !== ""
     );
-    const u = l.length, d = [[]];
-    let p = 0, m = 0;
-    l.forEach((f, b) => {
-      d[p].push(f), m += c(f), m >= o && b < u - 1 && (d.push([]), p++, m = 0);
+    const ContentCount = ContentList.length;
+    const RowList = [[]];
+    let RowIndex = 0, CellIndex = 0;
+    ContentList.forEach((Cell, Index) => {
+      RowList[RowIndex].push(Cell);
+      CellIndex += ColSpanOfCell(Cell);
+      if (CellIndex >= Columns && Index < ContentCount - 1) {
+        RowList.push([]);
+        RowIndex++;
+        CellIndex = 0;
+      }
     });
-    const g = a.trim() === "" ? "" : w`<colgroup>${a.split(" ").map((f) => w`<col class="${f}"/>`)}</>`;
-    return w`<table class="sim-component tabular ${t ?? ""}" style="
-        ${n ?? ""};
-        border-spacing:${r}px ${i}px;
-        margin:-${i}px -${r}px -${i}px -${r}px
-      " ...${s}
-      >${g}<tbody>
-        ${u > 0 && d.map((f, b) => w`<tr>
-          ${f.map(
-      (x) => w`<td colspan=${c(x)}>${x}</>`
+    const ColGroup = ColClasses.trim() === "" ? "" : m`<colgroup>${ColClasses.split(" ").map((Class) => m`<col class="${Class}"/>`)}</>`;
+    return m`<table class="sim-component tabular ${Classes ?? ""}" style="
+        ${Style ?? ""};
+        border-spacing:${ColGap}px ${RowGap}px;
+        margin:-${RowGap}px -${ColGap}px -${RowGap}px -${ColGap}px
+      " ...${RestProps}
+      >${ColGroup}<tbody>
+        ${ContentCount > 0 && RowList.map((Row, i) => m`<tr>
+          ${Row.map(
+      (Cell) => m`<td colspan=${ColSpanOfCell(Cell)}>${Cell}</>`
     )}
         </tr>`)}
       </tbody></table>`;
   });
 }
-U("sim-component.tabular", `
+installStylesheetFor("sim-component.tabular", `
     .sim-component.tabular {
       border:none;
       border-collapse:separate;
@@ -5222,27 +6431,28 @@ U("sim-component.tabular", `
     .sim-component.tabular > colgroup > col.expanding { width:100% }
     .sim-component.tabular > colgroup > col.shrinking { width:1px }
   `);
-function Fs(e) {
-  return G(() => {
+function selective(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i
-    ] = j(
-      e,
-      D("class"),
-      re("activeindex")
+      Classes,
+      activeIndex,
+      RestProps,
+      ContentList
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalOrdinal("activeindex")
     );
-    i = In(i).filter(
-      (a) => typeof a != "string" || a.trim() !== ""
+    ContentList = toChildArray(ContentList).filter(
+      (Content) => typeof Content !== "string" || Content.trim() !== ""
     );
-    const r = i.length;
-    return n = r === 0 ? 0 : Math.max(0, Math.min(n ?? 0, r - 1)), w`<div class="sim-component selective ${t ?? ""}"
-        ...${o}>${i[n]}</>`;
+    const ContentCount = ContentList.length;
+    activeIndex = ContentCount === 0 ? 0 : Math.max(0, Math.min(activeIndex ?? 0, ContentCount - 1));
+    return m`<div class="sim-component selective ${Classes ?? ""}"
+        ...${RestProps}>${ContentList[activeIndex]}</>`;
   });
 }
-U("sim-component.selective", `
+installStylesheetFor("sim-component.selective", `
     .sim-component.selective {
       display:block; position:relative;
       left:0px; top:0px; width:100% ! important; height:100% ! important;
@@ -5253,18 +6463,18 @@ U("sim-component.selective", `
       left:0px; top:0px; width:100% ! important; height:100% ! important;
     }
   `);
-function Hs(e) {
-  return G(() => {
-    let [t, n, o] = j(
-      e,
-      D("class")
+function stacked(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, RestProps, ContentList] = parsedPropSet(
+      PropSet,
+      optionalTextline("class")
     );
-    return w`<div class="sim-component stacked ${t ?? ""}" ...${n}>
-        ${o}
+    return m`<div class="sim-component stacked ${Classes ?? ""}" ...${RestProps}>
+        ${ContentList}
       </>`;
   });
 }
-U("sim-component.stacked", `
+installStylesheetFor("sim-component.stacked", `
     .sim-component.stacked {
       display:inline-block; position:relative;
     }
@@ -5276,21 +6486,21 @@ U("sim-component.stacked", `
       position:absolute;
     }
   `);
-function Us(e) {
-  return G(() => {
-    let [t, n, o, i] = j(
-      e,
-      D("class"),
-      fe("value"),
-      V("visiblepattern")
+function Dummy(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, Value, visiblePattern, RestProps] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("value"),
+      optionalBoolean("visiblepattern")
     );
-    return w`<div
-        class="sim-component dummy ${o ? "visible-pattern" : ""} ${t ?? ""}"
-        ...${i} dangerouslySetInnerHTML=${{ __html: n ?? "" }}
+    return m`<div
+        class="sim-component dummy ${visiblePattern ? "visible-pattern" : ""} ${Classes ?? ""}"
+        ...${RestProps} dangerouslySetInnerHTML=${{ __html: Value ?? "" }}
       />`;
   });
 }
-U("sim-component.dummy", `
+installStylesheetFor("sim-component.dummy", `
     .sim-component.dummy.visible-pattern {
       background-image:repeating-linear-gradient(-45deg,
         rgba(222,222,222, 1) 0px, rgba(222,222,222, 1) 4px,
@@ -5298,54 +6508,54 @@ U("sim-component.dummy", `
       ); background-size:11.31px 11.31px;
     }
   `);
-function js(e) {
-  return G(() => {
-    let [t, n] = j(
-      e,
-      D("class")
+function Outline(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, RestProps] = parsedPropSet(
+      PropSet,
+      optionalTextline("class")
     );
-    return w`<div class="sim-component outline ${t ?? ""}" ...${n}/>`;
+    return m`<div class="sim-component outline ${Classes ?? ""}" ...${RestProps}/>`;
   });
 }
-U("sim-component.outline", `
+installStylesheetFor("sim-component.outline", `
     .sim-component.outline {
       outline:dotted 1px blue;
       outline-offset:2px;
     }
   `);
-function Gs(e) {
-  return G(() => {
-    let [t, n] = j(
-      e,
-      D("class")
+function Spacer(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, RestProps] = parsedPropSet(
+      PropSet,
+      optionalTextline("class")
     );
-    return w`<div class="sim-component spacer ${t ?? ""}" ...${n}/>`;
+    return m`<div class="sim-component spacer ${Classes ?? ""}" ...${RestProps}/>`;
   });
 }
-function qs(e) {
-  return G(() => {
-    let [t, n] = j(
-      e,
-      D("class")
+function expandingSpacer(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, RestProps] = parsedPropSet(
+      PropSet,
+      optionalTextline("class")
     );
-    return w`<div class="sim-component expanding-spacer ${t ?? ""}" ...${n}/>`;
+    return m`<div class="sim-component expanding-spacer ${Classes ?? ""}" ...${RestProps}/>`;
   });
 }
-U("sim-component.expanding-spacer", `
+installStylesheetFor("sim-component.expanding-spacer", `
     .sim-component.expanding-spacer {
       flex:1 0 auto ! important;
     }
   `);
-function Ws(e) {
-  return G(() => {
-    let [t, n] = j(
-      e,
-      D("class")
+function horizontalSeparator(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, RestProps] = parsedPropSet(
+      PropSet,
+      optionalTextline("class")
     );
-    return w`<div class="sim-component horizontal-separator ${t ?? ""}" ...${n}/>`;
+    return m`<div class="sim-component horizontal-separator ${Classes ?? ""}" ...${RestProps}/>`;
   });
 }
-U("sim-component.horizontal-separator", `
+installStylesheetFor("sim-component.horizontal-separator", `
     .sim-component.horizontal-separator {
       width:100%; min-width:1px; min-height:1px;
     }
@@ -5356,16 +6566,16 @@ U("sim-component.horizontal-separator", `
       background:gray;
     }
   `);
-function Ks(e) {
-  return G(() => {
-    let [t, n] = j(
-      e,
-      D("class")
+function verticalSeparator(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, RestProps] = parsedPropSet(
+      PropSet,
+      optionalTextline("class")
     );
-    return w`<div class="sim-component vertical-separator ${t ?? ""}" ...${n}/>`;
+    return m`<div class="sim-component vertical-separator ${Classes ?? ""}" ...${RestProps}/>`;
   });
 }
-U("sim-component.vertical-separator", `
+installStylesheetFor("sim-component.vertical-separator", `
     .sim-component.vertical-separator {
       height:100%; min-width:1px; min-height:1px;
     }
@@ -5376,134 +6586,140 @@ U("sim-component.vertical-separator", `
       background:gray;
     }
   `);
-function It(e) {
-  return G(() => {
-    let [t, n, o, i] = j(
-      e,
-      D("class"),
-      fe("value")
+function plainTextlineView(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, Value, RestProps, ContentList] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("value")
     );
-    return w`<div class=${t ?? ""} ...${o}>
-        ${n ?? i}
+    return m`<div class=${Classes ?? ""} ...${RestProps}>
+        ${Value ?? ContentList}
       </>`;
   });
 }
-function Zs(e) {
-  return e = { ...e, class: `sim-component title ${e.class ?? ""}` }, It(e);
+function Title(PropSet) {
+  PropSet = { ...PropSet, "class": `sim-component title ${PropSet.class ?? ""}` };
+  return plainTextlineView(PropSet);
 }
-U("sim-component.title", `
+installStylesheetFor("sim-component.title", `
     .sim-component.title {
       font-size:22px; font-weight:bold; line-height:32px;
       overflow:hidden; text-overflow:ellipsis;
     }
   `);
-function Xs(e) {
-  return e = { ...e, class: `sim-component subtitle ${e.class ?? ""}` }, It(e);
+function Subtitle(PropSet) {
+  PropSet = { ...PropSet, "class": `sim-component subtitle ${PropSet.class ?? ""}` };
+  return plainTextlineView(PropSet);
 }
-U("sim-component.subtitle", `
+installStylesheetFor("sim-component.subtitle", `
     .sim-component.subtitle {
       font-size:18px; font-weight:bold; line-height:27px;
       overflow:hidden; text-overflow:ellipsis;
     }
   `);
-function Ys(e) {
-  return e = { ...e, class: `sim-component label ${e.class ?? ""}` }, It(e);
+function Label(PropSet) {
+  PropSet = { ...PropSet, "class": `sim-component label ${PropSet.class ?? ""}` };
+  return plainTextlineView(PropSet);
 }
-U("sim-component.label", `
+installStylesheetFor("sim-component.label", `
     .sim-component.label {
       height:30px;
       font-size:14px; font-weight:bold; line-height:30px;
       overflow:hidden; text-overflow:ellipsis;
     }
   `);
-function Js(e) {
-  return e = { ...e, class: `sim-component description ${e.class ?? ""}` }, It(e);
+function Description(PropSet) {
+  PropSet = { ...PropSet, "class": `sim-component description ${PropSet.class ?? ""}` };
+  return plainTextlineView(PropSet);
 }
-U("sim-component.description", `
+installStylesheetFor("sim-component.description", `
     .sim-component.description {
       font-size:14px; font-weight:normal; line-height:21px;
       overflow:hidden; text-overflow:ellipsis;
     }
   `);
-function Qs(e) {
-  return e = { ...e, class: `sim-component fineprint ${e.class ?? ""}` }, It(e);
+function Fineprint(PropSet) {
+  PropSet = { ...PropSet, "class": `sim-component fineprint ${PropSet.class ?? ""}` };
+  return plainTextlineView(PropSet);
 }
-U("sim-component.fineprint", `
+installStylesheetFor("sim-component.fineprint", `
     .sim-component.fineprint {
       font-size:12px; font-weight:normal; line-height:18px;
       overflow:hidden; text-overflow:ellipsis;
     }
   `);
-function el(e) {
-  return G(() => {
-    let [t, n, o] = j(
-      e,
-      D("class"),
-      fe("value")
+function TextView(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, Value, RestProps] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("value")
     );
-    return w`<div class="sim-component textview ${t ?? ""}" ...${o}>${n ?? ""}</>`;
+    return m`<div class="sim-component textview ${Classes ?? ""}" ...${RestProps}>${Value ?? ""}</>`;
   });
 }
-U("sim-component.textview", `
+installStylesheetFor("sim-component.textview", `
     .sim-component.textview {
       overflow:auto;
       font-size:14px; font-weight:normal; line-height:21px;
     }
   `);
-function tl(e) {
-  return G(() => {
-    let [t, n, o] = j(
-      e,
-      D("class"),
-      fe("value")
+function HTMLView(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, Value, RestProps] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("value")
     );
-    return w`<div class="sim-component htmlview ${t ?? ""}" ...${o}
-        dangerouslySetInnerHTML=${{ __html: n ?? "" }}
+    return m`<div class="sim-component htmlview ${Classes ?? ""}" ...${RestProps}
+        dangerouslySetInnerHTML=${{ __html: Value ?? "" }}
       />`;
   });
 }
-U("sim-component.htmlview", `
+installStylesheetFor("sim-component.htmlview", `
     .sim-component.htmlview {
       overflow:auto;
       font-size:14px; font-weight:normal; line-height:21px;
     }
   `);
-const cn = new ri();
-cn.setOptions({
-  gfm: !0,
-  breaks: !0,
-  pedantic: !1,
-  smartypants: !1
+const MarkdownRenderer = new Marked();
+MarkdownRenderer.setOptions({
+  gfm: true,
+  breaks: true,
+  pedantic: false,
+  smartypants: false
 });
-cn.use(si({
-  throwOnError: !1
+MarkdownRenderer.use(markedKatex({
+  throwOnError: false
   /*nonStandard:true,*/
 }));
-cn.use(li({
+MarkdownRenderer.use(markedHighlight({
   emptyLangClass: "hljs",
   langPrefix: "hljs language-",
   // CSS class prefix
-  highlight(e, t, n) {
-    return t = Ve.getLanguage(t) ? t : "plaintext", Ve.highlight(e, { language: t }).value;
+  highlight(Code, Language, Info) {
+    Language = HighlightJS.getLanguage(Language) ? Language : "plaintext";
+    return HighlightJS.highlight(Code, { language: Language }).value;
   }
 }));
-function nl(e) {
-  return G(() => {
-    let [t, n, o] = j(
-      e,
-      D("class"),
-      fe("value")
+function MarkdownView(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, Value, RestProps] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("value")
     );
-    const i = kt(
-      () => cn.paime(n ?? ""),
-      [n]
+    const HTMLContents = useMemo(
+      () => MarkdownRenderer.paime(Value ?? ""),
+      [Value]
     );
-    return w`<div class="sim-component markdownview ${t ?? ""}" ...${o}
-        dangerouslySetInnerHTML=${{ __html: i }}
+    return m`<div class="sim-component markdownview ${Classes ?? ""}" ...${RestProps}
+        dangerouslySetInnerHTML=${{ __html: HTMLContents }}
       />`;
   });
 }
-U("sim-component.markdownview", `
+installStylesheetFor("sim-component.markdownview", `
     .sim-component.markdownview {
       overflow:auto;
       font-size:14px; font-weight:normal; line-height:21px;
@@ -5586,7 +6802,8 @@ U("sim-component.markdownview", `
     .hljs.language-java .hljs-keyword              { color:#bb9966 }
     .hljs.language-json .hljs-attribute            { color:#0000aa }
   `);
-const dr = ["none", "stretch", "cover", "contain"], pr = [
+const SIM_ImageScalings = ["none", "stretch", "cover", "contain"];
+const SIM_ImageAlignments = [
   "left top",
   "center top",
   "right top",
@@ -5597,70 +6814,71 @@ const dr = ["none", "stretch", "cover", "contain"], pr = [
   "center bottom",
   "right bottom"
 ];
-function Zo(e) {
-  return ze(e, dr);
+function ValueIsImageScaling(Value) {
+  return ValueIsOneOf(Value, SIM_ImageScalings);
 }
-function Xo(e) {
-  return ze(e, pr);
+function ValueIsImageAlignment(Value) {
+  return ValueIsOneOf(Value, SIM_ImageAlignments);
 }
-function ol(e) {
-  return G(() => {
+function ImageView(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a
-    ] = j(
-      e,
-      D("class"),
-      fe("style"),
-      ln("value"),
-      H("scaling", Zo),
-      H("alignment", Xo)
+      Classes,
+      Style,
+      Value,
+      ImageScaling,
+      ImageAlignment,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("style"),
+      optionalURL("value"),
+      optionalValue("scaling", ValueIsImageScaling),
+      optionalValue("alignment", ValueIsImageAlignment)
     );
-    return w`<img class="sim-component imageview ${t ?? ""}" src=${o ?? ""} style="
-        object-fit:${i ?? "contain"};
-        object-position:${r ?? "center center"}; ${n}
-      " ...${a}/>`;
+    return m`<img class="sim-component imageview ${Classes ?? ""}" src=${Value ?? ""} style="
+        object-fit:${ImageScaling ?? "contain"};
+        object-position:${ImageAlignment ?? "center center"}; ${Style}
+      " ...${RestProps}/>`;
   });
 }
-U("sim-component.imageview", `
+installStylesheetFor("sim-component.imageview", `
     .sim-component.imageview {
       object-fit:contain; object-position:center;
     }
   `);
-function il(e) {
-  return G(() => {
+function SVGView(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a
-    ] = j(
-      e,
-      D("class"),
-      fe("style"),
-      ln("value"),
-      H("scaling", Zo),
-      H("alignment", Xo)
+      Classes,
+      Style,
+      Value,
+      ImageScaling,
+      ImageAlignment,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("style"),
+      optionalURL("value"),
+      optionalValue("scaling", ValueIsImageScaling),
+      optionalValue("alignment", ValueIsImageAlignment)
     );
-    const s = kt(() => "image/svg+xml;base64," + btoa(o ?? ""));
-    return w`<img class="sim-component svgview ${t ?? ""}" src=${s} style="
-        object-fit:${i ?? "contain"};
-        object-position:${r ?? "center center"}; ${n}
-      " ...${a}/>`;
+    const DataURL = useMemo(() => "image/svg+xml;base64," + btoa(Value ?? ""));
+    return m`<img class="sim-component svgview ${Classes ?? ""}" src=${DataURL} style="
+        object-fit:${ImageScaling ?? "contain"};
+        object-position:${ImageAlignment ?? "center center"}; ${Style}
+      " ...${RestProps}/>`;
   });
 }
-U("sim-component.svgview", `
+installStylesheetFor("sim-component.svgview", `
     .sim-component.svgview {
       object-fit:contain; object-position:center;
     }
   `);
-const al = "allow-downloads allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-same-origin allow-scripts", fr = [
+const SIM_DefaultSandboxPermissions = "allow-downloads allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-same-origin allow-scripts";
+const SIM_ReferrerPolicies = [
   "no-referrer",
   "no-referrer-when-downgrade",
   "origin",
@@ -5670,79 +6888,82 @@ const al = "allow-downloads allow-forms allow-modals allow-orientation-lock allo
   "strict-origin-when-cross-origin",
   "unsafe-url"
 ];
-function mr(e) {
-  return ze(e, fr);
+function ValueIsReferrerPolicy(Value) {
+  return ValueIsOneOf(Value, SIM_ReferrerPolicies);
 }
-function rl(e) {
-  return G(() => {
+function WebView(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s
-    ] = j(
-      e,
-      D("class"),
-      ln("value"),
-      D("allow"),
-      V("allowfullscreen"),
-      D("sandbox"),
-      H("referrerpolicy", mr)
+      Classes,
+      Value,
+      Permissions,
+      allowsFullScreen,
+      SandboxPermissions,
+      ReferrerPolicy,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalURL("value"),
+      optionalTextline("allow"),
+      optionalBoolean("allowfullscreen"),
+      optionalTextline("sandbox"),
+      optionalValue("referrerpolicy", ValueIsReferrerPolicy)
     );
-    return w`<iframe class="sim-component webview ${t ?? ""}" src=${n ?? ""}
-        allow=${o} allowfullscreen=${i}
-        sandbox=${r} referrerpolicy=${a}
-        ...${s}
+    return m`<iframe class="sim-component webview ${Classes ?? ""}" src=${Value ?? ""}
+        allow=${Permissions} allowfullscreen=${allowsFullScreen}
+        sandbox=${SandboxPermissions} referrerpolicy=${ReferrerPolicy}
+        ...${RestProps}
       />`;
   });
 }
-U("sim-component.webview", `
+installStylesheetFor("sim-component.webview", `
     .sim-component.webview {
       overflow:auto;
     }
   `);
-function sl(e) {
-  return G(() => {
+function Icon(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l
-    ] = j(
-      e,
-      D("class"),
-      ln("value"),
-      sn("color"),
-      V("active"),
-      V("disabled"),
-      M("onclick")
+      Classes,
+      Value,
+      Color,
+      active,
+      disabled,
+      onClick,
+      RestProps,
+      ContentList
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalURL("value"),
+      optionalColor("color"),
+      optionalBoolean("active"),
+      optionalBoolean("disabled"),
+      optionalFunction("onclick")
     );
-    n = n ?? `${yn}/circle-information.png`, o = o ?? "black";
-    const c = X((d) => {
-      if (r)
-        return Rn(d);
-      R('Icon callback "onClick"', a, d);
-    }, [r, a]), u = r ? "not-allowed" : a == null ? "auto" : "pointer";
-    return w`<div
-        class="sim-component icon ${r ? "disabled" : ""} ${i ? "active" : ""} ${t ?? ""}"
-        onClick=${c} ...${s}
+    Value = Value ?? `${IconFolder}/circle-information.png`;
+    Color = Color ?? "black";
+    const _onClick = useCallback((Event) => {
+      if (disabled) {
+        return consumingEvent(Event);
+      }
+      executeCallback('Icon callback "onClick"', onClick, Event);
+    }, [disabled, onClick]);
+    const Cursor = disabled ? "not-allowed" : onClick == null ? "auto" : "pointer";
+    return m`<div
+        class="sim-component icon ${disabled ? "disabled" : ""} ${active ? "active" : ""} ${Classes ?? ""}"
+        onClick=${_onClick} ...${RestProps}
       >
         <div style="
-          -webkit-mask-image:url(${n}); mask-image:url(${n});
-          background-color:${o};
-          cursor:${u};
+          -webkit-mask-image:url(${Value}); mask-image:url(${Value});
+          background-color:${Color};
+          cursor:${Cursor};
         "/>
       </>`;
   });
 }
-U("sim-component.icon", `
+installStylesheetFor("sim-component.icon", `
     .sim-component.icon {
       width:24px ! important; height:24px ! important;
     }
@@ -5759,7 +6980,7 @@ U("sim-component.icon", `
       outline:solid 2px lightgray; border-radius:4px;
     }
   `);
-const gr = [
+const SIM_FAIconNames = [
   // modified version from https://gist.github.com/zwinnie/3ed8e7970240962bc29227533c3ae047
   "fa-500px",
   "fa-address-book",
@@ -6548,39 +7769,42 @@ const gr = [
   "fa-youtube-play",
   "fa-youtube-square"
 ];
-function ll(e) {
-  return G(() => {
+function FAIcon(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l
-    ] = j(
-      e,
-      D("class"),
-      H("value", (d) => ze(d, gr)),
-      sn("color"),
-      V("active"),
-      V("disabled"),
-      M("onclick")
+      Classes,
+      Value,
+      Color,
+      active,
+      disabled,
+      onClick,
+      RestProps,
+      ContentList
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsOneOf(Value2, SIM_FAIconNames)),
+      optionalColor("color"),
+      optionalBoolean("active"),
+      optionalBoolean("disabled"),
+      optionalFunction("onclick")
     );
-    n = n ?? "fa-question-circle-o", o = o ?? "black";
-    const c = X((d) => {
-      if (r)
-        return Rn(d);
-      R('Icon callback "onClick"', a, d);
-    }, [r, a]), u = r ? "not-allowed" : a == null ? "auto" : "pointer";
-    return w`<div class="sim-component fa-icon fa ${n} ${r ? "disabled" : ""} ${i ? "active" : ""} ${t ?? ""}" style="
-        color:${o};
-        cursor:${u};
-      " onClick=${c} ...${s}/>`;
+    Value = Value ?? "fa-question-circle-o";
+    Color = Color ?? "black";
+    const _onClick = useCallback((Event) => {
+      if (disabled) {
+        return consumingEvent(Event);
+      }
+      executeCallback('Icon callback "onClick"', onClick, Event);
+    }, [disabled, onClick]);
+    const Cursor = disabled ? "not-allowed" : onClick == null ? "auto" : "pointer";
+    return m`<div class="sim-component fa-icon fa ${Value} ${disabled ? "disabled" : ""} ${active ? "active" : ""} ${Classes ?? ""}" style="
+        color:${Color};
+        cursor:${Cursor};
+      " onClick=${_onClick} ...${RestProps}/>`;
   });
 }
-U("sim-component.fa-icon", `
+installStylesheetFor("sim-component.fa-icon", `
     .sim-component.fa-icon {
       width:24px ! important; height:24px ! important;
       font-size:24px; line-height:24px; text-align:center;
@@ -6592,21 +7816,25 @@ U("sim-component.fa-icon", `
       outline:solid 2px lightgray; border-radius:4px;
     }
   `);
-function cl(e) {
-  return G(() => {
-    let [t, n, o, i] = j(
-      e,
-      D("class"),
-      fe("value")
+function Button(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, Value, RestProps, ContentList] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("value")
     );
-    return n == null ? w`<button class="sim-component button ${t ?? ""}" ...${o}>
-          ${i}
-        </>` : w`<button class="sim-component button ${t ?? ""}" ...${o}
-          dangerouslySetInnerHTML=${{ __html: n }}
+    if (Value == null) {
+      return m`<button class="sim-component button ${Classes ?? ""}" ...${RestProps}>
+          ${ContentList}
+        </>`;
+    } else {
+      return m`<button class="sim-component button ${Classes ?? ""}" ...${RestProps}
+          dangerouslySetInnerHTML=${{ __html: Value }}
         />`;
+    }
   });
 }
-U("sim-component.button", `
+installStylesheetFor("sim-component.button", `
     .sim-component.button {
       height:30px;
       border:solid 1px black; border-radius:4px;
@@ -6618,48 +7846,53 @@ U("sim-component.button", `
       cursor:not-allowed;
     }
   `);
-function ul(e) {
-  return G(() => {
+function Checkbox(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s
-    ] = j(
-      e,
-      D("class"),
-      fe("style"),
-      H("value", (m) => Xt(m) || Z(m)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("onclick")
+      Classes,
+      Style,
+      Value,
+      disabled,
+      onValueInput,
+      onClick,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("style"),
+      optionalValue("value", (Value2) => ValueIsBoolean(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("onclick")
     );
-    const [l, c] = Z(o) ? [void 0, i || o.disabled] : [o, i], u = l == !0, d = l == null, p = X((m) => {
-      if (se(m, c), c == !0)
+    const [actualValue, actualDisabling] = ValueIsSpecial(Value) ? [void 0, disabled || Value.disabled] : [Value, disabled];
+    const checked = actualValue == true;
+    const indeterminate = actualValue == null;
+    const _onClick = useCallback((Event) => {
+      consumeEvent(Event, actualDisabling);
+      if (actualDisabling == true) {
         return;
-      R('Checkbox callback "onClick"', a, m);
-      const g = m.target.checked;
-      R(
+      }
+      executeCallback('Checkbox callback "onClick"', onClick, Event);
+      const Value2 = Event.target.checked;
+      executeCallback(
         'Checkbox callback "onValueInput"',
-        r,
-        g,
-        m
+        onValueInput,
+        Value2,
+        Event
       );
-    }, [c, a, r]);
-    return w`<div class="sim-component checkbox ${c ? "disabled" : ""} ${t ?? ""}"
-        style=${n}
+    }, [actualDisabling, onClick, onValueInput]);
+    return m`<div class="sim-component checkbox ${actualDisabling ? "disabled" : ""} ${Classes ?? ""}"
+        style=${Style}
       >
         <input type="checkbox"
-          checked=${u} indeterminate=${d}
-          onClick=${p} ...${s}
+          checked=${checked} indeterminate=${indeterminate}
+          onClick=${_onClick} ...${RestProps}
         />
       </>`;
   });
 }
-U("sim-component.checkbox", `
+installStylesheetFor("sim-component.checkbox", `
     .sim-component.checkbox {
       height:30px;
       min-width:20px; min-height:20px;
@@ -6674,46 +7907,50 @@ U("sim-component.checkbox", `
       cursor:not-allowed;
     }
   `);
-function dl(e) {
-  return G(() => {
+function Radiobutton(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s
-    ] = j(
-      e,
-      D("class"),
-      fe("style"),
-      H("value", (p) => Xt(p) || Z(p)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("onclick")
+      Classes,
+      Style,
+      Value,
+      disabled,
+      onValueInput,
+      onClick,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("style"),
+      optionalValue("value", (Value2) => ValueIsBoolean(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("onclick")
     );
-    o = o ?? Q;
-    const [l, c] = Z(o) ? [void 0, i || o.disabled] : [o, i], u = l == !0, d = X((p) => {
-      if (se(p, c), c == !0)
+    Value = Value ?? SIM_empty;
+    const [actualValue, actualDisabling] = ValueIsSpecial(Value) ? [void 0, disabled || Value.disabled] : [Value, disabled];
+    const checked = actualValue == true;
+    const _onClick = useCallback((Event) => {
+      consumeEvent(Event, actualDisabling);
+      if (actualDisabling == true) {
         return;
-      R('Radiobutton callback "onClick"', a, p);
-      const m = p.target.checked;
-      R(
+      }
+      executeCallback('Radiobutton callback "onClick"', onClick, Event);
+      const Value2 = Event.target.checked;
+      executeCallback(
         'Checkbox callback "onValueInput"',
-        r,
-        m,
-        p
+        onValueInput,
+        Value2,
+        Event
       );
-    }, [c, a, r]);
-    return w`<div class="sim-component radiobutton ${c ? "disabled" : ""} ${t ?? ""}"
-        style=${n}
+    }, [actualDisabling, onClick, onValueInput]);
+    return m`<div class="sim-component radiobutton ${actualDisabling ? "disabled" : ""} ${Classes ?? ""}"
+        style=${Style}
       >
-        <input type="radio" checked=${u} onClick=${d} ...${s}/>
+        <input type="radio" checked=${checked} onClick=${_onClick} ...${RestProps}/>
       </>`;
   });
 }
-U("sim-component.radiobutton", `
+installStylesheetFor("sim-component.radiobutton", `
     .sim-component.radiobutton {
       height:30px;
       min-width:20px; min-height:20px;
@@ -6728,38 +7965,38 @@ U("sim-component.radiobutton", `
       cursor:not-allowed;
     }
   `);
-function pl(e) {
-  return G(() => {
+function Gauge(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c
-    ] = j(
-      e,
-      D("class"),
-      fe("style"),
-      Le("value"),
-      Le("min"),
-      Le("low"),
-      Le("opt"),
-      Le("high"),
-      Le("max")
+      Classes,
+      Style,
+      Value,
+      Minimum,
+      lowerBound,
+      Optimum,
+      upperBound,
+      Maximum,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("style"),
+      optionalNumber("value"),
+      optionalNumber("min"),
+      optionalNumber("low"),
+      optionalNumber("opt"),
+      optionalNumber("high"),
+      optionalNumber("max")
     );
-    return w`<div class="sim-component gauge ${t ?? ""}" style=${n}>
+    return m`<div class="sim-component gauge ${Classes ?? ""}" style=${Style}>
         <meter
-          value=${o} min=${i} low=${r} opt=${a}
-          high=${s} max=${l} ...${c}
+          value=${Value} min=${Minimum} low=${lowerBound} opt=${Optimum}
+          high=${upperBound} max=${Maximum} ...${RestProps}
         />
       </>`;
   });
 }
-U("sim-component.gauge", `
+installStylesheetFor("sim-component.gauge", `
     .sim-component.gauge {
       height:30px;
       min-width:40px; min-height:20px;
@@ -6771,21 +8008,21 @@ U("sim-component.gauge", `
       margin:0px; padding:0px;
     }
   `);
-function fl(e) {
-  return G(() => {
-    let [t, n, o, i, r] = j(
-      e,
-      D("class"),
-      fe("style"),
-      Le("value"),
-      Le("max")
+function Progressbar(PropSet) {
+  return safelyRendered(() => {
+    let [Classes, Style, Value, Maximum, RestProps] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("style"),
+      optionalNumber("value"),
+      optionalNumber("max")
     );
-    return w`<div class="sim-component progressbar ${t ?? ""}" style=${n}>
-        <progress value=${o} max=${i} ...${r}/>
+    return m`<div class="sim-component progressbar ${Classes ?? ""}" style=${Style}>
+        <progress value=${Value} max=${Maximum} ...${RestProps}/>
       </>`;
   });
 }
-U("sim-component.progressbar", `
+installStylesheetFor("sim-component.progressbar", `
     .sim-component.progressbar {
       height:30px;
       min-width:40px; min-height:20px;
@@ -6806,69 +8043,86 @@ U("sim-component.progressbar", `
       border:none; border-radius:2px;
     }
   `);
-function ml(e) {
-  return G(() => {
+function Slider(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d,
-      p
-    ] = j(
-      e,
-      D("class"),
-      fe("style"),
-      H("value", (_) => ht(_) || Z(_)),
-      Le("min"),
-      H("step", (_) => Yt(_, 0, 1 / 0, !1, !1)),
-      Le("max"),
-      H("hashmarks", (_) => ue(_, ce)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput"),
-      M("onblur")
+      Classes,
+      Style,
+      Value,
+      Minimum,
+      Stepping,
+      Maximum,
+      Hashmarks,
+      disabled,
+      onValueInput,
+      onInput,
+      onBlur,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("style"),
+      optionalValue("value", (Value2) => ValueIsNumber(Value2) || ValueIsSpecial(Value2)),
+      optionalNumber("min"),
+      optionalValue("step", (Value2) => ValueIsNumberInRange(Value2, 0, Infinity, false, false)),
+      optionalNumber("max"),
+      optionalValue("hashmarks", (Value2) => ValueIsListSatisfying(Value2, ValueIsTextline)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput"),
+      optionalFunction("onblur")
     );
-    l = l ?? !1;
-    const m = W(), g = W();
-    let f = o == null || isNaN(o) ? Q : o;
-    m.current != null && document.activeElement === m.current ? f = g.current : g.current = f;
-    const [b, x] = Z(f) ? [void 0, l || f.disabled] : [f, l], T = X((_) => {
-      if (se(_), x == !0)
+    disabled = disabled ?? false;
+    const ViewRef = useRef();
+    const shownValue = useRef();
+    let ValueToShow = Value == null || isNaN(Value) ? SIM_empty : Value;
+    if (ViewRef.current != null && document.activeElement === ViewRef.current) {
+      ValueToShow = shownValue.current;
+    } else {
+      shownValue.current = ValueToShow;
+    }
+    const [actualValue, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, disabled || ValueToShow.disabled] : [ValueToShow, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('Slider callback "onInput"', u, _);
-      let C = g.current = parseFloat(_.target.value);
-      R(
+      }
+      executeCallback('Slider callback "onInput"', onInput, Event);
+      let Value2 = shownValue.current = parseFloat(Event.target.value);
+      executeCallback(
         'Slider callback "onValueInput"',
-        c,
-        C,
-        _
+        onValueInput,
+        Value2,
+        Event
       );
-    }, [x, u, c]), $ = X((_) => {
-      B(), R('slider callback "onBlur"', d, _);
-    }, [d]), O = Ee(), B = ke();
-    let N = "", k;
-    return s != null && s.length > 0 && (k = O + "-Hashmarks", N = w`\n<datalist id=${k}>
-          ${s.map((_) => {
-      const C = _.replace(/:.*$/, "").trim(), v = _.replace(/^[^:]+:/, "").trim();
-      return w`<option value=${C}>${v}</option>`;
-    })}
-        </datalist>`), w`<div class="sim-component slider ${t ?? ""}" style=${n}>
-        <input type="range" ref=${m} disabled=${x}
-          value=${b} min=${i} max=${a} step=${r}
-          list=${k}
-          onInput=${T} onBlur=${$} ...${p}
-        />${N}
+    }, [actualDisabling, onInput, onValueInput]);
+    const _onBlur = useCallback((Event) => {
+      rerender();
+      executeCallback('slider callback "onBlur"', onBlur, Event);
+    }, [onBlur]);
+    const internalId = useId();
+    const rerender = useRerenderer();
+    let HashmarkList = "", HashmarkId;
+    if (Hashmarks != null && Hashmarks.length > 0) {
+      HashmarkId = internalId + "-Hashmarks";
+      HashmarkList = m`\n<datalist id=${HashmarkId}>
+          ${Hashmarks.map((Item) => {
+        const Value2 = Item.replace(/:.*$/, "").trim();
+        const Label2 = Item.replace(/^[^:]+:/, "").trim();
+        return m`<option value=${Value2}>${Label2}</option>`;
+      })}
+        </datalist>`;
+    }
+    return m`<div class="sim-component slider ${Classes ?? ""}" style=${Style}>
+        <input type="range" ref=${ViewRef} disabled=${actualDisabling}
+          value=${actualValue} min=${Minimum} max=${Maximum} step=${Stepping}
+          list=${HashmarkId}
+          onInput=${_onInput} onBlur=${_onBlur} ...${RestProps}
+        />${HashmarkList}
       </>`;
   });
 }
-U("sim-component.slider", `
+installStylesheetFor("sim-component.slider", `
     .sim-component.slider {
       height:30px;
       min-width:40px; min-height:20px;
@@ -6883,72 +8137,89 @@ U("sim-component.slider", `
       cursor:not-allowed;
     }
   `);
-function gl(e) {
-  return G(() => {
+function TextlineInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d,
-      p,
-      m,
-      g,
-      f
-    ] = j(
-      e,
-      D("class"),
-      H("value", (E) => ce(E) || Z(E)),
-      V("invalid"),
-      D("placeholder"),
-      V("readonly"),
-      re("minlength"),
-      re("maxlength"),
-      D("pattern"),
-      V("spellcheck"),
-      H("suggestions", (E) => ue(E, ce)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput"),
-      M("onblur")
+      Classes,
+      Value,
+      invalid,
+      Placeholder,
+      readonly,
+      minLength,
+      maxLength,
+      Pattern,
+      SpellChecking,
+      Suggestions,
+      disabled,
+      onValueInput,
+      onInput,
+      onBlur,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsTextline(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("invalid"),
+      optionalTextline("placeholder"),
+      optionalBoolean("readonly"),
+      optionalOrdinal("minlength"),
+      optionalOrdinal("maxlength"),
+      optionalTextline("pattern"),
+      optionalBoolean("spellcheck"),
+      optionalValue("suggestions", (Value2) => ValueIsListSatisfying(Value2, ValueIsTextline)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput"),
+      optionalFunction("onblur")
     );
-    d = d ?? !1;
-    const b = W(), x = W();
-    let T = n ?? Q;
-    b.current != null && document.activeElement === b.current ? T = x.current : x.current = T;
-    const [$, O, B] = Z(T) ? [void 0, T === Q ? i ?? T.Placeholder : T.Placeholder, d || T.disabled] : [T, i, d], N = X((E) => {
-      if (se(E), B == !0)
+    disabled = disabled ?? false;
+    const ViewRef = useRef();
+    const shownValue = useRef();
+    let ValueToShow = Value == null ? SIM_empty : Value;
+    if (ViewRef.current != null && document.activeElement === ViewRef.current) {
+      ValueToShow = shownValue.current;
+    } else {
+      shownValue.current = ValueToShow;
+    }
+    const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('TextlineInput callback "onInput"', m, E);
-      const K = E.target.value;
-      x.current = K === "" ? Q : K, R(
+      }
+      executeCallback('TextlineInput callback "onInput"', onInput, Event);
+      const enteredValue = Event.target.value;
+      shownValue.current = enteredValue === "" ? SIM_empty : enteredValue;
+      executeCallback(
         'TextlineInput callback "onValueInput"',
-        p,
-        K,
-        E
+        onValueInput,
+        enteredValue,
+        Event
       );
-    }, [B, m, p]), k = X((E) => {
-      C(), R('TextlineInput callback "onBlur"', g, E);
-    }, [g]), _ = Ee(), C = ke();
-    let v = "", h;
-    return u != null && u.length > 0 && (h = _ + "-Suggestions", v = w`<datalist id=${h}>
-          ${u.map((E) => w`<option value=${E}></option>`)}
-        </datalist>`), w`<input type="text" class="sim-component textline-input ${t ?? ""}" ref=${b}
-        value=${$} minlength=${a} maxlength=${s}
-        readOnly=${r} placeholder=${O}
-        pattern=${l} spellcheck=${c}
-        disabled=${B} list=${h}
-        onInput=${N} onBlur=${k} ...${f}
-      />${v}`;
+    }, [actualDisabling, onInput, onValueInput]);
+    const _onBlur = useCallback((Event) => {
+      rerender();
+      executeCallback('TextlineInput callback "onBlur"', onBlur, Event);
+    }, [onBlur]);
+    const internalId = useId();
+    const rerender = useRerenderer();
+    let SuggestionList = "", SuggestionId;
+    if (Suggestions != null && Suggestions.length > 0) {
+      SuggestionId = internalId + "-Suggestions";
+      SuggestionList = m`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+        </datalist>`;
+    }
+    return m`<input type="text" class="sim-component textline-input ${Classes ?? ""}" ref=${ViewRef}
+        value=${actualValue} minlength=${minLength} maxlength=${maxLength}
+        readOnly=${readonly} placeholder=${actualPlaceholder}
+        pattern=${Pattern} spellcheck=${SpellChecking}
+        disabled=${actualDisabling} list=${SuggestionId}
+        onInput=${_onInput} onBlur=${_onBlur} ...${RestProps}
+      />${SuggestionList}`;
   });
 }
-U("sim-component.textline-input", `
+installStylesheetFor("sim-component.textline-input", `
     .sim-component.textline-input {
       height:30px;
       border:solid 1px #888888; border-radius:2px;
@@ -6970,64 +8241,76 @@ U("sim-component.textline-input", `
       cursor:not-allowed;
     }
   `);
-function hl(e) {
-  return G(() => {
+function PasswordInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d,
-      p,
-      m
-    ] = j(
-      e,
-      D("class"),
-      H("value", (k) => ce(k) || Z(k)),
-      V("invalid"),
-      D("placeholder"),
-      V("readonly"),
-      re("minlength"),
-      re("maxlength"),
-      D("pattern"),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput"),
-      M("onblur")
+      Classes,
+      Value,
+      invalid,
+      Placeholder,
+      readonly,
+      minLength,
+      maxLength,
+      Pattern,
+      disabled,
+      onValueInput,
+      onInput,
+      onBlur,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsTextline(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("invalid"),
+      optionalTextline("placeholder"),
+      optionalBoolean("readonly"),
+      optionalOrdinal("minlength"),
+      optionalOrdinal("maxlength"),
+      optionalTextline("pattern"),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput"),
+      optionalFunction("onblur")
     );
-    c = c ?? !1;
-    const g = W(), f = W();
-    let b = n ?? Q;
-    g.current != null && document.activeElement === g.current ? b = f.current : f.current = b;
-    const [x, T, $] = Z(b) ? [void 0, b === Q ? i ?? b.Placeholder : b.Placeholder, c || b.disabled] : [b, i, c], O = X((k) => {
-      if (se(k), $ == !0)
+    disabled = disabled ?? false;
+    const ViewRef = useRef();
+    const shownValue = useRef();
+    let ValueToShow = Value == null ? SIM_empty : Value;
+    if (ViewRef.current != null && document.activeElement === ViewRef.current) {
+      ValueToShow = shownValue.current;
+    } else {
+      shownValue.current = ValueToShow;
+    }
+    const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('PasswordInput callback "onInput"', d, k);
-      const _ = k.target.value;
-      f.current = _ === "" ? Q : _, R(
+      }
+      executeCallback('PasswordInput callback "onInput"', onInput, Event);
+      const enteredValue = Event.target.value;
+      shownValue.current = enteredValue === "" ? SIM_empty : enteredValue;
+      executeCallback(
         'PasswordInput callback "onValueInput"',
-        u,
-        _,
-        k
+        onValueInput,
+        enteredValue,
+        Event
       );
-    }, [$, d, u]), B = X((k) => {
-      N(), R('PasswordInput callback "onBlur"', p, k);
-    }, [p]), N = ke();
-    return w`<input type="password" class="sim-component password-input ${t ?? ""}" ref=${g}
-        value=${x} minlength=${a} maxlength=${s}
-        readOnly=${r} placeholder=${T}
-        pattern=${l} disabled=${$}
-        onInput=${O} onBlur=${B} ...${m}
+    }, [actualDisabling, onInput, onValueInput]);
+    const _onBlur = useCallback((Event) => {
+      rerender();
+      executeCallback('PasswordInput callback "onBlur"', onBlur, Event);
+    }, [onBlur]);
+    const rerender = useRerenderer();
+    return m`<input type="password" class="sim-component password-input ${Classes ?? ""}" ref=${ViewRef}
+        value=${actualValue} minlength=${minLength} maxlength=${maxLength}
+        readOnly=${readonly} placeholder=${actualPlaceholder}
+        pattern=${Pattern} disabled=${actualDisabling}
+        onInput=${_onInput} onBlur=${_onBlur} ...${RestProps}
       />`;
   });
 }
-U("sim-component.password-input", `
+installStylesheetFor("sim-component.password-input", `
     .sim-component.password-input {
       height:30px;
       border:solid 1px #888888; border-radius:2px;
@@ -7049,70 +8332,87 @@ U("sim-component.password-input", `
       cursor:not-allowed;
     }
   `);
-function bl(e) {
-  return G(() => {
+function NumberInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d,
-      p,
-      m,
-      g
-    ] = j(
-      e,
-      D("class"),
-      H("value", (h) => ht(h) || Z(h)),
-      V("invalid"),
-      D("placeholder"),
-      V("readonly"),
-      Le("min"),
-      H("step", (h) => Yt(h, 0, 1 / 0, !1, !1)),
-      Le("max"),
-      H("suggestions", (h) => ue(h, ht)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput"),
-      M("onblur")
+      Classes,
+      Value,
+      invalid,
+      Placeholder,
+      readonly,
+      Minimum,
+      Stepping,
+      Maximum,
+      Suggestions,
+      disabled,
+      onValueInput,
+      onInput,
+      onBlur,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsNumber(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("invalid"),
+      optionalTextline("placeholder"),
+      optionalBoolean("readonly"),
+      optionalNumber("min"),
+      optionalValue("step", (Value2) => ValueIsNumberInRange(Value2, 0, Infinity, false, false)),
+      optionalNumber("max"),
+      optionalValue("suggestions", (Value2) => ValueIsListSatisfying(Value2, ValueIsNumber)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput"),
+      optionalFunction("onblur")
     );
-    u = u ?? !1;
-    const f = W(), b = W();
-    let x = Z(n) || n != null && !isNaN(n) ? n : Q;
-    f.current != null && document.activeElement === f.current ? x = b.current : b.current = x;
-    const [T, $, O] = Z(x) ? [void 0, x === Q ? i ?? x.Placeholder : x.Placeholder, u || x.disabled] : [x, i, u], B = X((h) => {
-      if (se(h), O == !0)
+    disabled = disabled ?? false;
+    const ViewRef = useRef();
+    const shownValue = useRef();
+    let ValueToShow = ValueIsSpecial(Value) || Value != null && !isNaN(Value) ? Value : SIM_empty;
+    if (ViewRef.current != null && document.activeElement === ViewRef.current) {
+      ValueToShow = shownValue.current;
+    } else {
+      shownValue.current = ValueToShow;
+    }
+    const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('NumberInput callback "onInput"', p, h);
-      const E = parseFloat(h.target.value);
-      b.current = isNaN(E) ? void 0 : E, R(
+      }
+      executeCallback('NumberInput callback "onInput"', onInput, Event);
+      const enteredValue = parseFloat(Event.target.value);
+      shownValue.current = isNaN(enteredValue) ? void 0 : enteredValue;
+      executeCallback(
         'NumberInput callback "onValueInput"',
-        d,
-        b.current,
-        h
+        onValueInput,
+        shownValue.current,
+        Event
       );
-    }, [O, p, d]), N = X((h) => {
-      _(), R('NumberInput callback "onBlur"', m, h);
-    }, [m]), k = Ee(), _ = ke();
-    let C = "", v;
-    return c != null && c.length > 0 && (v = k + "-Suggestions", C = w`<datalist id=${v}>
-          ${c.map((h) => w`<option value=${h}></option>`)}
-        </datalist>`), w`<input type="number" ref=${f}
-        class="sim-component number-input ${t ?? ""} ${o ? "invalid" : ""}"
-        value=${T} min=${a} max=${l} step=${s}
-        readOnly=${r} placeholder=${$}
-        disabled=${O} list=${v}
-        onInput=${B} onBlur=${N} ...${g}
-      />${C}`;
+    }, [actualDisabling, onInput, onValueInput]);
+    const _onBlur = useCallback((Event) => {
+      rerender();
+      executeCallback('NumberInput callback "onBlur"', onBlur, Event);
+    }, [onBlur]);
+    const internalId = useId();
+    const rerender = useRerenderer();
+    let SuggestionList = "", SuggestionId;
+    if (Suggestions != null && Suggestions.length > 0) {
+      SuggestionId = internalId + "-Suggestions";
+      SuggestionList = m`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+        </datalist>`;
+    }
+    return m`<input type="number" ref=${ViewRef}
+        class="sim-component number-input ${Classes ?? ""} ${invalid ? "invalid" : ""}"
+        value=${actualValue} min=${Minimum} max=${Maximum} step=${Stepping}
+        readOnly=${readonly} placeholder=${actualPlaceholder}
+        disabled=${actualDisabling} list=${SuggestionId}
+        onInput=${_onInput} onBlur=${_onBlur} ...${RestProps}
+      />${SuggestionList}`;
   });
 }
-U("sim-component.number-input", `
+installStylesheetFor("sim-component.number-input", `
     .sim-component.number-input {
       height:30px;
       border:solid 1px #888888; border-radius:2px;
@@ -7134,71 +8434,88 @@ U("sim-component.number-input", `
       cursor:not-allowed;
     }
   `);
-function wl(e) {
-  return G(() => {
+function EMailAddressInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d,
-      p,
-      m,
-      g,
-      f
-    ] = j(
-      e,
-      D("class"),
-      H("value", (E) => Ht(E) || Z(E)),
-      V("multiple"),
-      V("invalid"),
-      D("placeholder"),
-      V("readonly"),
-      re("minlength"),
-      re("maxlength"),
-      D("pattern"),
-      H("suggestions", (E) => ue(E, Ht)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput"),
-      M("onblur")
+      Classes,
+      Value,
+      multiple,
+      invalid,
+      Placeholder,
+      readonly,
+      minLength,
+      maxLength,
+      Pattern,
+      Suggestions,
+      disabled,
+      onValueInput,
+      onInput,
+      onBlur,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsEMailAddress(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("multiple"),
+      optionalBoolean("invalid"),
+      optionalTextline("placeholder"),
+      optionalBoolean("readonly"),
+      optionalOrdinal("minlength"),
+      optionalOrdinal("maxlength"),
+      optionalTextline("pattern"),
+      optionalValue("suggestions", (Value2) => ValueIsListSatisfying(Value2, ValueIsEMailAddress)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput"),
+      optionalFunction("onblur")
     );
-    d = d ?? !1;
-    const b = W(), x = W();
-    let T = n ?? Q;
-    b.current != null && document.activeElement === b.current ? T = x.current : x.current = T;
-    const [$, O, B] = Z(T) ? [void 0, T === Q ? r ?? T.Placeholder : T.Placeholder, d || T.disabled] : [T, r, d], N = X((E) => {
-      if (se(E), B == !0)
+    disabled = disabled ?? false;
+    const ViewRef = useRef();
+    const shownValue = useRef();
+    let ValueToShow = Value == null ? SIM_empty : Value;
+    if (ViewRef.current != null && document.activeElement === ViewRef.current) {
+      ValueToShow = shownValue.current;
+    } else {
+      shownValue.current = ValueToShow;
+    }
+    const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('EMailAddressInput callback "onInput"', m, E);
-      const K = E.target.value;
-      x.current = K === "" ? Q : K, R(
+      }
+      executeCallback('EMailAddressInput callback "onInput"', onInput, Event);
+      const enteredValue = Event.target.value;
+      shownValue.current = enteredValue === "" ? SIM_empty : enteredValue;
+      executeCallback(
         'EMailAddressInput callback "onValueInput"',
-        p,
-        K,
-        E
+        onValueInput,
+        enteredValue,
+        Event
       );
-    }, [B, m, p]), k = X((E) => {
-      C(), R('EMailAddressInput callback "onBlur"', g, E);
-    }, [g]), _ = Ee(), C = ke();
-    let v = "", h;
-    return u != null && u.length > 0 && (h = _ + "-Suggestions", v = w`<datalist id=${h}>
-          ${u.map((E) => w`<option value=${E}></option>`)}
-        </datalist>`), w`<input type="email" class="sim-component emailaddress-input ${t ?? ""}" ref=${b}
-        value=${$} minlength=${s} maxlength=${l}
-        multiple=${o} readOnly=${a} placeholder=${O}
-        pattern=${c} disabled=${B} list=${h}
-        onInput=${N} onBlur=${k} ...${f}
-      />${v}`;
+    }, [actualDisabling, onInput, onValueInput]);
+    const _onBlur = useCallback((Event) => {
+      rerender();
+      executeCallback('EMailAddressInput callback "onBlur"', onBlur, Event);
+    }, [onBlur]);
+    const internalId = useId();
+    const rerender = useRerenderer();
+    let SuggestionList = "", SuggestionId;
+    if (Suggestions != null && Suggestions.length > 0) {
+      SuggestionId = internalId + "-Suggestions";
+      SuggestionList = m`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+        </datalist>`;
+    }
+    return m`<input type="email" class="sim-component emailaddress-input ${Classes ?? ""}" ref=${ViewRef}
+        value=${actualValue} minlength=${minLength} maxlength=${maxLength}
+        multiple=${multiple} readOnly=${readonly} placeholder=${actualPlaceholder}
+        pattern=${Pattern} disabled=${actualDisabling} list=${SuggestionId}
+        onInput=${_onInput} onBlur=${_onBlur} ...${RestProps}
+      />${SuggestionList}`;
   });
 }
-U("sim-component.emailaddress-input", `
+installStylesheetFor("sim-component.emailaddress-input", `
     .sim-component.emailaddress-input {
       height:30px;
       border:solid 1px #888888; border-radius:2px;
@@ -7220,69 +8537,86 @@ U("sim-component.emailaddress-input", `
       cursor:not-allowed;
     }
   `);
-function xl(e) {
-  return G(() => {
+function PhoneNumberInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d,
-      p,
-      m,
-      g
-    ] = j(
-      e,
-      D("class"),
-      H("value", (h) => Wt(h) || Z(h)),
-      V("invalid"),
-      D("placeholder"),
-      V("readonly"),
-      re("minlength"),
-      re("maxlength"),
-      D("pattern"),
-      H("suggestions", (h) => ue(h, Wt)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput"),
-      M("onblur")
+      Classes,
+      Value,
+      invalid,
+      Placeholder,
+      readonly,
+      minLength,
+      maxLength,
+      Pattern,
+      Suggestions,
+      disabled,
+      onValueInput,
+      onInput,
+      onBlur,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsPhoneNumber(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("invalid"),
+      optionalTextline("placeholder"),
+      optionalBoolean("readonly"),
+      optionalOrdinal("minlength"),
+      optionalOrdinal("maxlength"),
+      optionalTextline("pattern"),
+      optionalValue("suggestions", (Value2) => ValueIsListSatisfying(Value2, ValueIsPhoneNumber)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput"),
+      optionalFunction("onblur")
     );
-    u = u ?? !1;
-    const f = W(), b = W();
-    let x = n ?? Q;
-    f.current != null && document.activeElement === f.current ? x = b.current : b.current = x;
-    const [T, $, O] = Z(x) ? [void 0, x === Q ? i ?? x.Placeholder : x.Placeholder, u || x.disabled] : [x, i, u], B = X((h) => {
-      if (se(h), O == !0)
+    disabled = disabled ?? false;
+    const ViewRef = useRef();
+    const shownValue = useRef();
+    let ValueToShow = Value == null ? SIM_empty : Value;
+    if (ViewRef.current != null && document.activeElement === ViewRef.current) {
+      ValueToShow = shownValue.current;
+    } else {
+      shownValue.current = ValueToShow;
+    }
+    const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('PhoneNumberInput callback "onInput"', p, h);
-      const E = h.target.value;
-      b.current = E === "" ? Q : E, R(
+      }
+      executeCallback('PhoneNumberInput callback "onInput"', onInput, Event);
+      const enteredValue = Event.target.value;
+      shownValue.current = enteredValue === "" ? SIM_empty : enteredValue;
+      executeCallback(
         'PhoneNumberInput callback "onValueInput"',
-        d,
-        E,
-        h
+        onValueInput,
+        enteredValue,
+        Event
       );
-    }, [O, p, d]), N = X((h) => {
-      _(), R('PhoneNumberInput callback "onBlur"', m, h);
-    }, [m]), k = Ee(), _ = ke();
-    let C = "", v;
-    return c != null && c.length > 0 && (v = k + "-Suggestions", C = w`<datalist id=${v}>
-          ${c.map((h) => w`<option value=${h}></option>`)}
-        </datalist>`), w`<input type="tel" class="sim-component phonenumber-input ${t ?? ""}" ref=${f}
-        value=${T} minlength=${a} maxlength=${s}
-        readOnly=${r} placeholder=${$} pattern=${l}
-        disabled=${O} list=${v}
-        onInput=${B} onBlur=${N} ...${g}
-      />${C}`;
+    }, [actualDisabling, onInput, onValueInput]);
+    const _onBlur = useCallback((Event) => {
+      rerender();
+      executeCallback('PhoneNumberInput callback "onBlur"', onBlur, Event);
+    }, [onBlur]);
+    const internalId = useId();
+    const rerender = useRerenderer();
+    let SuggestionList = "", SuggestionId;
+    if (Suggestions != null && Suggestions.length > 0) {
+      SuggestionId = internalId + "-Suggestions";
+      SuggestionList = m`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+        </datalist>`;
+    }
+    return m`<input type="tel" class="sim-component phonenumber-input ${Classes ?? ""}" ref=${ViewRef}
+        value=${actualValue} minlength=${minLength} maxlength=${maxLength}
+        readOnly=${readonly} placeholder=${actualPlaceholder} pattern=${Pattern}
+        disabled=${actualDisabling} list=${SuggestionId}
+        onInput=${_onInput} onBlur=${_onBlur} ...${RestProps}
+      />${SuggestionList}`;
   });
 }
-U("sim-component.phonenumber-input", `
+installStylesheetFor("sim-component.phonenumber-input", `
     .sim-component.phonenumber-input {
       height:30px;
       border:solid 1px #888888; border-radius:2px;
@@ -7304,69 +8638,86 @@ U("sim-component.phonenumber-input", `
       cursor:not-allowed;
     }
   `);
-function vl(e) {
-  return G(() => {
+function URLInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d,
-      p,
-      m,
-      g
-    ] = j(
-      e,
-      D("class"),
-      H("value", (h) => Ut(h) || Z(h)),
-      V("invalid"),
-      D("placeholder"),
-      V("readonly"),
-      re("minlength"),
-      re("maxlength"),
-      D("pattern"),
-      H("suggestions", (h) => ue(h, Ut)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput"),
-      M("onblur")
+      Classes,
+      Value,
+      invalid,
+      Placeholder,
+      readonly,
+      minLength,
+      maxLength,
+      Pattern,
+      Suggestions,
+      disabled,
+      onValueInput,
+      onInput,
+      onBlur,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsURL(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("invalid"),
+      optionalTextline("placeholder"),
+      optionalBoolean("readonly"),
+      optionalOrdinal("minlength"),
+      optionalOrdinal("maxlength"),
+      optionalTextline("pattern"),
+      optionalValue("suggestions", (Value2) => ValueIsListSatisfying(Value2, ValueIsURL)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput"),
+      optionalFunction("onblur")
     );
-    u = u ?? !1;
-    const f = W(), b = W();
-    let x = n ?? Q;
-    f.current != null && document.activeElement === f.current ? x = b.current : b.current = x;
-    const [T, $, O] = Z(x) ? [void 0, x === Q ? i ?? x.Placeholder : x.Placeholder, u || x.disabled] : [x, i, u], B = X((h) => {
-      if (se(h), O == !0)
+    disabled = disabled ?? false;
+    const ViewRef = useRef();
+    const shownValue = useRef();
+    let ValueToShow = Value == null ? SIM_empty : Value;
+    if (ViewRef.current != null && document.activeElement === ViewRef.current) {
+      ValueToShow = shownValue.current;
+    } else {
+      shownValue.current = ValueToShow;
+    }
+    const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('URLInput callback "onInput"', p, h);
-      const E = h.target.value;
-      b.current = E === "" ? Q : E, R(
+      }
+      executeCallback('URLInput callback "onInput"', onInput, Event);
+      const enteredValue = Event.target.value;
+      shownValue.current = enteredValue === "" ? SIM_empty : enteredValue;
+      executeCallback(
         'URLInput callback "onValueInput"',
-        d,
-        E,
-        h
+        onValueInput,
+        enteredValue,
+        Event
       );
-    }, [O, p, d]), N = X((h) => {
-      _(), R('URLInput callback "onBlur"', m, h);
-    }, [m]), k = Ee(), _ = ke();
-    let C = "", v;
-    return c != null && c.length > 0 && (v = k + "-Suggestions", C = w`<datalist id=${v}>
-          ${c.map((h) => w`<option value=${h}></option>`)}
-        </datalist>`), w`<input type="url" class="sim-component url-input ${t ?? ""}" ref=${f}
-        value=${T} minlength=${a} maxlength=${s}
-        readOnly=${r} placeholder=${$} pattern=${l}
-        disabled=${O} list=${v}
-        onInput=${B} onBlur=${N} ...${g}
-      />${C}`;
+    }, [actualDisabling, onInput, onValueInput]);
+    const _onBlur = useCallback((Event) => {
+      rerender();
+      executeCallback('URLInput callback "onBlur"', onBlur, Event);
+    }, [onBlur]);
+    const internalId = useId();
+    const rerender = useRerenderer();
+    let SuggestionList = "", SuggestionId;
+    if (Suggestions != null && Suggestions.length > 0) {
+      SuggestionId = internalId + "-Suggestions";
+      SuggestionList = m`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+        </datalist>`;
+    }
+    return m`<input type="url" class="sim-component url-input ${Classes ?? ""}" ref=${ViewRef}
+        value=${actualValue} minlength=${minLength} maxlength=${maxLength}
+        readOnly=${readonly} placeholder=${actualPlaceholder} pattern=${Pattern}
+        disabled=${actualDisabling} list=${SuggestionId}
+        onInput=${_onInput} onBlur=${_onBlur} ...${RestProps}
+      />${SuggestionList}`;
   });
 }
-U("sim-component.url-input", `
+installStylesheetFor("sim-component.url-input", `
     .sim-component.url-input {
       height:30px;
       border:solid 1px #888888; border-radius:2px;
@@ -7388,69 +8739,87 @@ U("sim-component.url-input", `
       cursor:not-allowed;
     }
   `);
-const $t = "\\d{2}:\\d{2}", hr = /\d{2}:\d{2}/;
-function Ot(e) {
-  return Ne(e, hr);
+const SIM_TimePattern = "\\d{2}:\\d{2}";
+const SIM_TimeRegExp = /\d{2}:\d{2}/;
+function ValueIsTime(Value) {
+  return ValueIsStringMatching(Value, SIM_TimeRegExp);
 }
-function yl(e) {
-  return G(() => {
+function TimeInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d,
-      p
-    ] = j(
-      e,
-      D("class"),
-      H("value", (_) => Ot(_) || Z(_)),
-      V("readonly"),
-      V("withseconds"),
-      H("min", Ot),
-      H("max", Ot),
-      H("suggestions", (_) => ue(_, Ot)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput"),
-      M("onblur")
+      Classes,
+      Value,
+      readonly,
+      withSeconds,
+      Minimum,
+      Maximum,
+      Suggestions,
+      disabled,
+      onValueInput,
+      onInput,
+      onBlur,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsTime(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("readonly"),
+      optionalBoolean("withseconds"),
+      optionalValue("min", ValueIsTime),
+      optionalValue("max", ValueIsTime),
+      optionalValue("suggestions", (Value2) => ValueIsListSatisfying(Value2, ValueIsTime)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput"),
+      optionalFunction("onblur")
     );
-    l = l ?? !1;
-    const m = W(), g = W();
-    let f = n ?? Q;
-    m.current != null && document.activeElement === m.current ? f = g.current : g.current = f;
-    const [b, x] = Z(f) ? [void 0, l || f.disabled] : [f, l], T = X((_) => {
-      if (se(_), x == !0)
+    disabled = disabled ?? false;
+    const ViewRef = useRef();
+    const shownValue = useRef();
+    let ValueToShow = Value == null ? SIM_empty : Value;
+    if (ViewRef.current != null && document.activeElement === ViewRef.current) {
+      ValueToShow = shownValue.current;
+    } else {
+      shownValue.current = ValueToShow;
+    }
+    const [actualValue, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, disabled || ValueToShow.disabled] : [ValueToShow, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('TimeInput callback "onInput"', u, _);
-      const C = _.target.value;
-      g.current = C === "" ? Q : C, R(
+      }
+      executeCallback('TimeInput callback "onInput"', onInput, Event);
+      const enteredValue = Event.target.value;
+      shownValue.current = enteredValue === "" ? SIM_empty : enteredValue;
+      executeCallback(
         'TimeInput callback "onValueInput"',
-        c,
-        C,
-        _
+        onValueInput,
+        enteredValue,
+        Event
       );
-    }, [x, u, c]), $ = X((_) => {
-      B(), R('TimeInput callback "onBlur"', d, _);
-    }, [d]), O = Ee(), B = ke();
-    let N = "", k;
-    return s != null && s.length > 0 && (k = O + "-Suggestions", N = w`<datalist id=${k}>
-          ${s.map((_) => w`<option value=${_}></option>`)}
-        </datalist>`), w`<input type="time" class="sim-component time-input ${t ?? ""}" ref=${m}
-        value=${b} min=${r} max=${a} step=${i ? 1 : 60}
-        readOnly=${o} pattern=${$t}
-        disabled=${x}
-        onInput=${T} onBlur=${$} ...${p}
-      />${N}`;
+    }, [actualDisabling, onInput, onValueInput]);
+    const _onBlur = useCallback((Event) => {
+      rerender();
+      executeCallback('TimeInput callback "onBlur"', onBlur, Event);
+    }, [onBlur]);
+    const internalId = useId();
+    const rerender = useRerenderer();
+    let SuggestionList = "", SuggestionId;
+    if (Suggestions != null && Suggestions.length > 0) {
+      SuggestionId = internalId + "-Suggestions";
+      SuggestionList = m`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+        </datalist>`;
+    }
+    return m`<input type="time" class="sim-component time-input ${Classes ?? ""}" ref=${ViewRef}
+        value=${actualValue} min=${Minimum} max=${Maximum} step=${withSeconds ? 1 : 60}
+        readOnly=${readonly} pattern=${SIM_TimePattern}
+        disabled=${actualDisabling}
+        onInput=${_onInput} onBlur=${_onBlur} ...${RestProps}
+      />${SuggestionList}`;
   });
 }
-U("sim-component.time-input", `
+installStylesheetFor("sim-component.time-input", `
     .sim-component.time-input {
       height:30px;
       border:solid 1px #888888; border-radius:2px;
@@ -7468,69 +8837,87 @@ U("sim-component.time-input", `
       cursor:not-allowed;
     }
   `);
-const _l = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}", br = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/;
-function Rt(e) {
-  return Ne(e, br);
+const SIM_DateTimePattern = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}";
+const SIM_DateTimeRegExp = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/;
+function ValueIsDateTime(Value) {
+  return ValueIsStringMatching(Value, SIM_DateTimeRegExp);
 }
-function kl(e) {
-  return G(() => {
+function DateTimeInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d,
-      p
-    ] = j(
-      e,
-      D("class"),
-      H("value", (_) => Rt(_) || Z(_)),
-      V("readonly"),
-      V("withseconds"),
-      H("min", Rt),
-      H("max", Rt),
-      H("suggestions", (_) => ue(_, Rt)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput"),
-      M("onblur")
+      Classes,
+      Value,
+      readonly,
+      withSeconds,
+      Minimum,
+      Maximum,
+      Suggestions,
+      disabled,
+      onValueInput,
+      onInput,
+      onBlur,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsDateTime(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("readonly"),
+      optionalBoolean("withseconds"),
+      optionalValue("min", ValueIsDateTime),
+      optionalValue("max", ValueIsDateTime),
+      optionalValue("suggestions", (Value2) => ValueIsListSatisfying(Value2, ValueIsDateTime)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput"),
+      optionalFunction("onblur")
     );
-    l = l ?? !1;
-    const m = W(), g = W();
-    let f = n ?? Q;
-    m.current != null && document.activeElement === m.current ? f = g.current : g.current = f;
-    const [b, x] = Z(f) ? [void 0, l || f.disabled] : [f, l], T = X((_) => {
-      if (se(_), x == !0)
+    disabled = disabled ?? false;
+    const ViewRef = useRef();
+    const shownValue = useRef();
+    let ValueToShow = Value == null ? SIM_empty : Value;
+    if (ViewRef.current != null && document.activeElement === ViewRef.current) {
+      ValueToShow = shownValue.current;
+    } else {
+      shownValue.current = ValueToShow;
+    }
+    const [actualValue, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, disabled || ValueToShow.disabled] : [ValueToShow, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('DateTimeInput callback "onInput"', u, _);
-      const C = _.target.value;
-      g.current = C === "" ? Q : C, R(
+      }
+      executeCallback('DateTimeInput callback "onInput"', onInput, Event);
+      const enteredValue = Event.target.value;
+      shownValue.current = enteredValue === "" ? SIM_empty : enteredValue;
+      executeCallback(
         'DateTimeInput callback "onValueInput"',
-        c,
-        C,
-        _
+        onValueInput,
+        enteredValue,
+        Event
       );
-    }, [x, u, c]), $ = X((_) => {
-      B(), R('DateTimeInput callback "onBlur"', d, _);
-    }, [d]), O = Ee(), B = ke();
-    let N = "", k;
-    return s != null && s.length > 0 && (k = O + "-Suggestions", N = w`<datalist id=${k}>
-          ${s.map((_) => w`<option value=${_}></option>`)}
-        </datalist>`), w`<input type="datetime-local" class="sim-component datetime-input ${t ?? ""}" ref=${m}
-        value=${b} min=${r} max=${a} step=${i ? 1 : 60}
-        readOnly=${o} pattern=${$t}
-        disabled=${x}
-        onInput=${T} onBlur=${$} ...${p}
-      />${N}`;
+    }, [actualDisabling, onInput, onValueInput]);
+    const _onBlur = useCallback((Event) => {
+      rerender();
+      executeCallback('DateTimeInput callback "onBlur"', onBlur, Event);
+    }, [onBlur]);
+    const internalId = useId();
+    const rerender = useRerenderer();
+    let SuggestionList = "", SuggestionId;
+    if (Suggestions != null && Suggestions.length > 0) {
+      SuggestionId = internalId + "-Suggestions";
+      SuggestionList = m`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+        </datalist>`;
+    }
+    return m`<input type="datetime-local" class="sim-component datetime-input ${Classes ?? ""}" ref=${ViewRef}
+        value=${actualValue} min=${Minimum} max=${Maximum} step=${withSeconds ? 1 : 60}
+        readOnly=${readonly} pattern=${SIM_TimePattern}
+        disabled=${actualDisabling}
+        onInput=${_onInput} onBlur=${_onBlur} ...${RestProps}
+      />${SuggestionList}`;
   });
 }
-U("sim-component.datetime-input", `
+installStylesheetFor("sim-component.datetime-input", `
     .sim-component.datetime-input {
       height:30px;
       border:solid 1px #888888; border-radius:2px;
@@ -7548,67 +8935,85 @@ U("sim-component.datetime-input", `
       cursor:not-allowed;
     }
   `);
-const Il = "\\d{4}-\\d{2}-\\d{2}", wr = /\d{4}-\d{2}-\d{2}/;
-function At(e) {
-  return Ne(e, wr);
+const SIM_DatePattern = "\\d{4}-\\d{2}-\\d{2}";
+const SIM_DateRegExp = /\d{4}-\d{2}-\d{2}/;
+function ValueIsDate(Value) {
+  return ValueIsStringMatching(Value, SIM_DateRegExp);
 }
-function $l(e) {
-  return G(() => {
+function DateInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d
-    ] = j(
-      e,
-      D("class"),
-      H("value", (k) => At(k) || Z(k)),
-      V("readonly"),
-      H("min", At),
-      H("max", At),
-      H("suggestions", (k) => ue(k, At)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput"),
-      M("onblur")
+      Classes,
+      Value,
+      readonly,
+      Minimum,
+      Maximum,
+      Suggestions,
+      disabled,
+      onValueInput,
+      onInput,
+      onBlur,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsDate(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("readonly"),
+      optionalValue("min", ValueIsDate),
+      optionalValue("max", ValueIsDate),
+      optionalValue("suggestions", (Value2) => ValueIsListSatisfying(Value2, ValueIsDate)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput"),
+      optionalFunction("onblur")
     );
-    s = s ?? !1;
-    const p = W(), m = W();
-    let g = n ?? Q;
-    p.current != null && document.activeElement === p.current ? g = m.current : m.current = g;
-    const [f, b] = Z(g) ? [void 0, s || g.disabled] : [g, s], x = X((k) => {
-      if (se(k), b == !0)
+    disabled = disabled ?? false;
+    const ViewRef = useRef();
+    const shownValue = useRef();
+    let ValueToShow = Value == null ? SIM_empty : Value;
+    if (ViewRef.current != null && document.activeElement === ViewRef.current) {
+      ValueToShow = shownValue.current;
+    } else {
+      shownValue.current = ValueToShow;
+    }
+    const [actualValue, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, disabled || ValueToShow.disabled] : [ValueToShow, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('DateInput callback "onInput"', c, k);
-      const _ = k.target.value;
-      m.current = _ === "" ? Q : _, R(
+      }
+      executeCallback('DateInput callback "onInput"', onInput, Event);
+      const enteredValue = Event.target.value;
+      shownValue.current = enteredValue === "" ? SIM_empty : enteredValue;
+      executeCallback(
         'DateInput callback "onValueInput"',
-        l,
-        _,
-        k
+        onValueInput,
+        enteredValue,
+        Event
       );
-    }, [b, c, l]), T = X((k) => {
-      O(), R('DateInput callback "onBlur"', u, k);
-    }, [u]), $ = Ee(), O = ke();
-    let B = "", N;
-    return a != null && a.length > 0 && (N = $ + "-Suggestions", B = w`<datalist id=${N}>
-          ${a.map((k) => w`<option value=${k}></option>`)}
-        </datalist>`), w`<input type="date" class="sim-component date-input ${t ?? ""}" ref=${p}
-        value=${f} min=${i} max=${r}
-        readOnly=${o} pattern=${$t}
-        disabled=${b}
-        onInput=${x} onBlur=${T} ...${d}
-      />${B}`;
+    }, [actualDisabling, onInput, onValueInput]);
+    const _onBlur = useCallback((Event) => {
+      rerender();
+      executeCallback('DateInput callback "onBlur"', onBlur, Event);
+    }, [onBlur]);
+    const internalId = useId();
+    const rerender = useRerenderer();
+    let SuggestionList = "", SuggestionId;
+    if (Suggestions != null && Suggestions.length > 0) {
+      SuggestionId = internalId + "-Suggestions";
+      SuggestionList = m`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+        </datalist>`;
+    }
+    return m`<input type="date" class="sim-component date-input ${Classes ?? ""}" ref=${ViewRef}
+        value=${actualValue} min=${Minimum} max=${Maximum}
+        readOnly=${readonly} pattern=${SIM_TimePattern}
+        disabled=${actualDisabling}
+        onInput=${_onInput} onBlur=${_onBlur} ...${RestProps}
+      />${SuggestionList}`;
   });
 }
-U("sim-component.date-input", `
+installStylesheetFor("sim-component.date-input", `
     .sim-component.date-input {
       height:30px;
       border:solid 1px #888888; border-radius:2px;
@@ -7626,67 +9031,85 @@ U("sim-component.date-input", `
       cursor:not-allowed;
     }
   `);
-const El = "\\d{4}-W\\d{2}", xr = /\d{4}-W\d{2}/;
-function Pt(e) {
-  return Ne(e, xr);
+const SIM_WeekPattern = "\\d{4}-W\\d{2}";
+const SIM_WeekRegExp = /\d{4}-W\d{2}/;
+function ValueIsWeek(Value) {
+  return ValueIsStringMatching(Value, SIM_WeekRegExp);
 }
-function Sl(e) {
-  return G(() => {
+function WeekInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d
-    ] = j(
-      e,
-      D("class"),
-      H("value", (k) => Pt(k) || Z(k)),
-      V("readonly"),
-      H("min", Pt),
-      H("max", Pt),
-      H("suggestions", (k) => ue(k, Pt)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput"),
-      M("onblur")
+      Classes,
+      Value,
+      readonly,
+      Minimum,
+      Maximum,
+      Suggestions,
+      disabled,
+      onValueInput,
+      onInput,
+      onBlur,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsWeek(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("readonly"),
+      optionalValue("min", ValueIsWeek),
+      optionalValue("max", ValueIsWeek),
+      optionalValue("suggestions", (Value2) => ValueIsListSatisfying(Value2, ValueIsWeek)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput"),
+      optionalFunction("onblur")
     );
-    s = s ?? !1;
-    const p = W(), m = W();
-    let g = n ?? Q;
-    p.current != null && document.activeElement === p.current ? g = m.current : m.current = g;
-    const [f, b] = Z(g) ? [void 0, s || g.disabled] : [g, s], x = X((k) => {
-      if (se(k), b == !0)
+    disabled = disabled ?? false;
+    const ViewRef = useRef();
+    const shownValue = useRef();
+    let ValueToShow = Value == null ? SIM_empty : Value;
+    if (ViewRef.current != null && document.activeElement === ViewRef.current) {
+      ValueToShow = shownValue.current;
+    } else {
+      shownValue.current = ValueToShow;
+    }
+    const [actualValue, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, disabled || ValueToShow.disabled] : [ValueToShow, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('WeekInput callback "onInput"', c, k);
-      const _ = k.target.value;
-      m.current = _ === "" ? Q : _, R(
+      }
+      executeCallback('WeekInput callback "onInput"', onInput, Event);
+      const enteredValue = Event.target.value;
+      shownValue.current = enteredValue === "" ? SIM_empty : enteredValue;
+      executeCallback(
         'WeekInput callback "onValueInput"',
-        l,
-        _,
-        k
+        onValueInput,
+        enteredValue,
+        Event
       );
-    }, [b, c, l]), T = X((k) => {
-      O(), R('WeekInput callback "onBlur"', u, k);
-    }, [u]), $ = Ee(), O = ke();
-    let B = "", N;
-    return a != null && a.length > 0 && (N = $ + "-Suggestions", B = w`<datalist id=${N}>
-          ${a.map((k) => w`<option value=${k}></option>`)}
-        </datalist>`), w`<input type="week" class="sim-component week-input ${t ?? ""}" ref=${p}
-        value=${f} min=${i} max=${r}
-        readOnly=${o} pattern=${$t}
-        disabled=${b}
-        onInput=${x} onBlur=${T} ...${d}
-      />${B}`;
+    }, [actualDisabling, onInput, onValueInput]);
+    const _onBlur = useCallback((Event) => {
+      rerender();
+      executeCallback('WeekInput callback "onBlur"', onBlur, Event);
+    }, [onBlur]);
+    const internalId = useId();
+    const rerender = useRerenderer();
+    let SuggestionList = "", SuggestionId;
+    if (Suggestions != null && Suggestions.length > 0) {
+      SuggestionId = internalId + "-Suggestions";
+      SuggestionList = m`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+        </datalist>`;
+    }
+    return m`<input type="week" class="sim-component week-input ${Classes ?? ""}" ref=${ViewRef}
+        value=${actualValue} min=${Minimum} max=${Maximum}
+        readOnly=${readonly} pattern=${SIM_TimePattern}
+        disabled=${actualDisabling}
+        onInput=${_onInput} onBlur=${_onBlur} ...${RestProps}
+      />${SuggestionList}`;
   });
 }
-U("sim-component.week-input", `
+installStylesheetFor("sim-component.week-input", `
     .sim-component.week-input {
       height:30px;
       border:solid 1px #888888; border-radius:2px;
@@ -7704,67 +9127,85 @@ U("sim-component.week-input", `
       cursor:not-allowed;
     }
   `);
-const Tl = "\\d{4}-\\d{2}", vr = /\d{4}-\d{2}/;
-function Bt(e) {
-  return Ne(e, vr);
+const SIM_MonthPattern = "\\d{4}-\\d{2}";
+const SIM_MonthRegExp = /\d{4}-\d{2}/;
+function ValueIsMonth(Value) {
+  return ValueIsStringMatching(Value, SIM_MonthRegExp);
 }
-function Ml(e) {
-  return G(() => {
+function MonthInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d
-    ] = j(
-      e,
-      D("class"),
-      H("value", (k) => Bt(k) || Z(k)),
-      V("readonly"),
-      H("min", Bt),
-      H("max", Bt),
-      H("suggestions", (k) => ue(k, Bt)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput"),
-      M("onblur")
+      Classes,
+      Value,
+      readonly,
+      Minimum,
+      Maximum,
+      Suggestions,
+      disabled,
+      onValueInput,
+      onInput,
+      onBlur,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsMonth(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("readonly"),
+      optionalValue("min", ValueIsMonth),
+      optionalValue("max", ValueIsMonth),
+      optionalValue("suggestions", (Value2) => ValueIsListSatisfying(Value2, ValueIsMonth)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput"),
+      optionalFunction("onblur")
     );
-    s = s ?? !1;
-    const p = W(), m = W();
-    let g = n ?? Q;
-    p.current != null && document.activeElement === p.current ? g = m.current : m.current = g;
-    const [f, b] = Z(g) ? [void 0, s || g.disabled] : [g, s], x = X((k) => {
-      if (se(k), b == !0)
+    disabled = disabled ?? false;
+    const ViewRef = useRef();
+    const shownValue = useRef();
+    let ValueToShow = Value == null ? SIM_empty : Value;
+    if (ViewRef.current != null && document.activeElement === ViewRef.current) {
+      ValueToShow = shownValue.current;
+    } else {
+      shownValue.current = ValueToShow;
+    }
+    const [actualValue, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, disabled || ValueToShow.disabled] : [ValueToShow, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('MonthInput callback "onInput"', c, k);
-      const _ = k.target.value;
-      m.current = _ === "" ? Q : _, R(
+      }
+      executeCallback('MonthInput callback "onInput"', onInput, Event);
+      const enteredValue = Event.target.value;
+      shownValue.current = enteredValue === "" ? SIM_empty : enteredValue;
+      executeCallback(
         'MonthInput callback "onValueInput"',
-        l,
-        _,
-        k
+        onValueInput,
+        enteredValue,
+        Event
       );
-    }, [b, c, l]), T = X((k) => {
-      O(), R('MonthInput callback "onBlur"', u, k);
-    }, [u]), $ = Ee(), O = ke();
-    let B = "", N;
-    return a != null && a.length > 0 && (N = $ + "-Suggestions", B = w`<datalist id=${N}>
-          ${a.map((k) => w`<option value=${k}></option>`)}
-        </datalist>`), w`<input type="month" class="sim-component month-input ${t ?? ""}" ref=${p}
-        value=${f} min=${i} max=${r}
-        readOnly=${o} pattern=${$t}
-        disabled=${b}
-        onInput=${x} onBlur=${T} ...${d}
-      />${B}`;
+    }, [actualDisabling, onInput, onValueInput]);
+    const _onBlur = useCallback((Event) => {
+      rerender();
+      executeCallback('MonthInput callback "onBlur"', onBlur, Event);
+    }, [onBlur]);
+    const internalId = useId();
+    const rerender = useRerenderer();
+    let SuggestionList = "", SuggestionId;
+    if (Suggestions != null && Suggestions.length > 0) {
+      SuggestionId = internalId + "-Suggestions";
+      SuggestionList = m`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+        </datalist>`;
+    }
+    return m`<input type="month" class="sim-component month-input ${Classes ?? ""}" ref=${ViewRef}
+        value=${actualValue} min=${Minimum} max=${Maximum}
+        readOnly=${readonly} pattern=${SIM_TimePattern}
+        disabled=${actualDisabling}
+        onInput=${_onInput} onBlur=${_onBlur} ...${RestProps}
+      />${SuggestionList}`;
   });
 }
-U("sim-component.month-input", `
+installStylesheetFor("sim-component.month-input", `
     .sim-component.month-input {
       height:30px;
       border:solid 1px #888888; border-radius:2px;
@@ -7782,72 +9223,89 @@ U("sim-component.month-input", `
       cursor:not-allowed;
     }
   `);
-function Ll(e) {
-  return G(() => {
+function SearchInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d,
-      p,
-      m,
-      g,
-      f
-    ] = j(
-      e,
-      D("class"),
-      H("value", (E) => ce(E) || Z(E)),
-      V("invalid"),
-      D("placeholder"),
-      V("readonly"),
-      re("minlength"),
-      re("maxlength"),
-      D("pattern"),
-      V("spellcheck"),
-      H("suggestions", (E) => ue(E, ce)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput"),
-      M("onblur")
+      Classes,
+      Value,
+      invalid,
+      Placeholder,
+      readonly,
+      minLength,
+      maxLength,
+      Pattern,
+      SpellChecking,
+      Suggestions,
+      disabled,
+      onValueInput,
+      onInput,
+      onBlur,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsTextline(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("invalid"),
+      optionalTextline("placeholder"),
+      optionalBoolean("readonly"),
+      optionalOrdinal("minlength"),
+      optionalOrdinal("maxlength"),
+      optionalTextline("pattern"),
+      optionalBoolean("spellcheck"),
+      optionalValue("suggestions", (Value2) => ValueIsListSatisfying(Value2, ValueIsTextline)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput"),
+      optionalFunction("onblur")
     );
-    d = d ?? !1;
-    const b = W(), x = W();
-    let T = n ?? Q;
-    b.current != null && document.activeElement === b.current ? T = x.current : x.current = T;
-    const [$, O, B] = Z(T) ? [void 0, T === Q ? i ?? T.Placeholder : T.Placeholder, d || T.disabled] : [T, i, d], N = X((E) => {
-      if (se(E), B == !0)
+    disabled = disabled ?? false;
+    const ViewRef = useRef();
+    const shownValue = useRef();
+    let ValueToShow = Value == null ? SIM_empty : Value;
+    if (ViewRef.current != null && document.activeElement === ViewRef.current) {
+      ValueToShow = shownValue.current;
+    } else {
+      shownValue.current = ValueToShow;
+    }
+    const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('SearchInput callback "onInput"', m, E);
-      const K = E.target.value;
-      x.current = K === "" ? Q : K, R(
+      }
+      executeCallback('SearchInput callback "onInput"', onInput, Event);
+      const enteredValue = Event.target.value;
+      shownValue.current = enteredValue === "" ? SIM_empty : enteredValue;
+      executeCallback(
         'SearchInput callback "onValueInput"',
-        p,
-        K,
-        E
+        onValueInput,
+        enteredValue,
+        Event
       );
-    }, [B, m, p]), k = X((E) => {
-      C(), R('SearchInput callback "onBlur"', g, E);
-    }, [g]), _ = Ee(), C = ke();
-    let v = "", h;
-    return u != null && u.length > 0 && (h = _ + "-Suggestions", v = w`<datalist id=${h}>
-          ${u.map((E) => w`<option value=${E}></option>`)}
-        </datalist>`), w`<input type="search" class="sim-component search-input ${t ?? ""}" ref=${b}
-        value=${$} minlength=${a} maxlength=${s}
-        readOnly=${r} placeholder=${O}
-        pattern=${l} spellcheck=${c}
-        disabled=${B} list=${h}
-        onInput=${N} onBlur=${k} ...${f}
-      />${v}`;
+    }, [actualDisabling, onInput, onValueInput]);
+    const _onBlur = useCallback((Event) => {
+      rerender();
+      executeCallback('SearchInput callback "onBlur"', onBlur, Event);
+    }, [onBlur]);
+    const internalId = useId();
+    const rerender = useRerenderer();
+    let SuggestionList = "", SuggestionId;
+    if (Suggestions != null && Suggestions.length > 0) {
+      SuggestionId = internalId + "-Suggestions";
+      SuggestionList = m`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+        </datalist>`;
+    }
+    return m`<input type="search" class="sim-component search-input ${Classes ?? ""}" ref=${ViewRef}
+        value=${actualValue} minlength=${minLength} maxlength=${maxLength}
+        readOnly=${readonly} placeholder=${actualPlaceholder}
+        pattern=${Pattern} spellcheck=${SpellChecking}
+        disabled=${actualDisabling} list=${SuggestionId}
+        onInput=${_onInput} onBlur=${_onBlur} ...${RestProps}
+      />${SuggestionList}`;
   });
 }
-U("sim-component.search-input", `
+installStylesheetFor("sim-component.search-input", `
     .sim-component.search-input {
       height:30px;
       border:solid 1px #888888; border-radius:2px;
@@ -7869,53 +9327,57 @@ U("sim-component.search-input", `
       cursor:not-allowed;
     }
   `);
-function Dl(e) {
-  return G(() => {
+function FileInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c
-    ] = j(
-      e,
-      D("class"),
-      H("value", (f) => ce(f) || Z(f)),
-      D("placeholder"),
-      V("multiple"),
-      D("accept"),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput")
+      Classes,
+      Value,
+      Placeholder,
+      multiple,
+      FileTypes,
+      disabled,
+      onValueInput,
+      onInput,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsTextline(Value2) || ValueIsSpecial(Value2)),
+      optionalTextline("placeholder"),
+      optionalBoolean("multiple"),
+      optionalTextline("accept"),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput")
     );
-    a = a ?? !1;
-    let u = n ?? Q;
-    const [d, p, m] = Z(u) ? [void 0, u === Q ? o ?? u.Placeholder : u.Placeholder, a || u.disabled] : [u, o, a], g = X((f) => {
-      if (se(f), m == !0)
+    disabled = disabled ?? false;
+    let ValueToShow = Value == null ? SIM_empty : Value;
+    const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('FileInput callback "onInput"', l, f);
-      let b = Array.from(f.target.files);
-      R(
+      }
+      executeCallback('FileInput callback "onInput"', onInput, Event);
+      let ValueList = Array.from(Event.target.files);
+      executeCallback(
         'FileInput callback "onValueInput"',
-        s,
-        b,
-        f
-      ), f.target.value = "";
-    }, [m, l, s]);
-    return w`<label class="sim-component file-input ${t ?? ""}">
-        ${d == null ? w`<span>${p ?? ""}</span>` : w`<span>${d}</span>`}
+        onValueInput,
+        ValueList,
+        Event
+      );
+      Event.target.value = "";
+    }, [actualDisabling, onInput, onValueInput]);
+    return m`<label class="sim-component file-input ${Classes ?? ""}">
+        ${actualValue == null ? m`<span>${actualPlaceholder ?? ""}</span>` : m`<span>${actualValue}</span>`}
         <input type="file" style="display:none"
-          multiple=${i} accept=${r}
-          disabled=${m} onInput=${g} ...${c}
+          multiple=${multiple} accept=${FileTypes}
+          disabled=${actualDisabling} onInput=${_onInput} ...${RestProps}
         />
       </label>`;
   });
 }
-U("sim-component.file-input", `
+installStylesheetFor("sim-component.file-input", `
     .sim-component.file-input {
       height:30px;
         min-width:60px;
@@ -7932,59 +9394,62 @@ U("sim-component.file-input", `
       cursor:not-allowed;
     }
   `);
-function Nl(e) {
-  return G(() => {
+function PseudoFileInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u
-    ] = j(
-      e,
-      D("class"),
-      fe("style"),
-      Ko("icon"),
-      sn("color"),
-      V("multiple"),
-      D("accept"),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput")
+      Classes,
+      Style,
+      IconURL,
+      Color,
+      multiple,
+      FileTypes,
+      disabled,
+      onValueInput,
+      onInput,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("style"),
+      mandatoryURL("icon"),
+      optionalColor("color"),
+      optionalBoolean("multiple"),
+      optionalTextline("accept"),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput")
     );
-    s = s ?? !1;
-    const d = X((p) => {
-      if (se(p), s == !0)
+    disabled = disabled ?? false;
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (disabled == true) {
         return;
-      R('PseudoFileInput callback "onInput"', c, p);
-      let m = Array.from(p.target.files);
-      R(
+      }
+      executeCallback('PseudoFileInput callback "onInput"', onInput, Event);
+      let ValueList = Array.from(Event.target.files);
+      executeCallback(
         'PseudoFileInput callback "onValueInput"',
-        l,
-        m,
-        p
-      ), p.target.value = "";
-    }, [s, c, l]);
-    return w`<label
-        class="sim-component pseudo-file-input ${s ? "disabled" : ""} ${t ?? ""}"
+        onValueInput,
+        ValueList,
+        Event
+      );
+      Event.target.value = "";
+    }, [disabled, onInput, onValueInput]);
+    return m`<label
+        class="sim-component pseudo-file-input ${disabled ? "disabled" : ""} ${Classes ?? ""}"
       >
-        <div style="${n ?? ""};
-          -webkit-mask-image:url(${o}); mask-image:url(${o});
-          background-color:${i ?? "black"};
+        <div style="${Style ?? ""};
+          -webkit-mask-image:url(${IconURL}); mask-image:url(${IconURL});
+          background-color:${Color ?? "black"};
         "/>
         <input type="file" style="display:none"
-          multiple=${r} accept=${a}
-          disabled=${s} onInput=${d} ...${u}
+          multiple=${multiple} accept=${FileTypes}
+          disabled=${disabled} onInput=${_onInput} ...${RestProps}
         />
       </label>`;
   });
 }
-U("sim-component.pseudo-file-input", `
+installStylesheetFor("sim-component.pseudo-file-input", `
     .sim-component.pseudo-file-input {
       display:flex ! important; justify-content:center; align-items:center;
       overflow:hidden;
@@ -8000,55 +9465,63 @@ U("sim-component.pseudo-file-input", `
       cursor:not-allowed;
     }
   `);
-function Cl(e) {
-  return G(() => {
+function ColorInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c
-    ] = j(
-      e,
-      D("class"),
-      fe("style"),
-      H("value", (x) => Ft(x) || Z(x)),
-      V("readonly"),
-      H("suggestions", (x) => ue(x, Ft)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput")
+      Classes,
+      Style,
+      Value,
+      readonly,
+      Suggestions,
+      disabled,
+      onValueInput,
+      onInput,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("style"),
+      optionalValue("value", (Value2) => ValueIsColor(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("readonly"),
+      optionalValue("suggestions", (Value2) => ValueIsListSatisfying(Value2, ValueIsColor)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput")
     );
-    a = a ?? !1;
-    const [u, d] = Z(o) ? [void 0, a || o.disabled] : [o, a], p = X((x) => {
-      if (se(x), d == !0)
+    disabled = disabled ?? false;
+    const [actualValue, actualDisabling] = ValueIsSpecial(Value) ? [void 0, disabled || Value.disabled] : [Value, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('ColorInput callback "onInput"', l, x);
-      const T = x.target.value;
-      R(
+      }
+      executeCallback('ColorInput callback "onInput"', onInput, Event);
+      const enteredValue = Event.target.value;
+      executeCallback(
         'ColorInput callback "onValueInput"',
-        s,
-        T,
-        x
+        onValueInput,
+        enteredValue,
+        Event
       );
-    }, [d, l, s]);
-    let m = 40;
-    const g = Ee();
-    let f = "", b;
-    return r != null && r.length > 0 && (b = g + "-Suggestions", m += 20, f = w`<datalist id=${b}>
-          ${r.map((x) => w`<option value=${x}></option>`)}
-        </datalist>`), w`<input type="color" class="sim-component color-input ${t ?? ""}"
-        style="min-width:${m}px; ${n}"
-        value=${u} readOnly=${o} list=${b}
-        disabled=${d} onInput=${p} ...${c}
-      />${f}`;
+    }, [actualDisabling, onInput, onValueInput]);
+    let minWidth = 40;
+    const internalId = useId();
+    let SuggestionList = "", SuggestionId;
+    if (Suggestions != null && Suggestions.length > 0) {
+      SuggestionId = internalId + "-Suggestions";
+      minWidth += 20;
+      SuggestionList = m`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+        </datalist>`;
+    }
+    return m`<input type="color" class="sim-component color-input ${Classes ?? ""}"
+        style="min-width:${minWidth}px; ${Style}"
+        value=${actualValue} readOnly=${Value} list=${SuggestionId}
+        disabled=${actualDisabling} onInput=${_onInput} ...${RestProps}
+      />${SuggestionList}`;
   });
 }
-U("sim-component.color-input", `
+installStylesheetFor("sim-component.color-input", `
     .sim-component.color-input {
       height:30px;
         min-width:40px;
@@ -8066,52 +9539,67 @@ U("sim-component.color-input", `
       cursor:not-allowed;
     }
   `);
-function Ol(e) {
-  return G(() => {
+function DropDown(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s
-    ] = j(
-      e,
-      D("class"),
-      H("value", (d) => ce(d) || Z(d)),
-      rn("options", (d) => ue(d, ce)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput")
+      Classes,
+      Value,
+      Options,
+      disabled,
+      onValueInput,
+      onInput,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalValue("value", (Value2) => ValueIsTextline(Value2) || ValueIsSpecial(Value2)),
+      mandatoryValue("options", (Value2) => ValueIsListSatisfying(Value2, ValueIsTextline)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput")
     );
-    i = i ?? !1, o = o ?? [];
-    const [l, c] = Z(n) ? [void 0, i || n.disabled] : [n, i], u = X((d) => {
-      if (se(d), c == !0)
+    disabled = disabled ?? false;
+    Options = Options ?? [];
+    const [actualValue, actualDisabling] = ValueIsSpecial(Value) ? [void 0, disabled || Value.disabled] : [Value, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('DropDown callback "onInput"', a, d);
-      let p = d.target.value;
-      R(
+      }
+      executeCallback('DropDown callback "onInput"', onInput, Event);
+      let Value2 = Event.target.value;
+      executeCallback(
         'DropDown callback "onValueInput"',
-        r,
-        p,
-        d
+        onValueInput,
+        Value2,
+        Event
       );
-    }, [c, a, r]);
-    return w`<select class="sim-component dropdown ${t ?? ""}"
-        disabled=${c} onInput=${u} ...${s}
-      >${o.map(
-      (d) => {
-        let p = d.replace(/:.*$/, "").trim(), m = d.replace(/^[^:]*:/, "").trim();
-        const g = m[0] === "-";
-        return /^[-]+$/.test(m) ? w`<hr/>` : (p === d && (p = p.replace(/^-/, "")), g && (m = m.replace(/^-/, "")), w`<option value=${p}
-              selected=${p === l} disabled=${g}
-            >${m}</option>`);
+    }, [actualDisabling, onInput, onValueInput]);
+    return m`<select class="sim-component dropdown ${Classes ?? ""}"
+        disabled=${actualDisabling} onInput=${_onInput} ...${RestProps}
+      >${Options.map(
+      (Option) => {
+        let OptionValue = Option.replace(/:.*$/, "").trim();
+        let OptionLabel = Option.replace(/^[^:]*:/, "").trim();
+        const disabled2 = OptionLabel[0] === "-";
+        if (/^[-]+$/.test(OptionLabel)) {
+          return m`<hr/>`;
+        } else {
+          if (OptionValue === Option) {
+            OptionValue = OptionValue.replace(/^-/, "");
+          }
+          if (disabled2) {
+            OptionLabel = OptionLabel.replace(/^-/, "");
+          }
+          return m`<option value=${OptionValue}
+              selected=${OptionValue === actualValue} disabled=${disabled2}
+            >${OptionLabel}</option>`;
+        }
       }
     )}</select>`;
   });
 }
-U("sim-component.dropdown", `
+installStylesheetFor("sim-component.dropdown", `
     .sim-component.dropdown {
       height:30px;
         min-width:30px;
@@ -8125,66 +9613,80 @@ U("sim-component.dropdown", `
       cursor:not-allowed;
     }
   `);
-function Rl(e) {
-  return G(() => {
+function PseudoDropDown(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u
-    ] = j(
-      e,
-      D("class"),
-      fe("style"),
-      H("value", (g) => ce(g) || Z(g)),
-      Ko("icon"),
-      sn("color"),
-      rn("options", (g) => ue(g, ce)),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput")
+      Classes,
+      Style,
+      Value,
+      IconURL,
+      Color,
+      Options,
+      disabled,
+      onValueInput,
+      onInput,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("style"),
+      optionalValue("value", (Value2) => ValueIsTextline(Value2) || ValueIsSpecial(Value2)),
+      mandatoryURL("icon"),
+      optionalColor("color"),
+      mandatoryValue("options", (Value2) => ValueIsListSatisfying(Value2, ValueIsTextline)),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput")
     );
-    s = s ?? !1;
-    const [d, p] = Z(o) ? [void 0, s || o.disabled] : [o, s], m = X((g) => {
-      if (se(g), p == !0)
+    disabled = disabled ?? false;
+    const [actualValue, actualDisabling] = ValueIsSpecial(Value) ? [void 0, disabled || Value.disabled] : [Value, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('PseudoDropDown callback "onInput"', c, g);
-      let f = g.target.value;
-      R(
+      }
+      executeCallback('PseudoDropDown callback "onInput"', onInput, Event);
+      let Value2 = Event.target.value;
+      executeCallback(
         'PseudoDropDown callback "onValueInput"',
-        l,
-        f,
-        g
+        onValueInput,
+        Value2,
+        Event
       );
-    }, [p, c, l]);
-    return w`<label
-        class="sim-component pseudo-dropdown ${s ? "disabled" : ""} ${t ?? ""}"
+    }, [actualDisabling, onInput, onValueInput]);
+    return m`<label
+        class="sim-component pseudo-dropdown ${disabled ? "disabled" : ""} ${Classes ?? ""}"
       >
-        <div style="${n ?? ""};
-          -webkit-mask-image:url(${i}); mask-image:url(${i});
-          background-color:${r ?? "black"};
+        <div style="${Style ?? ""};
+          -webkit-mask-image:url(${IconURL}); mask-image:url(${IconURL});
+          background-color:${Color ?? "black"};
         "/>
         <select
-          disabled=${p} onInput=${m} ...${u}
-        >${a.map(
-      (g) => {
-        let f = g.replace(/:.*$/, "").trim(), b = g.replace(/^[^:]*:/, "").trim();
-        const x = b[0] === "-";
-        return /^[-]+$/.test(b) ? w`<hr/>` : (f === g && (f = f.replace(/^-/, "")), x && (b = b.replace(/^-/, "")), w`<option value=${f}
-                selected=${f === d} disabled=${x}
-              >${b}</option>`);
+          disabled=${actualDisabling} onInput=${_onInput} ...${RestProps}
+        >${Options.map(
+      (Option) => {
+        let OptionValue = Option.replace(/:.*$/, "").trim();
+        let OptionLabel = Option.replace(/^[^:]*:/, "").trim();
+        const disabled2 = OptionLabel[0] === "-";
+        if (/^[-]+$/.test(OptionLabel)) {
+          return m`<hr/>`;
+        } else {
+          if (OptionValue === Option) {
+            OptionValue = OptionValue.replace(/^-/, "");
+          }
+          if (disabled2) {
+            OptionLabel = OptionLabel.replace(/^-/, "");
+          }
+          return m`<option value=${OptionValue}
+                selected=${OptionValue === actualValue} disabled=${disabled2}
+              >${OptionLabel}</option>`;
+        }
       }
     )}</select>
       </label>`;
   });
 }
-U("sim-component.pseudo-dropdown", `
+installStylesheetFor("sim-component.pseudo-dropdown", `
     .sim-component.pseudo-dropdown {
       display:flex ! important; justify-content:center; align-items:center;
       overflow:hidden;
@@ -8205,72 +9707,85 @@ U("sim-component.pseudo-dropdown", `
       cursor:not-allowed;
     }
   `);
-function Al(e) {
-  return G(() => {
+function TextInput(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d,
-      p,
-      m,
-      g,
-      f,
-      b
-    ] = j(
-      e,
-      D("class"),
-      fe("style"),
-      H("value", (h) => kn(h) || Z(h)),
-      V("invalid"),
-      D("placeholder"),
-      V("readonly"),
-      re("minlength"),
-      re("maxlength"),
-      V("wrap"),
-      H("resizability", (h) => ze(h, ["none", "horizontal", "vertical", "both"])),
-      V("spellcheck"),
-      V("disabled"),
-      M("onvalueinput"),
-      M("oninput"),
-      M("onblur")
+      Classes,
+      Style,
+      Value,
+      invalid,
+      Placeholder,
+      readonly,
+      minLength,
+      maxLength,
+      LineWrapping,
+      Resizability,
+      SpellChecking,
+      disabled,
+      onValueInput,
+      onInput,
+      onBlur,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalText("style"),
+      optionalValue("value", (Value2) => ValueIsText(Value2) || ValueIsSpecial(Value2)),
+      optionalBoolean("invalid"),
+      optionalTextline("placeholder"),
+      optionalBoolean("readonly"),
+      optionalOrdinal("minlength"),
+      optionalOrdinal("maxlength"),
+      optionalBoolean("wrap"),
+      optionalValue("resizability", (Value2) => ValueIsOneOf(Value2, ["none", "horizontal", "vertical", "both"])),
+      optionalBoolean("spellcheck"),
+      optionalBoolean("disabled"),
+      optionalFunction("onvalueinput"),
+      optionalFunction("oninput"),
+      optionalFunction("onblur")
     );
-    p = p ?? !1;
-    const x = W(), T = W();
-    let $ = o ?? Q;
-    x.current != null && document.activeElement === x.current ? $ = T.current : T.current = $;
-    const [O, B, N] = Z($) ? [void 0, $ === Q ? r ?? $.Placeholder : $.Placeholder, p || $.disabled] : [$, r, p], k = X((h) => {
-      if (se(h), N == !0)
+    disabled = disabled ?? false;
+    const ViewRef = useRef();
+    const shownValue = useRef();
+    let ValueToShow = Value == null ? SIM_empty : Value;
+    if (ViewRef.current != null && document.activeElement === ViewRef.current) {
+      ValueToShow = shownValue.current;
+    } else {
+      shownValue.current = ValueToShow;
+    }
+    const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
+    const _onInput = useCallback((Event) => {
+      consumeEvent(Event);
+      if (actualDisabling == true) {
         return;
-      R('TextInput callback "onInput"', g, h);
-      const E = h.target.value;
-      T.current = E === "" ? Q : E, R(
+      }
+      executeCallback('TextInput callback "onInput"', onInput, Event);
+      const enteredValue = Event.target.value;
+      shownValue.current = enteredValue === "" ? SIM_empty : enteredValue;
+      executeCallback(
         'TextInput callback "onValueInput"',
-        m,
-        E,
-        h
+        onValueInput,
+        enteredValue,
+        Event
       );
-    }, [N, g, m]), _ = X((h) => {
-      C(), R('TextInput callback "onBlur"', f, h);
-    }, [f]), C = ke(), v = Ee();
-    return w`<textarea class="sim-component text-input ${t ?? ""}"
-        key=${v} ref=${x}
-        style="${c == !0 ? "overflow-wrap:break-word; hyphens:auto;" : "white-space:pre;"} resize:${u ?? "none"}; ${n}"
-        value=${O} minlength=${s} maxlength=${l}
-        readOnly=${a} placeholder=${B}
-        spellcheck=${d} disabled=${N}
-        onInput=${k} onBlur=${_} ...${b}
+    }, [actualDisabling, onInput, onValueInput]);
+    const _onBlur = useCallback((Event) => {
+      rerender();
+      executeCallback('TextInput callback "onBlur"', onBlur, Event);
+    }, [onBlur]);
+    const rerender = useRerenderer();
+    const uniqueId = useId();
+    return m`<textarea class="sim-component text-input ${Classes ?? ""}"
+        key=${uniqueId} ref=${ViewRef}
+        style="${LineWrapping == true ? "overflow-wrap:break-word; hyphens:auto;" : "white-space:pre;"} resize:${Resizability ?? "none"}; ${Style}"
+        value=${actualValue} minlength=${minLength} maxlength=${maxLength}
+        readOnly=${readonly} placeholder=${actualPlaceholder}
+        spellcheck=${SpellChecking} disabled=${actualDisabling}
+        onInput=${_onInput} onBlur=${_onBlur} ...${RestProps}
       />`;
   });
 }
-U("sim-component.text-input", `
+installStylesheetFor("sim-component.text-input", `
     .sim-component.text-input {
       resize:none;
       border:solid 1px #888888; border-radius:2px;
@@ -8291,43 +9806,57 @@ U("sim-component.text-input", `
       cursor:not-allowed;
     }
   `);
-function Pl(e) {
-  return G(() => {
+function TabStrip(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s
-    ] = j(
-      e,
-      D("class"),
-      re("activeindex"),
-      re("gapindex"),
-      V("disabled"),
-      M("onactivationchange")
+      Classes,
+      activeIndex,
+      GapIndex,
+      disabled,
+      onActivationChange,
+      RestProps,
+      ContentList
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      optionalOrdinal("activeindex"),
+      optionalOrdinal("gapindex"),
+      optionalBoolean("disabled"),
+      optionalFunction("onactivationchange")
     );
-    const l = W(n ?? 0), c = W(n ?? 0);
-    n != null && n !== l.current ? c.current = n : n = c.current;
-    const u = X((m, g) => {
-      if (i)
-        return Rn(g);
-      c.current = n = m, d(), R('TabStrip callback "onActivationChange"', r, m);
-    }, [i, r]), d = ke(), p = In(s).filter(
-      (m) => m.type != null || m.trim() !== ""
+    const externalActiveIndex = useRef(activeIndex ?? 0);
+    const internalActiveIndex = useRef(activeIndex ?? 0);
+    if (activeIndex != null && activeIndex !== externalActiveIndex.current) {
+      internalActiveIndex.current = activeIndex;
+    } else {
+      activeIndex = internalActiveIndex.current;
+    }
+    const onClick = useCallback((Index, Event) => {
+      if (disabled) {
+        return consumingEvent(Event);
+      }
+      internalActiveIndex.current = activeIndex = Index;
+      rerender();
+      executeCallback('TabStrip callback "onActivationChange"', onActivationChange, Index);
+    }, [disabled, onActivationChange]);
+    const rerender = useRerenderer();
+    const TabList = toChildArray(ContentList).filter(
+      (Tab) => Tab.type != null || Tab.trim() !== ""
     );
-    return w`<div class="sim-component tabstrip ${t ?? ""}" ...${a}>
-        ${p.map((m, g) => {
-      const f = g === o ? w`<div class="gap"/>` : "";
-      return g === n ? w`${f}<div class="active tab">${m}</>` : w`${f}<div class="${i ? "disabled" : ""} tab"
-            onClick=${(b) => u(g, b)}>${m}</>`;
+    return m`<div class="sim-component tabstrip ${Classes ?? ""}" ...${RestProps}>
+        ${TabList.map((Tab, i) => {
+      const Gap = i === GapIndex ? m`<div class="gap"/>` : "";
+      if (i === activeIndex) {
+        return m`${Gap}<div class="active tab">${Tab}</>`;
+      } else {
+        return m`${Gap}<div class="${disabled ? "disabled" : ""} tab"
+            onClick=${(Event) => onClick(i, Event)}>${Tab}</>`;
+      }
     })}
       </>`;
   });
 }
-U("sim-component.tabstrip", `
+installStylesheetFor("sim-component.tabstrip", `
     .sim-component.tabstrip {
       display:flex ! important; flex-flow:row nowrap; align-items:center;
       font-size:14px; font-weight:bold;
@@ -8353,39 +9882,50 @@ U("sim-component.tabstrip", `
       pointer-events:none;
     }
   `);
-function Bl(e) {
-  return G(() => {
+function AccordionFold(PropSet) {
+  return safelyRendered(() => {
     let [
-      t,
-      n,
-      o,
-      i,
-      r,
-      a,
-      s
-    ] = j(
-      e,
-      D("class"),
-      sr("header"),
-      V("expanded"),
-      V("disabled"),
-      M("onexpansionchange")
+      Classes,
+      Header,
+      expanded,
+      disabled,
+      onExpansionChange,
+      RestProps,
+      ContentList
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      mandatoryTextline("header"),
+      optionalBoolean("expanded"),
+      optionalBoolean("disabled"),
+      optionalFunction("onexpansionchange")
     );
-    i = i ?? !1;
-    const l = W(o ?? !1), c = W(o ?? !1);
-    o != null && o !== l.current ? c.current = o : o = c.current;
-    const u = X((p) => {
-      se(p), i != !0 && (c.current = o = !o, d(), R('Fold callback "onExpansionChange"', r, o));
-    }, [i, r]), d = ke();
-    return w`<div class="sim-component accordion-fold ${t ?? ""}">
+    disabled = disabled ?? false;
+    const externalExpansion = useRef(expanded ?? false);
+    const internalExpansion = useRef(expanded ?? false);
+    if (expanded != null && expanded !== externalExpansion.current) {
+      internalExpansion.current = expanded;
+    } else {
+      expanded = internalExpansion.current;
+    }
+    const _onClick = useCallback((Event) => {
+      consumeEvent(Event);
+      if (disabled != true) {
+        internalExpansion.current = expanded = !expanded;
+        rerender();
+        executeCallback('Fold callback "onExpansionChange"', onExpansionChange, expanded);
+      }
+    }, [disabled, onExpansionChange]);
+    const rerender = useRerenderer();
+    return m`<div class="sim-component accordion-fold ${Classes ?? ""}">
         <div class="header">
-          <div class="expander ${o ? "expanded" : "collapsed"}" onClick=${u}/>
-          <div class="title">${n}</>
-        </>${o ? w`<div class="content">${s}</>` : ""}
+          <div class="expander ${expanded ? "expanded" : "collapsed"}" onClick=${_onClick}/>
+          <div class="title">${Header}</>
+        </>${expanded ? m`<div class="content">${ContentList}</>` : ""}
       </>`;
   });
 }
-U("sim-component.accordion-fold", `
+installStylesheetFor("sim-component.accordion-fold", `
     .sim-component.accordion-fold {
       display:inline-block; position:relative;
       left:0px; top:0px; right:auto; bottom:auto; width:100%; height:auto;
@@ -8408,12 +9948,12 @@ U("sim-component.accordion-fold", `
       user-select:none; pointer-events:auto;
     }
     .sim-component.accordion-fold > .header > .expander.expanded {
-      background:url(${yn}/caret-down.png);
+      background:url(${IconFolder}/caret-down.png);
       background-repeat:no-repeat;
       background-size:contain; background-position:center;
     }
     .sim-component.accordion-fold > .header > .expander.collapsed {
-      background:url(${yn}/caret-right.png);
+      background:url(${IconFolder}/caret-right.png);
       background-repeat:no-repeat;
       background-size:contain; background-position:center;
     }
@@ -8429,165 +9969,231 @@ U("sim-component.accordion-fold", `
       position:relative; width:100%; height:auto;
     }
   `);
-let nt = 0;
-const ot = /* @__PURE__ */ new WeakMap();
-function yr(e, t, n) {
-  return ot.has(e) ? "" + ot.get(e) : (nt++, ot.set(e, nt), "" + nt);
+let KeyCounter = 0;
+const KeyMap = /* @__PURE__ */ new WeakMap();
+function Default_KeyOfFlatListItem(Item, List, Index) {
+  if (KeyMap.has(Item)) {
+    return "" + KeyMap.get(Item);
+  } else {
+    KeyCounter++;
+    KeyMap.set(Item, KeyCounter);
+    return "" + KeyCounter;
+  }
 }
-function _r(e, t, n, o = !1, i = "") {
-  return typeof e.toHTML == "function" ? w`<div class="default" dangerouslySetInnerHTML=${{ __html: e.toHTML() }}/>` : w`<div class="default">${"" + e}</>`;
+function Default_FlatListItemRenderer(Item, List, Index, isSelected = false, InsertionDirection = "") {
+  if (typeof Item.toHTML === "function") {
+    return m`<div class="default" dangerouslySetInnerHTML=${{ __html: Item.toHTML() }}/>`;
+  } else {
+    return m`<div class="default">${"" + Item}</>`;
+  }
 }
-function Vl(e) {
-  return G(() => {
-    const [t] = en();
+function FlatListView(PropSet) {
+  return safelyRendered(() => {
+    const [animatedElement] = useAutoAnimate();
     let [
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d,
-      p
-    ] = j(
-      e,
-      D("class"),
-      rn("list", (v) => ue(v, Re)),
-      D("placeholder"),
-      M("keyoflistitem"),
-      M("listitemrenderer"),
-      M("onlistitemclick"),
-      H("selecteditems", (v) => ue(v, Re)),
-      re("selectionlimit"),
-      M("onselectionchange"),
-      M("onlistitemmove")
+      Classes,
+      List,
+      Placeholder,
+      KeyOfListItem,
+      ListItemRenderer,
+      onListItemClick,
+      selectedItems,
+      SelectionLimit,
+      onSelectionChange,
+      onListItemMove,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      mandatoryValue("list", (Value) => ValueIsListSatisfying(Value, ValueIsPlainObject)),
+      optionalTextline("placeholder"),
+      optionalFunction("keyoflistitem"),
+      optionalFunction("listitemrenderer"),
+      optionalFunction("onlistitemclick"),
+      optionalValue("selecteditems", (Value) => ValueIsListSatisfying(Value, ValueIsPlainObject)),
+      optionalOrdinal("selectionlimit"),
+      optionalFunction("onselectionchange"),
+      optionalFunction("onlistitemmove")
     );
-    const m = u != null, g = m && d != null, f = /* @__PURE__ */ new Set();
-    o.forEach((v) => {
-      f.has(v) && Ie(
+    const ListIsSelectable = onSelectionChange != null;
+    const ListIsSortable = ListIsSelectable && onListItemMove != null;
+    const ListItemSet = /* @__PURE__ */ new Set();
+    List.forEach((Item) => {
+      if (ListItemSet.has(Item)) throwError(
         'InvalidArguments: the given "List" contains double entries'
-      ), f.add(v);
-    }), r = r ?? yr, a = a ?? _r;
-    const b = /* @__PURE__ */ new Set();
-    m && (l == null ? l = [] : l = l.filter((v) => b.has(v) ? !1 : (b.add(v), !0)), l.length > c && (l.slice(c).forEach(
-      (v) => b.delete(v)
-    ), l.length = c));
-    const [x, T] = pt({
-      dragging: !1,
+      );
+      ListItemSet.add(Item);
+    });
+    KeyOfListItem = KeyOfListItem ?? Default_KeyOfFlatListItem;
+    ListItemRenderer = ListItemRenderer ?? Default_FlatListItemRenderer;
+    const SelectionSet = /* @__PURE__ */ new Set();
+    if (ListIsSelectable) {
+      if (selectedItems == null) {
+        selectedItems = [];
+      } else {
+        selectedItems = selectedItems.filter((Item) => {
+          if (SelectionSet.has(Item)) {
+            return false;
+          } else {
+            SelectionSet.add(Item);
+            return true;
+          }
+        });
+      }
+      if (selectedItems.length > SelectionLimit) {
+        selectedItems.slice(SelectionLimit).forEach(
+          (Item) => SelectionSet.delete(Item)
+        );
+        selectedItems.length = SelectionLimit;
+      }
+    }
+    const [State, setState] = useState({
+      dragging: false,
       DropTargetIndex: void 0,
       DropMode: void 0
     });
-    function $(v) {
-      T((h) => ({ ...h, ...v }));
+    function changeState(StateChanges) {
+      setState((oldState) => ({ ...oldState, ...StateChanges }));
     }
-    const O = (v) => {
-      v.stopImmediatePropagation();
-      const h = v.target.Item, E = v.target.Index;
-      if (R(
+    const onClick = (Event) => {
+      Event.stopImmediatePropagation();
+      const Item = Event.target.Item;
+      const Index = Event.target.Index;
+      executeCallback(
         'FlatListView callback "onListItemClick"',
-        s,
-        h,
-        o,
-        E,
-        v
-      ), m) {
-        const K = v.pointerType !== "mouse" || v.ctrlKey || v.metaKey;
-        B(h, o, E, K);
-      }
-    }, B = (v, h, E, K) => {
-      if (c === 0)
-        return;
-      let ne = l;
-      if (K)
-        if (b.has(v))
-          ne = l.filter(
-            (ee) => ee !== v
-          );
-        else {
-          if (l.length === c)
-            return;
-          ne = [...l, v];
-        }
-      else
-        ne = [v];
-      R(
-        'FlatListView callback "onSelectionChange"',
-        u,
-        ne,
-        h
+        onListItemClick,
+        Item,
+        List,
+        Index,
+        Event
       );
-    }, N = X((v) => {
-      const h = v.target.Item, E = v.target.Index;
-      if (!b.has(h)) {
-        const K = (
-          /* (Event.pointerType !== 'mouse') ||*/
-          v.ctrlKey || v.metaKey
-        );
-        B(h, o, E, K);
+      if (ListIsSelectable) {
+        const additively = Event.pointerType !== "mouse" || Event.ctrlKey || Event.metaKey;
+        changeSelection(Item, List, Index, additively);
       }
-      v.dataTransfer.effectAllowed = "move", $({ dragging: !0 });
-    }, [o, b, B]), k = (v) => {
-      const h = v.target.Item, E = v.target.Index, K = v.target, ne = K.getBoundingClientRect().top + K.offsetHeight / 2, ee = v.clientY < ne ? "before" : "after";
-      b.has(h) ? x.DropTargetItem != null && $({ DropTargetItem: void 0, DropMode: void 0 }) : (v.preventDefault(), (x.DropTargetItem !== h || x.DropMode !== ee) && $({ DropTargetItem: h, DropMode: ee }));
-    }, _ = (v) => {
-      $({ dragging: !1, DropTargetItem: void 0 });
-    }, C = (v) => {
-      let { DropTargetItem: h, DropMode: E } = x;
-      if (h != null) {
-        const K = l.length, ne = o.filter(
+    };
+    const changeSelection = (Item, List2, Index, additively) => {
+      if (SelectionLimit === 0) {
+        return;
+      }
+      let newSelection = selectedItems;
+      if (additively) {
+        if (SelectionSet.has(Item)) {
+          newSelection = selectedItems.filter(
+            (selectedItem) => selectedItem !== Item
+          );
+        } else {
+          if (selectedItems.length === SelectionLimit) {
+            return;
+          } else {
+            newSelection = [...selectedItems, Item];
+          }
+        }
+      } else {
+        newSelection = [Item];
+      }
+      executeCallback(
+        'FlatListView callback "onSelectionChange"',
+        onSelectionChange,
+        newSelection,
+        List2
+      );
+    };
+    const onDragStart = useCallback((Event) => {
+      const Item = Event.target.Item;
+      const Index = Event.target.Index;
+      if (!SelectionSet.has(Item)) {
+        const additively = (
+          /* (Event.pointerType !== 'mouse') ||*/
+          Event.ctrlKey || Event.metaKey
+        );
+        changeSelection(Item, List, Index, additively);
+      }
+      Event.dataTransfer.effectAllowed = "move";
+      changeState({ dragging: true });
+    }, [List, SelectionSet, changeSelection]);
+    const onDragOver = (Event) => {
+      const Item = Event.target.Item;
+      const Index = Event.target.Index;
+      const hoveredElement = Event.target;
+      const Limit = hoveredElement.getBoundingClientRect().top + hoveredElement.offsetHeight / 2;
+      const DropMode = Event.clientY < Limit ? "before" : "after";
+      if (SelectionSet.has(Item)) {
+        if (State.DropTargetItem != null) {
+          changeState({ DropTargetItem: void 0, DropMode: void 0 });
+        }
+      } else {
+        Event.preventDefault();
+        if (State.DropTargetItem !== Item || State.DropMode !== DropMode) {
+          changeState({ DropTargetItem: Item, DropMode });
+        }
+      }
+    };
+    const onDragEnd = (Event) => {
+      changeState({ dragging: false, DropTargetItem: void 0 });
+    };
+    const onDrop = (Event) => {
+      let { DropTargetItem, DropMode } = State;
+      if (DropTargetItem != null) {
+        const SelectionCount = selectedItems.length;
+        const ItemsToMove = List.filter(
           // in original order!
-          (A) => b.has(A)
-        ), ee = o.filter(
-          (A) => !b.has(A)
-        ), y = ee.indexOf(h) + (E === "before" ? 0 : 1);
-        ee.splice(y, 0, ...ne), o = ee, R(
+          (Item) => SelectionSet.has(Item)
+        );
+        const ItemsToRemain = List.filter(
+          (Item) => !SelectionSet.has(Item)
+        );
+        const TargetIndex = ItemsToRemain.indexOf(DropTargetItem) + (DropMode === "before" ? 0 : 1);
+        ItemsToRemain.splice(TargetIndex, 0, ...ItemsToMove);
+        List = ItemsToRemain;
+        executeCallback(
           'FlatListView callback "onListItemMove"',
-          d,
-          o,
-          ne,
-          h,
-          E
+          onListItemMove,
+          List,
+          ItemsToMove,
+          DropTargetItem,
+          DropMode
         );
       }
     };
-    if (o.length === 0)
-      return w`<div class="sim-component flatlistview placeholder ${n ?? ""}" ...${p}>
-          <div dangerouslySetInnerHTML=${{ __html: i ?? "(empty)" }}/>
+    if (List.length === 0) {
+      return m`<div class="sim-component flatlistview placeholder ${Classes ?? ""}" ...${RestProps}>
+          <div dangerouslySetInnerHTML=${{ __html: Placeholder ?? "(empty)" }}/>
         </>`;
-    {
-      const { dragging: v, DropTargetItem: h, DropMode: E } = x;
-      return w`<div class="sim-component flatlistview ${v ? "dragging" : ""} ${n ?? ""}"
-              onClick=${O}
-          onDragStart=${g && N}
-           onDragOver=${g && k}
-            onDragEnd=${g && _}
-               onDrop=${g && C}
-          ref=${t} ...${p}
+    } else {
+      const { dragging, DropTargetItem, DropMode } = State;
+      return m`<div class="sim-component flatlistview ${dragging ? "dragging" : ""} ${Classes ?? ""}"
+              onClick=${onClick}
+          onDragStart=${ListIsSortable && onDragStart}
+           onDragOver=${ListIsSortable && onDragOver}
+            onDragEnd=${ListIsSortable && onDragEnd}
+               onDrop=${ListIsSortable && onDrop}
+          ref=${animatedElement} ...${RestProps}
         >
-          ${o.map((K, ne) => {
-        const ee = W();
-        rt(() => {
-          ee.current.Item = K, ee.current.Index = ne;
+          ${List.map((Item, Index) => {
+        const DOMRef = useRef();
+        useEffect(() => {
+          DOMRef.current.Item = Item;
+          DOMRef.current.Index = Index;
         }, []);
-        const y = we(
+        const Key = executedCallback(
           'FlatListView callback "KeyOfListItem"',
-          r,
-          K,
-          o,
-          ne
-        ), A = b.has(K), P = K === h ? E : "";
-        return w`<div class=${"itemview" + (A ? " selected" : "") + (K === h ? ` DropTarget ${E}` : "")} key=${y} ref=${ee} draggable=${g}>
-              ${we(
+          KeyOfListItem,
+          Item,
+          List,
+          Index
+        );
+        const ItemIsSelected = SelectionSet.has(Item);
+        const InsertionMode = Item === DropTargetItem ? DropMode : "";
+        return m`<div class=${"itemview" + (ItemIsSelected ? " selected" : "") + (Item === DropTargetItem ? ` DropTarget ${DropMode}` : "")} key=${Key} ref=${DOMRef} draggable=${ListIsSortable}>
+              ${executedCallback(
           'FlatListView callback "ListItemRenderer"',
-          a,
-          K,
-          o,
-          ne,
-          A,
-          P
+          ListItemRenderer,
+          Item,
+          List,
+          Index,
+          ItemIsSelected,
+          InsertionMode
         )}
             </>`;
       })}
@@ -8595,7 +10201,7 @@ function Vl(e) {
     }
   });
 }
-U("sim-component.flatlistview", `
+installStylesheetFor("sim-component.flatlistview", `
     .sim-component.flatlistview {
       display:flex ! important; flex-flow:column nowrap; align-items:stretch;
       overflow-x:auto; overflow-y:scroll;
@@ -8649,314 +10255,455 @@ U("sim-component.flatlistview", `
       left:0px; top:0px; right:auto; bottom:auto; width:auto; height:auto;
     }
   `);
-function kr(e) {
-  return ot.has(e) ? "" + ot.get(e) : (nt++, ot.set(e, nt), "" + nt);
+function Default_KeyOfNestedListItem(Item) {
+  if (KeyMap.has(Item)) {
+    return "" + KeyMap.get(Item);
+  } else {
+    KeyCounter++;
+    KeyMap.set(Item, KeyCounter);
+    return "" + KeyCounter;
+  }
 }
-function Ir(e, t = !1, n = !1, o = !1, i = "") {
-  return typeof e.toHTML == "function" ? w`<div class="default" dangerouslySetInnerHTML=${{ __html: e.toHTML() }}/>` : w`<div class="default">${"" + e}</>`;
+function Default_NestedListItemRenderer(Item, isSelected = false, isPlain = false, isExpanded = false, InsertionDirection = "") {
+  if (typeof Item.toHTML === "function") {
+    return m`<div class="default" dangerouslySetInnerHTML=${{ __html: Item.toHTML() }}/>`;
+  } else {
+    return m`<div class="default">${"" + Item}</>`;
+  }
 }
-function zl(e) {
-  return G(() => {
-    const [t] = en();
+function NestedListView(PropSet) {
+  return safelyRendered(() => {
+    const [animatedElement] = useAutoAnimate();
     let [
-      n,
-      o,
-      i,
-      r,
-      a,
-      s,
-      l,
-      c,
-      u,
-      d,
-      p,
-      m,
-      g,
-      f,
-      b,
-      x,
-      T,
-      $
-    ] = j(
-      e,
-      D("class"),
-      rn("list", (S) => ue(S, Re)),
-      D("placeholder"),
-      M("keyoflistitem"),
-      M("listitemrenderer"),
-      M("contentoflistitem"),
-      M("containeroflistitem"),
-      M("onlistitemclick"),
-      M("itemmaybeselected"),
-      H("selecteditems", (S) => ue(S, Re)),
-      re("selectionlimit"),
-      M("onselectionchange"),
-      M("itemmaybeexpanded"),
-      H("expandeditems", (S) => ue(S, Re)),
-      M("onexpansionchange"),
-      M("listitemmayaccept"),
-      M("onlistitemmove")
+      Classes,
+      List,
+      Placeholder,
+      KeyOfListItem,
+      ListItemRenderer,
+      ContentOfListItem,
+      ContainerOfListItem,
+      onListItemClick,
+      ListItemMayBeSelected,
+      selectedItems,
+      SelectionLimit,
+      onSelectionChange,
+      ListItemMayBeExpanded,
+      expandedItems,
+      onExpansionChange,
+      ListItemMayAccept,
+      onListItemMove,
+      RestProps
+    ] = parsedPropSet(
+      PropSet,
+      optionalTextline("class"),
+      mandatoryValue("list", (Value) => ValueIsListSatisfying(Value, ValueIsPlainObject)),
+      optionalTextline("placeholder"),
+      optionalFunction("keyoflistitem"),
+      optionalFunction("listitemrenderer"),
+      optionalFunction("contentoflistitem"),
+      optionalFunction("containeroflistitem"),
+      optionalFunction("onlistitemclick"),
+      optionalFunction("itemmaybeselected"),
+      optionalValue("selecteditems", (Value) => ValueIsListSatisfying(Value, ValueIsPlainObject)),
+      optionalOrdinal("selectionlimit"),
+      optionalFunction("onselectionchange"),
+      optionalFunction("itemmaybeexpanded"),
+      optionalValue("expandeditems", (Value) => ValueIsListSatisfying(Value, ValueIsPlainObject)),
+      optionalFunction("onexpansionchange"),
+      optionalFunction("listitemmayaccept"),
+      optionalFunction("onlistitemmove")
     );
-    const O = m != null, B = O && T != null, N = /* @__PURE__ */ new Set();
-    function k(S) {
-      S.forEach((z) => {
-        N.has(z) && Ie(
+    const ListIsSelectable = onSelectionChange != null;
+    const ListIsSortable = ListIsSelectable && onListItemMove != null;
+    const ListItemSet = /* @__PURE__ */ new Set();
+    function scanList(List2) {
+      List2.forEach((Item) => {
+        if (ListItemSet.has(Item)) throwError(
           'InvalidArguments: the given "List" contains double entries'
-        ), N.add(z);
-        const I = we(
-          'NestedListView callback "ContentOfListItem"',
-          s,
-          z
         );
-        I != null && k(I);
+        ListItemSet.add(Item);
+        const innerList = executedCallback(
+          'NestedListView callback "ContentOfListItem"',
+          ContentOfListItem,
+          Item
+        );
+        if (innerList != null) {
+          scanList(innerList);
+        }
       });
     }
-    k(o);
-    const _ = W([]), C = W(() => !0);
-    r = r ?? kr, a = a ?? Ir, u = u ?? C.current, g = g ?? C.current, f = f ?? _.current, x = x ?? C.current;
-    function v(S, z) {
-      let I = we(
+    scanList(List);
+    const emptyList = useRef([]);
+    const yeasayer = useRef(() => true);
+    KeyOfListItem = KeyOfListItem ?? Default_KeyOfNestedListItem;
+    ListItemRenderer = ListItemRenderer ?? Default_NestedListItemRenderer;
+    ListItemMayBeSelected = ListItemMayBeSelected ?? yeasayer.current;
+    ListItemMayBeExpanded = ListItemMayBeExpanded ?? yeasayer.current;
+    expandedItems = expandedItems ?? emptyList.current;
+    ListItemMayAccept = ListItemMayAccept ?? yeasayer.current;
+    function ItemContainsItem(ItemA, ItemB) {
+      let Container = executedCallback(
         'NestedListView callback "ContainerOfListItem"',
-        l,
-        z
+        ContainerOfListItem,
+        ItemB
       );
-      switch (I) {
+      switch (Container) {
         case null:
         case void 0:
-          return !1;
-        case S:
-          return !0;
+          return false;
+        case ItemA:
+          return true;
         default:
-          return v(S, I);
+          return ItemContainsItem(ItemA, Container);
       }
     }
-    const h = /* @__PURE__ */ new Set();
-    if (O) {
-      if (d == null)
-        d = [];
-      else {
-        d = d.filter((S) => h.has(S) ? !1 : (h.add(S), !0));
-        for (let S = d.length - 1; S >= 0; S--) {
-          const z = d[S];
-          d.some((I, de) => de !== S && v(I, z)) && (d.splice(S, 1), h.delete(z));
+    const SelectionSet = /* @__PURE__ */ new Set();
+    if (ListIsSelectable) {
+      if (selectedItems == null) {
+        selectedItems = [];
+      } else {
+        selectedItems = selectedItems.filter((Item) => {
+          if (SelectionSet.has(Item)) {
+            return false;
+          } else {
+            SelectionSet.add(Item);
+            return true;
+          }
+        });
+        for (let i = selectedItems.length - 1; i >= 0; i--) {
+          const thisItem = selectedItems[i];
+          if (selectedItems.some((otherItem, j) => {
+            return j !== i && ItemContainsItem(otherItem, thisItem);
+          })) {
+            selectedItems.splice(i, 1);
+            SelectionSet.delete(thisItem);
+          }
         }
       }
-      d.length > p && (d.slice(p).forEach(
-        (S) => h.delete(S)
-      ), d.length = p);
-    }
-    function E(S) {
-      return d.some(
-        (z) => v(z, S)
-      );
-    }
-    function K(S) {
-      for (let z = d.length - 1; z >= 0; z--) {
-        const I = d[z];
-        v(S, I) && (d.splice(z, 1), h.delete(I));
+      if (selectedItems.length > SelectionLimit) {
+        selectedItems.slice(SelectionLimit).forEach(
+          (Item) => SelectionSet.delete(Item)
+        );
+        selectedItems.length = SelectionLimit;
       }
     }
-    function ne(S, z) {
-      if (p === 0)
+    function anyOuterItemIsSelected(Item) {
+      return selectedItems.some(
+        (selectedItem) => ItemContainsItem(selectedItem, Item)
+      );
+    }
+    function deselectAllInnerItemsOf(Item) {
+      for (let i = selectedItems.length - 1; i >= 0; i--) {
+        const otherItem = selectedItems[i];
+        if (ItemContainsItem(Item, otherItem)) {
+          selectedItems.splice(i, 1);
+          SelectionSet.delete(otherItem);
+        }
+      }
+    }
+    function changeSelection(Item, additively) {
+      if (SelectionLimit === 0) {
         return;
-      let I = d;
-      if (z)
-        if (h.has(S))
-          I = d.filter(
-            (de) => de !== S
+      }
+      let newSelection = selectedItems;
+      if (additively) {
+        if (SelectionSet.has(Item)) {
+          newSelection = selectedItems.filter(
+            (selectedItem) => selectedItem !== Item
           );
-        else {
-          if (d.length === p)
+        } else {
+          if (selectedItems.length === SelectionLimit) {
             return;
-          I = [...d.filter(
-            (de) => !v(S, de)
-          ), S];
+          }
+          newSelection = [...selectedItems.filter(
+            (selectedItem) => !ItemContainsItem(Item, selectedItem)
+          ), Item];
         }
-      else
-        I = [S];
-      R(
+      } else {
+        newSelection = [Item];
+      }
+      executeCallback(
         'NestedListView callback "onSelectionChange"',
-        m,
-        I
+        onSelectionChange,
+        newSelection
       );
     }
-    const ee = kt(() => {
-      const S = /* @__PURE__ */ new Map();
-      return f == null ? f = [] : f = f.filter((z) => S.has(z) ? !1 : (S.set(z, "explicit"), !0)), S;
-    }, [f]);
-    function y(S) {
-      ee.has(S) ? P(S) : A(S);
+    const ExpansionMap = useMemo(() => {
+      const ExpansionMap2 = /* @__PURE__ */ new Map();
+      if (expandedItems == null) {
+        expandedItems = [];
+      } else {
+        expandedItems = expandedItems.filter((Item) => {
+          if (ExpansionMap2.has(Item)) {
+            return false;
+          } else {
+            ExpansionMap2.set(Item, "explicit");
+            return true;
+          }
+        });
+      }
+      return ExpansionMap2;
+    }, [expandedItems]);
+    function toggleExpansionOf(Item) {
+      if (ExpansionMap.has(Item)) {
+        collapseItem(Item);
+      } else {
+        expandItem(Item);
+      }
     }
-    function A(S) {
-      ee.set(S, "explicit");
-      let z = [...f, S], I = we(
+    function expandItem(Item) {
+      ExpansionMap.set(Item, "explicit");
+      let newExpansion = [...expandedItems, Item];
+      let Container = executedCallback(
         'NestedListView callback "ContainerOfListItem"',
-        l,
-        S
+        ContainerOfListItem,
+        Item
       );
-      for (; I != null; )
-        ee.has(I) || (ee.set(I, "explicit"), z.push(I)), I = we(
+      while (Container != null) {
+        if (!ExpansionMap.has(Container)) {
+          ExpansionMap.set(Container, "explicit");
+          newExpansion.push(Container);
+        }
+        Container = executedCallback(
           'NestedListView callback "ContainerOfListItem"',
-          l,
-          I
+          ContainerOfListItem,
+          Container
         );
-      R(
+      }
+      executeCallback(
         'NestedListView callback "onExpansionChange"',
-        b,
-        z
+        onExpansionChange,
+        newExpansion
       );
     }
-    function P(S) {
-      ee.delete(S);
-      const z = f.filter(
-        (I) => I !== S
+    function collapseItem(Item) {
+      ExpansionMap.delete(Item);
+      const newExpansion = expandedItems.filter(
+        (expandedItem) => expandedItem !== Item
       );
-      R(
+      executeCallback(
         'NestedListView callback "onExpansionChange"',
-        b,
-        z
+        onExpansionChange,
+        newExpansion
       );
     }
-    function q(S) {
-      ee.has(S) || ee.set(S, "automatic");
-      let z = we(
+    function autoExpandItem(Item) {
+      if (!ExpansionMap.has(Item)) {
+        ExpansionMap.set(Item, "automatic");
+      }
+      let Container = executedCallback(
         'NestedListView callback "ContainerOfListItem"',
-        l,
-        S
+        ContainerOfListItem,
+        Item
       );
-      for (; z != null; )
-        ee.has(z) || ee.set(z, "automatic"), z = we(
+      while (Container != null) {
+        if (!ExpansionMap.has(Container)) {
+          ExpansionMap.set(Container, "automatic");
+        }
+        Container = executedCallback(
           'NestedListView callback "ContainerOfListItem"',
-          l,
-          z
+          ContainerOfListItem,
+          Container
         );
+      }
     }
-    function te(S) {
-      ee.get(S) === "automatic" && ee.delete(S);
-      let z = we(
+    function autoCollapseItem(Item) {
+      if (ExpansionMap.get(Item) === "automatic") {
+        ExpansionMap.delete(Item);
+      }
+      let Container = executedCallback(
         'NestedListView callback "ContainerOfListItem"',
-        l,
-        S
+        ContainerOfListItem,
+        Item
       );
-      for (; z != null; )
-        ee.get(z) === "automatic" && ee.delete(z), z = we(
+      while (Container != null) {
+        if (ExpansionMap.get(Container) === "automatic") {
+          ExpansionMap.delete(Container);
+        }
+        Container = executedCallback(
           'NestedListView callback "ContainerOfListItem"',
-          l,
-          z
+          ContainerOfListItem,
+          Container
         );
+      }
     }
-    const ie = W(new Object(null)), he = W({
-      dragging: !1,
+    const ListItemWithKey = useRef(new Object(null));
+    const DragAndDropState = useRef({
+      dragging: false,
       DropTargetItem: void 0,
       DropMode: void 0,
       DropTargetTimer: void 0
     });
-    function Te(S) {
-      const z = S.target.getAttribute("data-key"), I = ie.current[z];
-      I != null && (h.has(I) || ne(I, S.shiftKey || S.metaKey), S.dataTransfer.effectAllowed = "move", Y.State.dragging = !0, Y.State.DropTargetItem = void 0, Y.State.DropTargetTimer = void 0, De());
+    function onDragStart(Event) {
+      const ComponentKey = Event.target.getAttribute("data-key");
+      const Item = ListItemWithKey.current[ComponentKey];
+      if (Item == null) {
+        return;
+      }
+      if (!SelectionSet.has(Item)) {
+        changeSelection(Item, Event.shiftKey || Event.metaKey);
+      }
+      Event.dataTransfer.effectAllowed = "move";
+      ListContext.State.dragging = true;
+      ListContext.State.DropTargetItem = void 0;
+      ListContext.State.DropTargetTimer = void 0;
+      rerender();
     }
-    function xe(S) {
-      const z = S.target.getAttribute("data-key"), I = ie.current[z], { DropTargetItem: de } = Y.State;
-      if (de === I)
-        S.preventDefault(), Tt(S, I);
-      else {
-        if (de != null && Mt(S), I == null)
+    function onDragEnter(Event) {
+      const ComponentKey = Event.target.getAttribute("data-key");
+      const Item = ListItemWithKey.current[ComponentKey];
+      const { DropTargetItem } = ListContext.State;
+      if (DropTargetItem === Item) {
+        Event.preventDefault();
+        handleDragOver(Event, Item);
+      } else {
+        if (DropTargetItem != null) {
+          handleDragLeave(Event);
+        }
+        if (Item == null) {
           return;
-        if (!h.has(I) && !E(I)) {
-          if (we(
+        }
+        if (!SelectionSet.has(Item) && !anyOuterItemIsSelected(Item)) {
+          if (executedCallback(
             'NestedListView callback "ListItemMayAccept"',
-            Y.ListItemMayAccept,
-            I,
-            d
-          ) != !0)
+            ListContext.ListItemMayAccept,
+            Item,
+            selectedItems
+          ) != true) {
             return;
-          S.preventDefault(), St(S, I);
+          }
+          Event.preventDefault();
+          handleDragEnter(Event, Item);
         }
       }
     }
-    const Me = xe;
-    function ft(S) {
-      const z = S.target.getAttribute("data-key"), I = ie.current[z], { DropTargetItem: de } = Y.State;
-      (de === I || I == null) && Mt(S);
+    const onDragOver = onDragEnter;
+    function onDragLeave(Event) {
+      const ComponentKey = Event.target.getAttribute("data-key");
+      const Item = ListItemWithKey.current[ComponentKey];
+      const { DropTargetItem } = ListContext.State;
+      if (DropTargetItem === Item || Item == null) {
+        handleDragLeave(Event);
+      }
     }
-    function Et(S) {
-      ft(S), Y.State.dragging = !1, Y.State.DropMode = void 0, De();
+    function onDragEnd(Event) {
+      onDragLeave(Event);
+      ListContext.State.dragging = false;
+      ListContext.State.DropMode = void 0;
+      rerender();
     }
-    function St(S, z) {
-      const { DropTargetTimer: I } = Y.State;
-      I != null && (clearTimeout(I), Y.State.DropTargetTimer = void 0), Y.State.DropTargetItem = z, Y.State.DropTargetTimer = setTimeout(() => {
-        Y.State.DropTargetTimer = void 0, Y.State.DropMode === "after" && (q(z), De());
+    function handleDragEnter(Event, Item) {
+      const { DropTargetTimer } = ListContext.State;
+      if (DropTargetTimer != null) {
+        clearTimeout(DropTargetTimer);
+        ListContext.State.DropTargetTimer = void 0;
+      }
+      ListContext.State.DropTargetItem = Item;
+      ListContext.State.DropTargetTimer = setTimeout(() => {
+        ListContext.State.DropTargetTimer = void 0;
+        if (ListContext.State.DropMode === "after") {
+          autoExpandItem(Item);
+          rerender();
+        }
       }, 2e3);
-      let de = we(
+      let Container = executedCallback(
         'NestedListView callback "ContainerOfListItem"',
-        l,
-        z
+        ContainerOfListItem,
+        Item
       );
-      de != null && (q(de), De()), Tt(S, z);
+      if (Container != null) {
+        autoExpandItem(Container);
+        rerender();
+      }
+      handleDragOver(Event, Item);
     }
-    function Tt(S, z) {
-      const I = S.target.getBoundingClientRect().top + S.target.offsetHeight / 2, de = S.clientY < I ? "before" : "after";
-      Y.State.DropMode !== de && (de === "after" && Y.State.DropTargetTimer == null && (Y.State.DropTargetTimer = setTimeout(() => {
-        Y.State.DropTargetTimer = void 0, Y.State.DropMode === "after" && (q(z), De());
-      }, 2e3)), Y.State.DropMode = de, De());
+    function handleDragOver(Event, Item) {
+      const Limit = Event.target.getBoundingClientRect().top + Event.target.offsetHeight / 2;
+      const DropMode = Event.clientY < Limit ? "before" : "after";
+      if (ListContext.State.DropMode !== DropMode) {
+        if (DropMode === "after" && ListContext.State.DropTargetTimer == null) {
+          ListContext.State.DropTargetTimer = setTimeout(() => {
+            ListContext.State.DropTargetTimer = void 0;
+            if (ListContext.State.DropMode === "after") {
+              autoExpandItem(Item);
+              rerender();
+            }
+          }, 2e3);
+        }
+        ListContext.State.DropMode = DropMode;
+        rerender();
+      }
     }
-    function Mt(S) {
-      const { DropTargetItem: z, DropTargetTimer: I } = Y.State;
-      I != null && (clearTimeout(I), Y.State.DropTargetTimer = void 0), z != null && (te(z), Y.State.DropTargetItem = void 0), setTimeout(De, 500);
+    function handleDragLeave(Event) {
+      const { DropTargetItem, DropTargetTimer } = ListContext.State;
+      if (DropTargetTimer != null) {
+        clearTimeout(DropTargetTimer);
+        ListContext.State.DropTargetTimer = void 0;
+      }
+      if (DropTargetItem != null) {
+        autoCollapseItem(DropTargetItem);
+        ListContext.State.DropTargetItem = void 0;
+      }
+      setTimeout(rerender, 500);
     }
-    function un(S) {
-      let { DropTargetItem: z, DropMode: I } = Y.State;
-      z != null && (R(
-        'NestedListView callback "onListItemMove"',
-        T,
-        d,
-        z,
-        I
-      ), Y.State.dragging = !1, Y.State.DropTargetItem = void 0, Y.State.DropMode = void 0);
+    function onDrop(Event) {
+      let { DropTargetItem, DropMode } = ListContext.State;
+      if (DropTargetItem != null) {
+        executeCallback(
+          'NestedListView callback "onListItemMove"',
+          onListItemMove,
+          selectedItems,
+          DropTargetItem,
+          DropMode
+        );
+        ListContext.State.dragging = false;
+        ListContext.State.DropTargetItem = void 0;
+        ListContext.State.DropMode = void 0;
+      }
     }
-    const [dn, Je] = pt({ Rendering: 0 });
-    function De() {
-      Je((S) => ({ Rendering: S.Rendering + 1 }));
+    const [State, setState] = useState({ Rendering: 0 });
+    function rerender() {
+      setState((oldState) => ({ Rendering: oldState.Rendering + 1 }));
     }
-    const Y = {
-      List: o,
-      ListIsSortable: B,
-      KeyOfListItem: r,
-      ListItemRenderer: a,
-      ContentOfListItem: s,
-      ListIsSelectable: O,
-      ListItemMayBeSelected: u,
-      onListItemClick: c,
-      SelectionSet: h,
-      anyOuterItemIsSelected: E,
-      changeSelection: ne,
-      ExpansionMap: ee,
-      ListItemMayBeExpanded: g,
-      toggleExpansionOf: y,
-      ListItemWithKey: ie.current,
-      ListItemMayAccept: x,
-      State: he.current,
-      rerender: De
+    const ListContext = {
+      List,
+      ListIsSortable,
+      KeyOfListItem,
+      ListItemRenderer,
+      ContentOfListItem,
+      ListIsSelectable,
+      ListItemMayBeSelected,
+      onListItemClick,
+      SelectionSet,
+      anyOuterItemIsSelected,
+      changeSelection,
+      ExpansionMap,
+      ListItemMayBeExpanded,
+      toggleExpansionOf,
+      ListItemWithKey: ListItemWithKey.current,
+      ListItemMayAccept,
+      State: DragAndDropState.current,
+      rerender
     };
-    if (o.length === 0)
-      return w`<div class="sim-component nestedlistview placeholder ${n ?? ""}" ...${$}>
-          <div dangerouslySetInnerHTML=${{ __html: i ?? "(empty)" }}/>
+    if (List.length === 0) {
+      return m`<div class="sim-component nestedlistview placeholder ${Classes ?? ""}" ...${RestProps}>
+          <div dangerouslySetInnerHTML=${{ __html: Placeholder ?? "(empty)" }}/>
         </>`;
-    {
-      const { dragging: S } = Y.State;
-      return w`<div class="sim-component nestedlistview ${S ? "dragging" : ""}"
-          onDragStart=${Te} onDragEnter=${xe} onDragOver=${Me}
-          onDragLeave=${ft} onDragEnd=${Et} onDrop=${un}
-          ref=${t} ...${$}
+    } else {
+      const { dragging } = ListContext.State;
+      return m`<div class="sim-component nestedlistview ${dragging ? "dragging" : ""}"
+          onDragStart=${onDragStart} onDragEnter=${onDragEnter} onDragOver=${onDragOver}
+          onDragLeave=${onDragLeave} onDragEnd=${onDragEnd} onDrop=${onDrop}
+          ref=${animatedElement} ...${RestProps}
         >
-          <${Yo} List=${o}
-            ListContext=${Y} Rendering=${dn.Rendering}
+          <${NLV_ListView} List=${List}
+            ListContext=${ListContext} Rendering=${State.Rendering}
           />
         </>`;
     }
   });
 }
-U("sim-component.nestedlistview", `
+installStylesheetFor("sim-component.nestedlistview", `
     .sim-component.nestedlistview {
       overflow-x:auto; overflow-y:scroll;
       border:solid 1px #888888; border-radius:2px;
@@ -9052,292 +10799,330 @@ U("sim-component.nestedlistview", `
       left:0px; top:0px; right:auto; bottom:auto; width:auto; height:auto;
     }
   `);
-function Yo(e) {
-  const [t] = en(), { List: n, ListContext: o, Rendering: i } = e;
-  if (n == null)
+function NLV_ListView(PropSet) {
+  const [animatedElement] = useAutoAnimate();
+  const { List, ListContext, Rendering } = PropSet;
+  if (List == null) {
     debugger;
-  return w`<div class="listview" ref=${t}>${n.map((r) => w`<${$r}
-        ListItem=${r} ListContext=${o} Rendering=${i}
+  }
+  return m`<div class="listview" ref=${animatedElement}>${List.map((ListItem) => m`<${NLV_ListItemView}
+        ListItem=${ListItem} ListContext=${ListContext} Rendering=${Rendering}
       />`)}</>`;
 }
-function $r(e) {
-  const [t] = en(), { ListItem: n, ListContext: o, Rendering: i } = e, { KeyOfListItem: r, ContentOfListItem: a } = o, s = we(
+function NLV_ListItemView(PropSet) {
+  const [animatedElement] = useAutoAnimate();
+  const { ListItem, ListContext, Rendering } = PropSet;
+  const { KeyOfListItem, ContentOfListItem } = ListContext;
+  const innerList = executedCallback(
     'NestedListView callback "ContentOfListItem"',
-    o.ContentOfListItem,
-    n
-  ), l = s == null, c = o.ExpansionMap.has(n), u = o.SelectionSet.has(n), d = we(
+    ListContext.ContentOfListItem,
+    ListItem
+  );
+  const ListItemIsPlain = innerList == null;
+  const ListItemIsExpanded = ListContext.ExpansionMap.has(ListItem);
+  const ListItemIsSelected = ListContext.SelectionSet.has(ListItem);
+  const ListItemKey = executedCallback(
     'NestedListView callback "KeyOfListItem"',
-    r,
-    n
+    KeyOfListItem,
+    ListItem
   );
-  rt(() => {
-    o.ListItemWithKey[d] = n;
+  useEffect(() => {
+    ListContext.ListItemWithKey[ListItemKey] = ListItem;
   }, []);
-  const p = (N) => {
-    if (N.stopPropagation(), R(
+  const onClick = (Event) => {
+    Event.stopPropagation();
+    executeCallback(
       'NestedListView callback "onListItemClick"',
-      o.onListItemClick,
-      n,
-      N
-    ), !o.anyOuterItemIsSelected(n) && o.ListIsSelectable) {
-      if (we(
-        'NestedListView callback "ListItemMayBeSelected"',
-        o.ListItemMayBeSelected,
-        n
-      ) != !0)
-        return;
-      const k = N.pointerType !== "mouse" || N.ctrlKey || N.metaKey;
-      o.changeSelection(n, k);
+      ListContext.onListItemClick,
+      ListItem,
+      Event
+    );
+    if (ListContext.anyOuterItemIsSelected(ListItem)) {
+      return;
     }
-  }, m = (N) => {
-    N.stopPropagation(), we(
-      'NestedListView callback "ContentOfListItem"',
-      a,
-      n
-    ) != null && (o.toggleExpansionOf(n), o.rerender());
+    if (ListContext.ListIsSelectable) {
+      if (executedCallback(
+        'NestedListView callback "ListItemMayBeSelected"',
+        ListContext.ListItemMayBeSelected,
+        ListItem
+      ) != true) {
+        return;
+      }
+      const additively = Event.pointerType !== "mouse" || Event.ctrlKey || Event.metaKey;
+      ListContext.changeSelection(ListItem, additively);
+    }
   };
-  let g = l ? "plain" : c ? "expanded" : "collapsed", f = we(
+  const onExpansionClick = (Event) => {
+    Event.stopPropagation();
+    const innerList2 = executedCallback(
+      'NestedListView callback "ContentOfListItem"',
+      ContentOfListItem,
+      ListItem
+    );
+    if (innerList2 == null) {
+      return;
+    }
+    ListContext.toggleExpansionOf(ListItem);
+    ListContext.rerender();
+  };
+  let ExpansionIcon = ListItemIsPlain ? "plain" : ListItemIsExpanded ? "expanded" : "collapsed";
+  let mayBeExpanded = executedCallback(
     'NestedListView callback "ListItemMayBeExpanded"',
-    o.ListItemMayBeExpanded,
-    n
+    ListContext.ListItemMayBeExpanded,
+    ListItem
   );
-  const b = w`<div
-      class="expansion-marker ${g} ${f ? "" : "disabled"}"
-      onClick=${f && m}
-    />`, x = !l && c && !(o.State.dragging && u) ? w`<${Yo} List=${s}
-          ListContext=${o} Rendering=${i}
-        />` : "", { DropTargetItem: T, DropMode: $ } = o.State, O = n === T, B = o.ListIsSortable;
-  return w`<div class=${"listitemview" + (u ? " selected" : "") + (O ? ` DropTarget ${$}` : "")} ref=${t} key=${d} data-key=${d}
-        draggable=${B} onClick=${p}
+  const ExpansionMarker = m`<div
+      class="expansion-marker ${ExpansionIcon} ${mayBeExpanded ? "" : "disabled"}"
+      onClick=${mayBeExpanded && onExpansionClick}
+    />`;
+  const Contents = !ListItemIsPlain && ListItemIsExpanded && !(ListContext.State.dragging && ListItemIsSelected) ? m`<${NLV_ListView} List=${innerList}
+          ListContext=${ListContext} Rendering=${Rendering}
+        />` : "";
+  const { DropTargetItem, DropMode } = ListContext.State;
+  const ListItemIsDropTarget = ListItem === DropTargetItem;
+  const ListIsSortable = ListContext.ListIsSortable;
+  return m`<div class=${"listitemview" + (ListItemIsSelected ? " selected" : "") + (ListItemIsDropTarget ? ` DropTarget ${DropMode}` : "")} ref=${animatedElement} key=${ListItemKey} data-key=${ListItemKey}
+        draggable=${ListIsSortable} onClick=${onClick}
     > <div class="labelline">
-        ${b}
-        <div class="labelview">${o.ListItemRenderer(
-    n,
-    u,
-    l,
-    c,
-    O ? $ : ""
+        ${ExpansionMarker}
+        <div class="labelview">${ListContext.ListItemRenderer(
+    ListItem,
+    ListItemIsSelected,
+    ListItemIsPlain,
+    ListItemIsExpanded,
+    ListItemIsDropTarget ? DropMode : ""
   )}</>
       </>
-      ${x}
+      ${Contents}
     </>`;
 }
-function se(e, t = !1) {
-  e.stopPropagation(), t == !0 && e.preventDefault();
+function consumeEvent(Event, completely = false) {
+  Event.stopPropagation();
+  if (completely == true) {
+    Event.preventDefault();
+  }
 }
-const Rn = se;
-function R(e, t, ...n) {
-  if (ni("callback description", e), Oe("callback", t), t != null)
+const consumingEvent = consumeEvent;
+function executeCallback(Description2, Callback, ...ArgList) {
+  expectTextline("callback description", Description2);
+  allowFunction("callback", Callback);
+  if (Callback != null) {
     try {
-      return t(...n);
-    } catch (o) {
-      Ie(`CallbackFailure: ${e} failed with ${"" + o}`);
+      return Callback(...ArgList);
+    } catch (Signal) {
+      throwError(`CallbackFailure: ${Description2} failed with ${"" + Signal}`);
     }
+  }
 }
-const we = R;
-function _n(e) {
-  if (e === null || typeof e != "object")
-    return e;
-  if (Array.isArray(e))
-    return e.map(_n);
-  const t = {};
-  for (const n in e)
-    e.hasOwnProperty(n) && (t[n] = _n(e[n]));
-  return t;
+const executedCallback = executeCallback;
+function deepCopyOf(Value) {
+  if (Value === null || typeof Value !== "object") {
+    return Value;
+  }
+  if (Array.isArray(Value)) {
+    return Value.map(deepCopyOf);
+  }
+  const Copy = {};
+  for (const Key in Value) {
+    if (Value.hasOwnProperty(Key)) {
+      Copy[Key] = deepCopyOf(Value[Key]);
+    }
+  }
+  return Copy;
 }
 export {
-  Bl as AccordionFold,
-  cl as Button,
-  ul as Checkbox,
-  Cl as ColorInput,
-  $l as DateInput,
-  kl as DateTimeInput,
-  Js as Description,
-  Ol as DropDown,
-  Us as Dummy,
-  wl as EMailAddressInput,
-  ll as FAIcon,
-  Dl as FileInput,
-  Qs as Fineprint,
-  Vl as FlatListView,
-  pl as Gauge,
-  tl as HTMLView,
-  sl as Icon,
-  ol as ImageView,
-  Ys as Label,
-  cn as MarkdownRenderer,
-  nl as MarkdownView,
-  Ul as Marked,
-  Ml as MonthInput,
-  zl as NestedListView,
-  bl as NumberInput,
-  Ns as OperationWasConfirmed,
-  js as Outline,
-  hl as PasswordInput,
-  xl as PhoneNumberInput,
-  fl as Progressbar,
-  Rl as PseudoDropDown,
-  Nl as PseudoFileInput,
-  dl as Radiobutton,
-  Il as SIM_DatePattern,
-  wr as SIM_DateRegExp,
-  _l as SIM_DateTimePattern,
-  br as SIM_DateTimeRegExp,
-  al as SIM_DefaultSandboxPermissions,
-  cr as SIM_ErrorIndicator,
-  gr as SIM_FAIconNames,
-  pr as SIM_ImageAlignments,
-  dr as SIM_ImageScalings,
-  Tl as SIM_MonthPattern,
-  vr as SIM_MonthRegExp,
-  fr as SIM_ReferrerPolicies,
-  $t as SIM_TimePattern,
-  hr as SIM_TimeRegExp,
-  El as SIM_WeekPattern,
-  xr as SIM_WeekRegExp,
-  Q as SIM_empty,
-  Pa as SIM_multipleValues,
-  Aa as SIM_noSelection,
-  er as SIM_supportedHTMLFormats,
-  nr as SIM_supportedImageFormats,
-  tr as SIM_supportedMarkdownFormats,
-  Qa as SIM_supportedTextFormats,
-  il as SVGView,
-  Ll as SearchInput,
-  ml as Slider,
-  Gs as Spacer,
-  Xs as Subtitle,
-  Pl as TabStrip,
-  Al as TextInput,
-  el as TextView,
-  gl as TextlineInput,
-  yl as TimeInput,
-  Zs as Title,
-  vl as URLInput,
-  At as ValueIsDate,
-  Rt as ValueIsDateTime,
-  ut as ValueIsDimension,
-  qo as ValueIsGeometry,
-  Zr as ValueIsHTMLFormat,
-  Wo as ValueIsIdentifier,
-  Yr as ValueIsImageFormat,
-  es as ValueIsIndexPath,
-  ct as ValueIsLocation,
-  Wr as ValueIsMIMEType,
-  Xr as ValueIsMarkdownFormat,
-  Bt as ValueIsMonth,
-  nn as ValueIsName,
-  on as ValueIsPath,
-  jo as ValueIsPosition,
-  Go as ValueIsSize,
-  Z as ValueIsSpecial,
-  Kr as ValueIsTextFormat,
-  Ot as ValueIsTime,
-  Pt as ValueIsWeek,
-  rl as WebView,
-  Sl as WeekInput,
-  On as _normalizedName,
-  lr as _normalizedPath,
-  ja as allowDimension,
-  Xa as allowGeometry,
-  ir as allowIdentifier,
-  Ha as allowLocation,
-  Va as allowName,
-  Fa as allowPath,
-  qa as allowPosition,
-  Ka as allowSize,
-  Vr as allowedDimension,
-  Gr as allowedGeometry,
-  Jr as allowedIdentifier,
-  Pr as allowedLocation,
-  Cr as allowedName,
-  Rr as allowedPath,
-  Fr as allowedPosition,
-  Ur as allowedSize,
-  Ps as centered,
-  se as consumeEvent,
-  Rn as consumingEvent,
-  _n as deepCopyOf,
-  R as executeCallback,
-  we as executedCallback,
-  qs as expandingSpacer,
-  Ga as expectDimension,
-  Ya as expectGeometry,
-  ar as expectIdentifier,
-  Ua as expectLocation,
-  Uo as expectName,
-  an as expectPath,
-  Wa as expectPosition,
-  Za as expectSize,
-  zr as expectedDimension,
-  qr as expectedGeometry,
-  Qr as expectedIdentifier,
-  Br as expectedLocation,
-  Or as expectedName,
-  Ar as expectedPath,
-  Hr as expectedPosition,
-  jr as expectedSize,
-  As as fullsized,
-  Bs as horizontal,
-  Ws as horizontalSeparator,
-  U as installStylesheetFor,
-  ge as mandatoryAttribute,
-  ns as mandatoryBoolean,
-  ds as mandatoryCardinal,
-  ws as mandatoryColor,
-  vs as mandatoryEMailAddress,
-  bs as mandatoryFunction,
-  ss as mandatoryInteger,
-  cs as mandatoryIntegerInRange,
-  Es as mandatoryNameOrIndex,
-  os as mandatoryNumber,
-  as as mandatoryNumberInRange,
-  us as mandatoryOrdinal,
-  Is as mandatoryPath,
-  _s as mandatoryPhoneNumber,
-  fs as mandatoryString,
-  gs as mandatoryStringMatching,
-  hs as mandatoryText,
-  sr as mandatoryTextline,
-  Ko as mandatoryURL,
-  rn as mandatoryValue,
-  Cs as normalizedName,
-  Os as normalizedPath,
-  me as optionalAttribute,
-  V as optionalBoolean,
-  rr as optionalCardinal,
-  sn as optionalColor,
-  xs as optionalEMailAddress,
-  M as optionalFunction,
-  rs as optionalInteger,
-  ls as optionalIntegerInRange,
-  $s as optionalNameOrIndex,
-  Le as optionalNumber,
-  is as optionalNumberInRange,
-  re as optionalOrdinal,
-  ks as optionalPath,
-  ys as optionalPhoneNumber,
-  ps as optionalString,
-  ms as optionalStringMatching,
-  fe as optionalText,
-  D as optionalTextline,
-  ln as optionalURL,
-  H as optionalValue,
-  ts as parsedProp,
-  j as parsedPropSet,
-  G as safelyRendered,
-  Fs as selective,
-  Hs as stacked,
-  zs as tabular,
-  Ie as throwError,
-  Nr as throwReadOnlyError,
-  Rs as uninstallStylesheetFor,
-  Ds as useClickDragging,
-  Ms as useConfiguration,
-  Ls as useDragging,
-  Ss as useOnlineStatus,
-  ke as useRerenderer,
-  Ts as useWindowSize,
-  Vs as vertical,
-  Ks as verticalSeparator
+  AccordionFold,
+  Button,
+  Checkbox,
+  ColorInput,
+  DateInput,
+  DateTimeInput,
+  Description,
+  DropDown,
+  Dummy,
+  EMailAddressInput,
+  FAIcon,
+  FileInput,
+  Fineprint,
+  FlatListView,
+  Gauge,
+  HTMLView,
+  Icon,
+  ImageView,
+  Label,
+  MarkdownRenderer,
+  MarkdownView,
+  Marked2 as Marked,
+  MonthInput,
+  NestedListView,
+  NumberInput,
+  OperationWasConfirmed,
+  Outline,
+  PasswordInput,
+  PhoneNumberInput,
+  Progressbar,
+  PseudoDropDown,
+  PseudoFileInput,
+  Radiobutton,
+  SIM_DatePattern,
+  SIM_DateRegExp,
+  SIM_DateTimePattern,
+  SIM_DateTimeRegExp,
+  SIM_DefaultSandboxPermissions,
+  SIM_ErrorIndicator,
+  SIM_FAIconNames,
+  SIM_ImageAlignments,
+  SIM_ImageScalings,
+  SIM_MonthPattern,
+  SIM_MonthRegExp,
+  SIM_ReferrerPolicies,
+  SIM_TimePattern,
+  SIM_TimeRegExp,
+  SIM_WeekPattern,
+  SIM_WeekRegExp,
+  SIM_empty,
+  SIM_multipleValues,
+  SIM_noSelection,
+  SIM_supportedHTMLFormats,
+  SIM_supportedImageFormats,
+  SIM_supportedMarkdownFormats,
+  SIM_supportedTextFormats,
+  SVGView,
+  SearchInput,
+  Slider,
+  Spacer,
+  Subtitle,
+  TabStrip,
+  TextInput,
+  TextView,
+  TextlineInput,
+  TimeInput,
+  Title,
+  URLInput,
+  ValueIsDate,
+  ValueIsDateTime,
+  ValueIsDimension,
+  ValueIsGeometry,
+  ValueIsHTMLFormat,
+  ValueIsIdentifier,
+  ValueIsImageFormat,
+  ValueIsIndexPath,
+  ValueIsLocation,
+  ValueIsMIMEType,
+  ValueIsMarkdownFormat,
+  ValueIsMonth,
+  ValueIsName,
+  ValueIsPath,
+  ValueIsPosition,
+  ValueIsSize,
+  ValueIsSpecial,
+  ValueIsTextFormat,
+  ValueIsTime,
+  ValueIsWeek,
+  WebView,
+  WeekInput,
+  _normalizedName,
+  _normalizedPath,
+  allowDimension,
+  allowGeometry,
+  allowIdentifier,
+  allowLocation,
+  allowName,
+  allowPath,
+  allowPosition,
+  allowSize,
+  allowedDimension,
+  allowedGeometry,
+  allowedIdentifier,
+  allowedLocation,
+  allowedName,
+  allowedPath,
+  allowedPosition,
+  allowedSize,
+  centered,
+  consumeEvent,
+  consumingEvent,
+  deepCopyOf,
+  executeCallback,
+  executedCallback,
+  expandingSpacer,
+  expectDimension,
+  expectGeometry,
+  expectIdentifier,
+  expectLocation,
+  expectName,
+  expectPath,
+  expectPosition,
+  expectSize,
+  expectedDimension,
+  expectedGeometry,
+  expectedIdentifier,
+  expectedLocation,
+  expectedName,
+  expectedPath,
+  expectedPosition,
+  expectedSize,
+  fullsized,
+  horizontal,
+  horizontalSeparator,
+  installStylesheetFor,
+  mandatoryAttribute,
+  mandatoryBoolean,
+  mandatoryCardinal,
+  mandatoryColor,
+  mandatoryEMailAddress,
+  mandatoryFunction,
+  mandatoryInteger,
+  mandatoryIntegerInRange,
+  mandatoryNameOrIndex,
+  mandatoryNumber,
+  mandatoryNumberInRange,
+  mandatoryOrdinal,
+  mandatoryPath,
+  mandatoryPhoneNumber,
+  mandatoryString,
+  mandatoryStringMatching,
+  mandatoryText,
+  mandatoryTextline,
+  mandatoryURL,
+  mandatoryValue,
+  normalizedName,
+  normalizedPath,
+  optionalAttribute,
+  optionalBoolean,
+  optionalCardinal,
+  optionalColor,
+  optionalEMailAddress,
+  optionalFunction,
+  optionalInteger,
+  optionalIntegerInRange,
+  optionalNameOrIndex,
+  optionalNumber,
+  optionalNumberInRange,
+  optionalOrdinal,
+  optionalPath,
+  optionalPhoneNumber,
+  optionalString,
+  optionalStringMatching,
+  optionalText,
+  optionalTextline,
+  optionalURL,
+  optionalValue,
+  parsedProp,
+  parsedPropSet,
+  safelyRendered,
+  selective,
+  stacked,
+  tabular,
+  throwError,
+  throwReadOnlyError,
+  uninstallStylesheetFor,
+  useClickDragging,
+  useConfiguration,
+  useDragging,
+  useOnlineStatus,
+  useRerenderer,
+  useWindowSize,
+  vertical,
+  verticalSeparator
 };
