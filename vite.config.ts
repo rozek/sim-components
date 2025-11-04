@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import pkg from './package.json'
 
 export default defineConfig({
   build: {
@@ -11,7 +12,7 @@ export default defineConfig({
     outDir: './dist',
     emptyOutDir: true,
     rollupOptions: {
-      external: [],
+      external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
       output: {
         globals: {},
         entryFileNames: '[name].esm.js',
