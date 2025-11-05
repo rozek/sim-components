@@ -33,7 +33,7 @@
   import { useId, useRef, useState, useEffect, useCallback, useMemo, useContext } from 'preact/hooks'
   type VNode = any
 
-  import { useAutoAnimate } from '@formkit/auto-animate'
+  import { useAutoAnimate } from '@formkit/auto-animate/preact'
 
 /**** for MarkdownView ****/
 
