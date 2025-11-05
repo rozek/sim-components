@@ -22,7 +22,7 @@
     "build": "vite build",
     "test": "vitest"
   },
-  "dependencies": {
+  "peerDependencies":{
     "@formkit/auto-animate": "^0.9.0",
     "highlight.js": "^11.11.1",
     "htm": "github:rozek/htm",
