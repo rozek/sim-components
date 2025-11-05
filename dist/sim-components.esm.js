@@ -1,849 +1,146 @@
 import { ValidatorForClassifier, acceptNil, rejectNil, ValueIsStringMatching, ValueIsFiniteNumber, ValueIsPlainObject, expectText, expectBoolean, quoted, ValueIsOneOf, ValueIsListSatisfying, ValueIsOrdinal, expectPlainObject, ValueIsFunction, expectFunction, allowTextline, ValueIsBoolean, ValueIsNumber, ValueIsNumberInRange, ValueIsInteger, ValueIsIntegerInRange, ValueIsCardinal, ValueIsString, ValueIsText, ValueIsTextline, ValueIsColor, ValueIsEMailAddress, ValueIsURL, allowPlainObject, expectValue, allowFunction, allowOrdinal, expectTextline } from "javascript-interface-library";
-import { h, toChildArray } from "preact";
-import e from "htm";
+import { h as h$1, options, toChildArray } from "preact";
+import e$1 from "htm";
+import { useAutoAnimate } from "@formkit/auto-animate";
 import { Marked } from "marked";
 import { Marked as Marked2 } from "marked";
 import markedKatex from "marked-katex-extension";
 import { markedHighlight } from "marked-highlight";
-var m = e.bind(h);
-var l;
-l = { __e: function(n, l2, u, t) {
-  for (var i, r, o; l2 = l2.__; ) if ((i = l2.__c) && !i.__) try {
-    if ((r = i.constructor) && null != r.getDerivedStateFromError && (i.setState(r.getDerivedStateFromError(n)), o = i.__d), null != i.componentDidCatch && (i.componentDidCatch(n, t || {}), o = i.__d), o) return i.__E = i;
-  } catch (l3) {
-    n = l3;
-  }
-  throw n;
-} }, "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout;
-const COMPONENT_FORCE = 1 << 2;
-const ObjectIs = Object.is;
-let currentIndex;
-let currentComponent;
-let previousComponent;
-let currentHook = 0;
-let afterPaintEffects = [];
-const options$1 = (
-  /** @type {import('./internal').Options} */
-  l
-);
-let oldBeforeDiff = options$1._diff;
-let oldBeforeRender = options$1._render;
-let oldAfterDiff = options$1.diffed;
-let oldCommit = options$1._commit;
-let oldBeforeUnmount = options$1.unmount;
-let oldRoot = options$1._root;
-const RAF_TIMEOUT = 35;
-let prevRaf;
-options$1._diff = (vnode) => {
-  currentComponent = null;
-  if (oldBeforeDiff) oldBeforeDiff(vnode);
-};
-options$1._root = (vnode, parentDom) => {
-  if (vnode && parentDom._children && parentDom._children._mask) {
-    vnode._mask = parentDom._children._mask;
-  }
-  if (oldRoot) oldRoot(vnode, parentDom);
-};
-options$1._render = (vnode) => {
-  if (oldBeforeRender) oldBeforeRender(vnode);
-  currentComponent = vnode._component;
-  currentIndex = 0;
-  const hooks = currentComponent.__hooks;
-  if (hooks) {
-    if (previousComponent === currentComponent) {
-      hooks._pendingEffects = [];
-      currentComponent._renderCallbacks = [];
-      hooks._list.forEach((hookItem) => {
-        if (hookItem._nextValue) {
-          hookItem._value = hookItem._nextValue;
-        }
-        hookItem._pendingArgs = hookItem._nextValue = void 0;
+var m$1 = e$1.bind(h$1);
+var t, r, u, i, o = Object.is, f = 0, c = [], e = options, a = e.__b, v = e.__r, l = e.diffed, m = e.__c, p = e.unmount, s = e.__;
+function d(n, t2) {
+  e.__h && e.__h(r, n, f || t2), f = 0;
+  var u2 = r.__H || (r.__H = { __: [], __h: [] });
+  return n >= u2.__.length && u2.__.push({}), u2.__[n];
+}
+function y(n) {
+  return f = 1, h(D, n);
+}
+function h(n, u2, i2) {
+  var f2 = d(t++, 2);
+  if (f2.t = n, !f2.__c && (f2.__ = [D(void 0, u2), function(n2) {
+    var t2 = f2.__N ? f2.__N[0] : f2.__[0], r2 = f2.t(t2, n2);
+    o(t2, r2) || (f2.__N = [r2, f2.__[1]], f2.__c.setState({}));
+  }], f2.__c = r, !r.__f)) {
+    var c2 = function(n2, t2, r2) {
+      if (!f2.__c.__H) return true;
+      var u3 = f2.__c.__H.__, i3 = f2.__c.props !== n2 || u3.every(function(n3) {
+        return !n3.__N;
       });
-    } else {
-      hooks._pendingEffects.forEach(invokeCleanup);
-      hooks._pendingEffects.forEach(invokeEffect);
-      hooks._pendingEffects = [];
-      currentIndex = 0;
-    }
-  }
-  previousComponent = currentComponent;
-};
-options$1.diffed = (vnode) => {
-  if (oldAfterDiff) oldAfterDiff(vnode);
-  const c = vnode._component;
-  if (c && c.__hooks) {
-    if (c.__hooks._pendingEffects.length) afterPaint(afterPaintEffects.push(c));
-    c.__hooks._list.forEach((hookItem) => {
-      if (hookItem._pendingArgs) {
-        hookItem._args = hookItem._pendingArgs;
-      }
-      hookItem._pendingArgs = void 0;
-    });
-  }
-  previousComponent = currentComponent = null;
-};
-options$1._commit = (vnode, commitQueue) => {
-  commitQueue.some((component) => {
-    try {
-      component._renderCallbacks.forEach(invokeCleanup);
-      component._renderCallbacks = component._renderCallbacks.filter(
-        (cb) => cb._value ? invokeEffect(cb) : true
-      );
-    } catch (e2) {
-      commitQueue.some((c) => {
-        if (c._renderCallbacks) c._renderCallbacks = [];
-      });
-      commitQueue = [];
-      options$1._catchError(e2, component._vnode);
-    }
-  });
-  if (oldCommit) oldCommit(vnode, commitQueue);
-};
-options$1.unmount = (vnode) => {
-  if (oldBeforeUnmount) oldBeforeUnmount(vnode);
-  const c = vnode._component;
-  if (c && c.__hooks) {
-    let hasErrored;
-    c.__hooks._list.forEach((s) => {
-      try {
-        invokeCleanup(s);
-      } catch (e2) {
-        hasErrored = e2;
-      }
-    });
-    c.__hooks = void 0;
-    if (hasErrored) options$1._catchError(hasErrored, c._vnode);
-  }
-};
-function getHookState(index, type) {
-  if (options$1._hook) {
-    options$1._hook(currentComponent, index, currentHook || type);
-  }
-  currentHook = 0;
-  const hooks = currentComponent.__hooks || (currentComponent.__hooks = {
-    _list: [],
-    _pendingEffects: []
-  });
-  if (index >= hooks._list.length) {
-    hooks._list.push({});
-  }
-  return hooks._list[index];
-}
-function useState(initialState) {
-  currentHook = 1;
-  return useReducer(invokeOrReturn, initialState);
-}
-function useReducer(reducer, initialState, init) {
-  const hookState = getHookState(currentIndex++, 2);
-  hookState._reducer = reducer;
-  if (!hookState._component) {
-    hookState._value = [
-      invokeOrReturn(void 0, initialState),
-      (action) => {
-        const currentValue = hookState._nextValue ? hookState._nextValue[0] : hookState._value[0];
-        const nextValue = hookState._reducer(currentValue, action);
-        if (!ObjectIs(currentValue, nextValue)) {
-          hookState._nextValue = [nextValue, hookState._value[1]];
-          hookState._component.setState({});
+      return u3.forEach(function(n3) {
+        if (n3.__N) {
+          var t3 = n3.__[0];
+          n3.__ = n3.__N, n3.__N = void 0, o(t3, n3.__[0]) || (i3 = true);
         }
+      }), e2 && e2.call(this, n2, t2, r2) || i3;
+    };
+    r.__f = true;
+    var e2 = r.shouldComponentUpdate, a2 = r.componentWillUpdate;
+    r.componentWillUpdate = function(n2, t2, r2) {
+      if (4 & this.__g) {
+        var u3 = e2;
+        e2 = void 0, c2(n2, t2, r2), e2 = u3;
       }
-    ];
-    hookState._component = currentComponent;
-    if (!currentComponent._hasScuFromHooks) {
-      let updateHookState = function(p, s, c) {
-        if (!hookState._component.__hooks) return true;
-        const hooksList = hookState._component.__hooks._list;
-        let shouldUpdate = hookState._component.props !== p || hooksList.every((x) => !x._nextValue);
-        hooksList.forEach((hookItem) => {
-          if (hookItem._nextValue) {
-            const currentValue = hookItem._value[0];
-            hookItem._value = hookItem._nextValue;
-            hookItem._nextValue = void 0;
-            if (!ObjectIs(currentValue, hookItem._value[0]))
-              shouldUpdate = true;
-          }
-        });
-        return prevScu ? prevScu.call(this, p, s, c) || shouldUpdate : shouldUpdate;
-      };
-      currentComponent._hasScuFromHooks = true;
-      let prevScu = currentComponent.shouldComponentUpdate;
-      const prevCWU = currentComponent.componentWillUpdate;
-      currentComponent.componentWillUpdate = function(p, s, c) {
-        if (this._bits & COMPONENT_FORCE) {
-          let tmp = prevScu;
-          prevScu = void 0;
-          updateHookState(p, s, c);
-          prevScu = tmp;
-        }
-        if (prevCWU) prevCWU.call(this, p, s, c);
-      };
-      currentComponent.shouldComponentUpdate = updateHookState;
-    }
+      a2 && a2.call(this, n2, t2, r2);
+    }, r.shouldComponentUpdate = c2;
   }
-  return hookState._value;
+  return f2.__;
 }
-function useEffect(callback, args) {
-  const state = getHookState(currentIndex++, 3);
-  if (!options$1._skipEffects && argsChanged(state._args, args)) {
-    state._value = callback;
-    state._pendingArgs = args;
-    currentComponent.__hooks._pendingEffects.push(state);
-  }
+function _(n, u2) {
+  var i2 = d(t++, 3);
+  !e.__s && C(i2.__H, u2) && (i2.__ = n, i2.u = u2, r.__H.__h.push(i2));
 }
-function useRef(initialValue) {
-  currentHook = 5;
-  return useMemo(() => ({ current: initialValue }), []);
-}
-function useMemo(factory, args) {
-  const state = getHookState(currentIndex++, 7);
-  if (argsChanged(state._args, args)) {
-    state._value = factory();
-    state._args = args;
-    state._factory = factory;
-  }
-  return state._value;
-}
-function useCallback(callback, args) {
-  currentHook = 8;
-  return useMemo(() => callback, args);
-}
-function useId() {
-  const state = getHookState(currentIndex++, 11);
-  if (!state._value) {
-    let root2 = currentComponent._vnode;
-    while (root2 !== null && !root2._mask && root2._parent !== null) {
-      root2 = root2._parent;
-    }
-    let mask = root2._mask || (root2._mask = [0, 0]);
-    state._value = "P" + mask[0] + "-" + mask[1]++;
-  }
-  return state._value;
-}
-function flushAfterPaintEffects() {
-  let component;
-  while (component = afterPaintEffects.shift()) {
-    if (!component._parentDom || !component.__hooks) continue;
-    try {
-      component.__hooks._pendingEffects.forEach(invokeCleanup);
-      component.__hooks._pendingEffects.forEach(invokeEffect);
-      component.__hooks._pendingEffects = [];
-    } catch (e2) {
-      component.__hooks._pendingEffects = [];
-      options$1._catchError(e2, component._vnode);
-    }
-  }
-}
-let HAS_RAF = typeof requestAnimationFrame == "function";
-function afterNextFrame(callback) {
-  const done = () => {
-    clearTimeout(timeout);
-    if (HAS_RAF) cancelAnimationFrame(raf);
-    setTimeout(callback);
-  };
-  const timeout = setTimeout(done, RAF_TIMEOUT);
-  let raf;
-  if (HAS_RAF) {
-    raf = requestAnimationFrame(done);
-  }
-}
-function afterPaint(newQueueLength) {
-  if (newQueueLength === 1 || prevRaf !== options$1.requestAnimationFrame) {
-    prevRaf = options$1.requestAnimationFrame;
-    (prevRaf || afterNextFrame)(flushAfterPaintEffects);
-  }
-}
-function invokeCleanup(hook) {
-  const comp = currentComponent;
-  let cleanup = hook._cleanup;
-  if (typeof cleanup == "function") {
-    hook._cleanup = void 0;
-    cleanup();
-  }
-  currentComponent = comp;
-}
-function invokeEffect(hook) {
-  const comp = currentComponent;
-  hook._cleanup = hook._value();
-  currentComponent = comp;
-}
-function argsChanged(oldArgs, newArgs) {
-  return !oldArgs || oldArgs.length !== newArgs.length || newArgs.some((arg, index) => !ObjectIs(arg, oldArgs[index]));
-}
-function invokeOrReturn(arg, f) {
-  return typeof f == "function" ? f(arg) : f;
-}
-const parents = /* @__PURE__ */ new Set();
-const coords = /* @__PURE__ */ new WeakMap();
-const siblings = /* @__PURE__ */ new WeakMap();
-const animations = /* @__PURE__ */ new WeakMap();
-const intersections = /* @__PURE__ */ new WeakMap();
-const mutationObservers = /* @__PURE__ */ new WeakMap();
-const intervals = /* @__PURE__ */ new WeakMap();
-const options = /* @__PURE__ */ new WeakMap();
-const debounces = /* @__PURE__ */ new WeakMap();
-const enabled = /* @__PURE__ */ new WeakSet();
-let root;
-let scrollX = 0;
-let scrollY = 0;
-const TGT = "__aa_tgt";
-const DEL = "__aa_del";
-const NEW = "__aa_new";
-const handleMutations = (mutations) => {
-  const elements = getElements(mutations);
-  if (elements) {
-    elements.forEach((el) => animate(el));
-  }
-};
-const handleResizes = (entries) => {
-  entries.forEach((entry) => {
-    if (entry.target === root)
-      updateAllPos();
-    if (coords.has(entry.target))
-      updatePos(entry.target);
-  });
-};
-function isOffscreen(el) {
-  const rect = el.getBoundingClientRect();
-  const vw = (root === null || root === void 0 ? void 0 : root.clientWidth) || 0;
-  const vh = (root === null || root === void 0 ? void 0 : root.clientHeight) || 0;
-  return rect.bottom < 0 || rect.top > vh || rect.right < 0 || rect.left > vw;
-}
-function observePosition(el) {
-  const oldObserver = intersections.get(el);
-  oldObserver === null || oldObserver === void 0 ? void 0 : oldObserver.disconnect();
-  let rect = coords.get(el);
-  let invocations = 0;
-  const buffer = 5;
-  if (!rect) {
-    rect = getCoords(el);
-    coords.set(el, rect);
-  }
-  const { offsetWidth, offsetHeight } = root;
-  const rootMargins = [
-    rect.top - buffer,
-    offsetWidth - (rect.left + buffer + rect.width),
-    offsetHeight - (rect.top + buffer + rect.height),
-    rect.left - buffer
-  ];
-  const rootMargin = rootMargins.map((px) => `${-1 * Math.floor(px)}px`).join(" ");
-  const observer = new IntersectionObserver(() => {
-    ++invocations > 1 && updatePos(el);
-  }, {
-    root,
-    threshold: 1,
-    rootMargin
-  });
-  observer.observe(el);
-  intersections.set(el, observer);
-}
-function updatePos(el, debounce = true) {
-  clearTimeout(debounces.get(el));
-  const optionsOrPlugin = getOptions(el);
-  const delay = debounce ? isPlugin(optionsOrPlugin) ? 500 : optionsOrPlugin.duration : 0;
-  debounces.set(el, setTimeout(async () => {
-    const currentAnimation = animations.get(el);
-    try {
-      await (currentAnimation === null || currentAnimation === void 0 ? void 0 : currentAnimation.finished);
-      coords.set(el, getCoords(el));
-      observePosition(el);
-    } catch {
-    }
-  }, delay));
-}
-function updateAllPos() {
-  clearTimeout(debounces.get(root));
-  debounces.set(root, setTimeout(() => {
-    parents.forEach((parent) => forEach(parent, (el) => lowPriority(() => updatePos(el))));
-  }, 100));
-}
-function poll(el) {
-  setTimeout(() => {
-    intervals.set(el, setInterval(() => lowPriority(updatePos.bind(null, el)), 2e3));
-  }, Math.round(2e3 * Math.random()));
-}
-function lowPriority(callback) {
-  if (typeof requestIdleCallback === "function") {
-    requestIdleCallback(() => callback());
-  } else {
-    requestAnimationFrame(() => callback());
-  }
-}
-let resize;
-const supportedBrowser = typeof window !== "undefined" && "ResizeObserver" in window;
-if (supportedBrowser) {
-  root = document.documentElement;
-  new MutationObserver(handleMutations);
-  resize = new ResizeObserver(handleResizes);
-  window.addEventListener("scroll", () => {
-    scrollY = window.scrollY;
-    scrollX = window.scrollX;
-  });
-  resize.observe(root);
-}
-function getElements(mutations) {
-  const observedNodes = mutations.reduce((nodes, mutation) => {
-    return [
-      ...nodes,
-      ...Array.from(mutation.addedNodes),
-      ...Array.from(mutation.removedNodes)
-    ];
+function F(n) {
+  return f = 5, q(function() {
+    return { current: n };
   }, []);
-  const onlyCommentNodesObserved = observedNodes.every((node) => node.nodeName === "#comment");
-  if (onlyCommentNodesObserved)
-    return false;
-  return mutations.reduce((elements, mutation) => {
-    if (elements === false)
-      return false;
-    if (mutation.target instanceof Element) {
-      target(mutation.target);
-      if (!elements.has(mutation.target)) {
-        elements.add(mutation.target);
-        for (let i = 0; i < mutation.target.children.length; i++) {
-          const child = mutation.target.children.item(i);
-          if (!child)
-            continue;
-          if (DEL in child) {
-            return false;
-          }
-          target(mutation.target, child);
-          elements.add(child);
-        }
-      }
-      if (mutation.removedNodes.length) {
-        for (let i = 0; i < mutation.removedNodes.length; i++) {
-          const child = mutation.removedNodes[i];
-          if (DEL in child) {
-            return false;
-          }
-          if (child instanceof Element) {
-            elements.add(child);
-            target(mutation.target, child);
-            siblings.set(child, [
-              mutation.previousSibling,
-              mutation.nextSibling
-            ]);
-          }
-        }
-      }
-    }
-    return elements;
-  }, /* @__PURE__ */ new Set());
 }
-function target(el, child) {
-  if (!child && !(TGT in el))
-    Object.defineProperty(el, TGT, { value: el });
-  else if (child && !(TGT in child))
-    Object.defineProperty(child, TGT, { value: el });
+function q(n, r2) {
+  var u2 = d(t++, 7);
+  return C(u2.__H, r2) && (u2.__ = n(), u2.__H = r2, u2.__h = n), u2.__;
 }
-function animate(el) {
-  var _a, _b;
-  const isMounted = el.isConnected;
-  const preExisting = coords.has(el);
-  if (isMounted && siblings.has(el))
-    siblings.delete(el);
-  if (((_a = animations.get(el)) === null || _a === void 0 ? void 0 : _a.playState) !== "finished") {
-    (_b = animations.get(el)) === null || _b === void 0 ? void 0 : _b.cancel();
+function b(n, t2) {
+  return f = 8, q(function() {
+    return n;
+  }, t2);
+}
+function P() {
+  var n = d(t++, 11);
+  if (!n.__) {
+    for (var u2 = r.__v; null !== u2 && !u2.__m && null !== u2.__; ) u2 = u2.__;
+    var i2 = u2.__m || (u2.__m = [0, 0]);
+    n.__ = "P" + i2[0] + "-" + i2[1]++;
   }
-  if (NEW in el) {
-    add(el);
-  } else if (preExisting && isMounted) {
-    remain(el);
-  } else if (preExisting && !isMounted) {
-    remove(el);
-  } else {
-    add(el);
+  return n.__;
+}
+function g() {
+  for (var n; n = c.shift(); ) if (n.__P && n.__H) try {
+    n.__H.__h.forEach(z), n.__H.__h.forEach(B), n.__H.__h = [];
+  } catch (t2) {
+    n.__H.__h = [], e.__e(t2, n.__v);
   }
 }
-function raw(str) {
-  return Number(str.replace(/[^0-9.\-]/g, ""));
-}
-function getScrollOffset(el) {
-  let p = el.parentElement;
-  while (p) {
-    if (p.scrollLeft || p.scrollTop) {
-      return { x: p.scrollLeft, y: p.scrollTop };
-    }
-    p = p.parentElement;
-  }
-  return { x: 0, y: 0 };
-}
-function getCoords(el) {
-  const rect = el.getBoundingClientRect();
-  const { x, y } = getScrollOffset(el);
-  return {
-    top: rect.top + y,
-    left: rect.left + x,
-    width: rect.width,
-    height: rect.height
-  };
-}
-function getTransitionSizes(el, oldCoords, newCoords) {
-  let widthFrom = oldCoords.width;
-  let heightFrom = oldCoords.height;
-  let widthTo = newCoords.width;
-  let heightTo = newCoords.height;
-  const styles = getComputedStyle(el);
-  const sizing = styles.getPropertyValue("box-sizing");
-  if (sizing === "content-box") {
-    const paddingY = raw(styles.paddingTop) + raw(styles.paddingBottom) + raw(styles.borderTopWidth) + raw(styles.borderBottomWidth);
-    const paddingX = raw(styles.paddingLeft) + raw(styles.paddingRight) + raw(styles.borderRightWidth) + raw(styles.borderLeftWidth);
-    widthFrom -= paddingX;
-    widthTo -= paddingX;
-    heightFrom -= paddingY;
-    heightTo -= paddingY;
-  }
-  return [widthFrom, widthTo, heightFrom, heightTo].map(Math.round);
-}
-function getOptions(el) {
-  return TGT in el && options.has(el[TGT]) ? options.get(el[TGT]) : { duration: 250, easing: "ease-in-out" };
-}
-function getTarget(el) {
-  if (TGT in el)
-    return el[TGT];
-  return void 0;
-}
-function isEnabled(el) {
-  const target2 = getTarget(el);
-  return target2 ? enabled.has(target2) : false;
-}
-function forEach(parent, ...callbacks) {
-  callbacks.forEach((callback) => callback(parent, options.has(parent)));
-  for (let i = 0; i < parent.children.length; i++) {
-    const child = parent.children.item(i);
-    if (child) {
-      callbacks.forEach((callback) => callback(child, options.has(child)));
-    }
-  }
-}
-function getPluginTuple(pluginReturn) {
-  if (Array.isArray(pluginReturn))
-    return pluginReturn;
-  return [pluginReturn];
-}
-function isPlugin(config) {
-  return typeof config === "function";
-}
-function remain(el) {
-  const oldCoords = coords.get(el);
-  const newCoords = getCoords(el);
-  if (!isEnabled(el))
-    return coords.set(el, newCoords);
-  if (isOffscreen(el)) {
-    coords.set(el, newCoords);
-    observePosition(el);
-    return;
-  }
-  let animation;
-  if (!oldCoords)
-    return;
-  const pluginOrOptions = getOptions(el);
-  if (typeof pluginOrOptions !== "function") {
-    let deltaLeft = oldCoords.left - newCoords.left;
-    let deltaTop = oldCoords.top - newCoords.top;
-    const deltaRight = oldCoords.left + oldCoords.width - (newCoords.left + newCoords.width);
-    const deltaBottom = oldCoords.top + oldCoords.height - (newCoords.top + newCoords.height);
-    if (deltaBottom == 0)
-      deltaTop = 0;
-    if (deltaRight == 0)
-      deltaLeft = 0;
-    const [widthFrom, widthTo, heightFrom, heightTo] = getTransitionSizes(el, oldCoords, newCoords);
-    const start = {
-      transform: `translate(${deltaLeft}px, ${deltaTop}px)`
-    };
-    const end = {
-      transform: `translate(0, 0)`
-    };
-    if (widthFrom !== widthTo) {
-      start.width = `${widthFrom}px`;
-      end.width = `${widthTo}px`;
-    }
-    if (heightFrom !== heightTo) {
-      start.height = `${heightFrom}px`;
-      end.height = `${heightTo}px`;
-    }
-    animation = el.animate([start, end], {
-      duration: pluginOrOptions.duration,
-      easing: pluginOrOptions.easing
-    });
-  } else {
-    const [keyframes] = getPluginTuple(pluginOrOptions(el, "remain", oldCoords, newCoords));
-    animation = new Animation(keyframes);
-    animation.play();
-  }
-  animations.set(el, animation);
-  coords.set(el, newCoords);
-  animation.addEventListener("finish", updatePos.bind(null, el, false), {
-    once: true
-  });
-}
-function add(el) {
-  if (NEW in el)
-    delete el[NEW];
-  const newCoords = getCoords(el);
-  coords.set(el, newCoords);
-  const pluginOrOptions = getOptions(el);
-  if (!isEnabled(el))
-    return;
-  if (isOffscreen(el)) {
-    observePosition(el);
-    return;
-  }
-  let animation;
-  if (typeof pluginOrOptions !== "function") {
-    animation = el.animate([
-      { transform: "scale(.98)", opacity: 0 },
-      { transform: "scale(0.98)", opacity: 0, offset: 0.5 },
-      { transform: "scale(1)", opacity: 1 }
-    ], {
-      duration: pluginOrOptions.duration * 1.5,
-      easing: "ease-in"
-    });
-  } else {
-    const [keyframes] = getPluginTuple(pluginOrOptions(el, "add", newCoords));
-    animation = new Animation(keyframes);
-    animation.play();
-  }
-  animations.set(el, animation);
-  animation.addEventListener("finish", updatePos.bind(null, el, false), {
-    once: true
-  });
-}
-function cleanUp(el, styles) {
-  var _a;
-  el.remove();
-  coords.delete(el);
-  siblings.delete(el);
-  animations.delete(el);
-  (_a = intersections.get(el)) === null || _a === void 0 ? void 0 : _a.disconnect();
-  setTimeout(() => {
-    if (DEL in el)
-      delete el[DEL];
-    Object.defineProperty(el, NEW, { value: true, configurable: true });
-    if (styles && el instanceof HTMLElement) {
-      for (const style in styles) {
-        el.style[style] = "";
-      }
-    }
-  }, 0);
-}
-function remove(el) {
-  var _a;
-  if (!siblings.has(el) || !coords.has(el))
-    return;
-  const [prev, next] = siblings.get(el);
-  Object.defineProperty(el, DEL, { value: true, configurable: true });
-  const finalX = window.scrollX;
-  const finalY = window.scrollY;
-  if (next && next.parentNode && next.parentNode instanceof Element) {
-    next.parentNode.insertBefore(el, next);
-  } else if (prev && prev.parentNode) {
-    prev.parentNode.appendChild(el);
-  } else {
-    (_a = getTarget(el)) === null || _a === void 0 ? void 0 : _a.appendChild(el);
-  }
-  if (!isEnabled(el))
-    return cleanUp(el);
-  const [top, left, width, height] = deletePosition(el);
-  const optionsOrPlugin = getOptions(el);
-  const oldCoords = coords.get(el);
-  if (finalX !== scrollX || finalY !== scrollY) {
-    adjustScroll(el, finalX, finalY, optionsOrPlugin);
-  }
-  let animation;
-  let styleReset = {
-    position: "absolute",
-    top: `${top}px`,
-    left: `${left}px`,
-    width: `${width}px`,
-    height: `${height}px`,
-    margin: "0",
-    pointerEvents: "none",
-    transformOrigin: "center",
-    zIndex: "100"
-  };
-  if (!isPlugin(optionsOrPlugin)) {
-    Object.assign(el.style, styleReset);
-    animation = el.animate([
-      {
-        transform: "scale(1)",
-        opacity: 1
-      },
-      {
-        transform: "scale(.98)",
-        opacity: 0
-      }
-    ], {
-      duration: optionsOrPlugin.duration,
-      easing: "ease-out"
-    });
-  } else {
-    const [keyframes, options2] = getPluginTuple(optionsOrPlugin(el, "remove", oldCoords));
-    if ((options2 === null || options2 === void 0 ? void 0 : options2.styleReset) !== false) {
-      styleReset = (options2 === null || options2 === void 0 ? void 0 : options2.styleReset) || styleReset;
-      Object.assign(el.style, styleReset);
-    }
-    animation = new Animation(keyframes);
-    animation.play();
-  }
-  animations.set(el, animation);
-  animation.addEventListener("finish", () => cleanUp(el, styleReset), {
-    once: true
-  });
-}
-function adjustScroll(el, finalX, finalY, optionsOrPlugin) {
-  const scrollDeltaX = scrollX - finalX;
-  const scrollDeltaY = scrollY - finalY;
-  const scrollBefore = document.documentElement.style.scrollBehavior;
-  const scrollBehavior = getComputedStyle(root).scrollBehavior;
-  if (scrollBehavior === "smooth") {
-    document.documentElement.style.scrollBehavior = "auto";
-  }
-  window.scrollTo(window.scrollX + scrollDeltaX, window.scrollY + scrollDeltaY);
-  if (!el.parentElement)
-    return;
-  const parent = el.parentElement;
-  let lastHeight = parent.clientHeight;
-  let lastWidth = parent.clientWidth;
-  const startScroll = performance.now();
-  function smoothScroll() {
-    requestAnimationFrame(() => {
-      if (!isPlugin(optionsOrPlugin)) {
-        const deltaY = lastHeight - parent.clientHeight;
-        const deltaX = lastWidth - parent.clientWidth;
-        if (startScroll + optionsOrPlugin.duration > performance.now()) {
-          window.scrollTo({
-            left: window.scrollX - deltaX,
-            top: window.scrollY - deltaY
-          });
-          lastHeight = parent.clientHeight;
-          lastWidth = parent.clientWidth;
-          smoothScroll();
-        } else {
-          document.documentElement.style.scrollBehavior = scrollBefore;
-        }
-      }
-    });
-  }
-  smoothScroll();
-}
-function deletePosition(el) {
-  var _a;
-  const oldCoords = coords.get(el);
-  const [width, , height] = getTransitionSizes(el, oldCoords, getCoords(el));
-  let offsetParent = el.parentElement;
-  while (offsetParent && (getComputedStyle(offsetParent).position === "static" || offsetParent instanceof HTMLBodyElement)) {
-    offsetParent = offsetParent.parentElement;
-  }
-  if (!offsetParent)
-    offsetParent = document.body;
-  const parentStyles = getComputedStyle(offsetParent);
-  const parentCoords = !animations.has(el) || ((_a = animations.get(el)) === null || _a === void 0 ? void 0 : _a.playState) === "finished" ? getCoords(offsetParent) : coords.get(offsetParent);
-  const top = Math.round(oldCoords.top - parentCoords.top) - raw(parentStyles.borderTopWidth);
-  const left = Math.round(oldCoords.left - parentCoords.left) - raw(parentStyles.borderLeftWidth);
-  return [top, left, width, height];
-}
-function autoAnimate(el, config = {}) {
-  if (supportedBrowser && resize) {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const isDisabledDueToReduceMotion = mediaQuery.matches && !isPlugin(config) && !config.disrespectUserMotionPreference;
-    if (!isDisabledDueToReduceMotion) {
-      enabled.add(el);
-      if (getComputedStyle(el).position === "static") {
-        Object.assign(el.style, { position: "relative" });
-      }
-      forEach(el, updatePos, poll, (element) => resize === null || resize === void 0 ? void 0 : resize.observe(element));
-      if (isPlugin(config)) {
-        options.set(el, config);
-      } else {
-        options.set(el, {
-          duration: 250,
-          easing: "ease-in-out",
-          ...config
-        });
-      }
-      const mo = new MutationObserver(handleMutations);
-      mo.observe(el, { childList: true });
-      mutationObservers.set(el, mo);
-      parents.add(el);
-    }
-  }
-  const controller = Object.freeze({
-    parent: el,
-    enable: () => {
-      enabled.add(el);
-    },
-    disable: () => {
-      enabled.delete(el);
-      forEach(el, (node) => {
-        const a = animations.get(node);
-        try {
-          a === null || a === void 0 ? void 0 : a.cancel();
-        } catch {
-        }
-        animations.delete(node);
-        const d = debounces.get(node);
-        if (d)
-          clearTimeout(d);
-        debounces.delete(node);
-        const i = intervals.get(node);
-        if (i)
-          clearInterval(i);
-        intervals.delete(node);
+e.__b = function(n) {
+  r = null, a && a(n);
+}, e.__ = function(n, t2) {
+  n && t2.__k && t2.__k.__m && (n.__m = t2.__k.__m), s && s(n, t2);
+}, e.__r = function(n) {
+  v && v(n), t = 0;
+  var i2 = (r = n.__c).__H;
+  i2 && (u === r ? (i2.__h = [], r.__h = [], i2.__.forEach(function(n2) {
+    n2.__N && (n2.__ = n2.__N), n2.u = n2.__N = void 0;
+  })) : (i2.__h.forEach(z), i2.__h.forEach(B), i2.__h = [], t = 0)), u = r;
+}, e.diffed = function(n) {
+  l && l(n);
+  var t2 = n.__c;
+  t2 && t2.__H && (t2.__H.__h.length && (1 !== c.push(t2) && i === e.requestAnimationFrame || ((i = e.requestAnimationFrame) || w)(g)), t2.__H.__.forEach(function(n2) {
+    n2.u && (n2.__H = n2.u), n2.u = void 0;
+  })), u = r = null;
+}, e.__c = function(n, t2) {
+  t2.some(function(n2) {
+    try {
+      n2.__h.forEach(z), n2.__h = n2.__h.filter(function(n3) {
+        return !n3.__ || B(n3);
       });
-    },
-    isEnabled: () => enabled.has(el),
-    destroy: () => {
-      enabled.delete(el);
-      parents.delete(el);
-      options.delete(el);
-      const mo = mutationObservers.get(el);
-      mo === null || mo === void 0 ? void 0 : mo.disconnect();
-      mutationObservers.delete(el);
-      forEach(el, (node) => {
-        resize === null || resize === void 0 ? void 0 : resize.unobserve(node);
-        const a = animations.get(node);
-        try {
-          a === null || a === void 0 ? void 0 : a.cancel();
-        } catch {
-        }
-        animations.delete(node);
-        const io = intersections.get(node);
-        io === null || io === void 0 ? void 0 : io.disconnect();
-        intersections.delete(node);
-        const i = intervals.get(node);
-        if (i)
-          clearInterval(i);
-        intervals.delete(node);
-        const d = debounces.get(node);
-        if (d)
-          clearTimeout(d);
-        debounces.delete(node);
-        coords.delete(node);
-        siblings.delete(node);
-      });
+    } catch (r2) {
+      t2.some(function(n3) {
+        n3.__h && (n3.__h = []);
+      }), t2 = [], e.__e(r2, n2.__v);
     }
-  });
-  return controller;
+  }), m && m(n, t2);
+}, e.unmount = function(n) {
+  p && p(n);
+  var t2, r2 = n.__c;
+  r2 && r2.__H && (r2.__H.__.forEach(function(n2) {
+    try {
+      z(n2);
+    } catch (n3) {
+      t2 = n3;
+    }
+  }), r2.__H = void 0, t2 && e.__e(t2, r2.__v));
+};
+var k = "function" == typeof requestAnimationFrame;
+function w(n) {
+  var t2, r2 = function() {
+    clearTimeout(u2), k && cancelAnimationFrame(t2), setTimeout(n);
+  }, u2 = setTimeout(r2, 35);
+  k && (t2 = requestAnimationFrame(r2));
 }
-function useAutoAnimate(options2) {
-  const element = useRef(null);
-  const [controller, setController] = useState();
-  const setEnabled = (enabled2) => {
-    if (controller) {
-      enabled2 ? controller.enable() : controller.disable();
-    }
-  };
-  useEffect(() => {
-    if (element.current instanceof HTMLElement)
-      setController(autoAnimate(element.current, {}));
-  }, []);
-  useEffect(() => {
-    return () => {
-      var _a;
-      (_a = controller === null || controller === void 0 ? void 0 : controller.destroy) === null || _a === void 0 ? void 0 : _a.call(controller);
-    };
-  }, [controller]);
-  return [element, setEnabled];
+function z(n) {
+  var t2 = r, u2 = n.__c;
+  "function" == typeof u2 && (n.__c = void 0, u2()), r = t2;
+}
+function B(n) {
+  var t2 = r;
+  n.__c = n.__(), r = t2;
+}
+function C(n, t2) {
+  return !n || n.length !== t2.length || t2.some(function(t3, r2) {
+    return !o(t3, n[r2]);
+  });
+}
+function D(n, t2) {
+  return "function" == typeof t2 ? t2(n) : t2;
 }
 function getDefaultExportFromCjs(x) {
   return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
@@ -911,7 +208,7 @@ const scopeToCSSClass = (name, { prefix }) => {
     const pieces = name.split(".");
     return [
       `${prefix}${pieces.shift()}`,
-      ...pieces.map((x, i) => `${x}${"_".repeat(i + 1)}`)
+      ...pieces.map((x, i2) => `${x}${"_".repeat(i2 + 1)}`)
     ].join(" ");
   }
   return `${prefix}${name}`;
@@ -1480,10 +777,10 @@ function remapScopeNames(mode, regexes, { key }) {
   const scopeNames = mode[key];
   const emit = {};
   const positions = {};
-  for (let i = 1; i <= regexes.length; i++) {
-    positions[i + offset] = scopeNames[i];
-    emit[i + offset] = true;
-    offset += countMatchGroups(regexes[i - 1]);
+  for (let i2 = 1; i2 <= regexes.length; i2++) {
+    positions[i2 + offset] = scopeNames[i2];
+    emit[i2 + offset] = true;
+    offset += countMatchGroups(regexes[i2 - 1]);
   }
   mode[key] = positions;
   mode[key]._emit = emit;
@@ -1562,15 +859,15 @@ function compileLanguage(language) {
       this.lastIndex = 0;
     }
     /** @param {string} s */
-    exec(s) {
+    exec(s2) {
       this.matcherRe.lastIndex = this.lastIndex;
-      const match = this.matcherRe.exec(s);
+      const match = this.matcherRe.exec(s2);
       if (!match) {
         return null;
       }
-      const i = match.findIndex((el, i2) => i2 > 0 && el !== void 0);
-      const matchData = this.matchIndexes[i];
-      match.splice(0, i);
+      const i2 = match.findIndex((el, i3) => i3 > 0 && el !== void 0);
+      const matchData = this.matchIndexes[i2];
+      match.splice(0, i2);
       return Object.assign(match, matchData);
     }
   }
@@ -1603,16 +900,16 @@ function compileLanguage(language) {
       if (opts.type === "begin") this.count++;
     }
     /** @param {string} s */
-    exec(s) {
+    exec(s2) {
       const m2 = this.getMatcher(this.regexIndex);
       m2.lastIndex = this.lastIndex;
-      let result = m2.exec(s);
+      let result = m2.exec(s2);
       if (this.resumingScanAtSamePosition()) {
         if (result && result.index === this.lastIndex) ;
         else {
           const m22 = this.getMatcher(0);
           m22.lastIndex = this.lastIndex + 1;
-          result = m22.exec(s);
+          result = m22.exec(s2);
         }
       }
       if (result) {
@@ -1686,13 +983,13 @@ function compileLanguage(language) {
       mode.illegal
     );
     if (!mode.contains) mode.contains = [];
-    mode.contains = [].concat(...mode.contains.map(function(c) {
-      return expandOrCloneMode(c === "self" ? mode : c);
+    mode.contains = [].concat(...mode.contains.map(function(c2) {
+      return expandOrCloneMode(c2 === "self" ? mode : c2);
     }));
-    mode.contains.forEach(function(c) {
+    mode.contains.forEach(function(c2) {
       compileMode(
         /** @type Mode */
-        c,
+        c2,
         cmode
       );
     });
@@ -1880,15 +1177,15 @@ const HLJS = function(hljs) {
       emitter.endScope();
     }
     function emitMultiClass(scope, match) {
-      let i = 1;
+      let i2 = 1;
       const max = match.length - 1;
-      while (i <= max) {
-        if (!scope._emit[i]) {
-          i++;
+      while (i2 <= max) {
+        if (!scope._emit[i2]) {
+          i2++;
           continue;
         }
-        const klass = language.classNameAliases[scope[i]] || scope[i];
-        const text = match[i];
+        const klass = language.classNameAliases[scope[i2]] || scope[i2];
+        const text = match[i2];
         if (klass) {
           emitKeyword(text, klass);
         } else {
@@ -1896,7 +1193,7 @@ const HLJS = function(hljs) {
           processKeywords();
           modeBuffer = "";
         }
-        i++;
+        i2++;
       }
     }
     function startNewMode(mode, match) {
@@ -2153,12 +1450,12 @@ const HLJS = function(hljs) {
       (name) => _highlight(name, code, false)
     );
     results.unshift(plaintext);
-    const sorted = results.sort((a, b) => {
-      if (a.relevance !== b.relevance) return b.relevance - a.relevance;
-      if (a.language && b.language) {
-        if (getLanguage(a.language).supersetOf === b.language) {
+    const sorted = results.sort((a2, b2) => {
+      if (a2.relevance !== b2.relevance) return b2.relevance - a2.relevance;
+      if (a2.language && b2.language) {
+        if (getLanguage(a2.language).supersetOf === b2.language) {
           return 1;
-        } else if (getLanguage(b.language).supersetOf === a.language) {
+        } else if (getLanguage(b2.language).supersetOf === a2.language) {
           return -1;
         }
       }
@@ -4043,7 +3340,7 @@ var NUMERIC = {
 };
 function recurRegex(re, substitution, depth) {
   if (depth === -1) return "";
-  return re.replace(substitution, (_) => {
+  return re.replace(substitution, (_2) => {
     return recurRegex(re, substitution, depth - 1);
   });
 }
@@ -5081,7 +4378,7 @@ function typescript(hljs) {
   };
   Object.assign(tsLanguage.keywords, KEYWORDS$12);
   tsLanguage.exports.PARAMS_CONTAINS.push(DECORATOR);
-  const ATTRIBUTE_HIGHLIGHT = tsLanguage.contains.find((c) => c.scope === "attr");
+  const ATTRIBUTE_HIGHLIGHT = tsLanguage.contains.find((c2) => c2.scope === "attr");
   const OPTIONAL_KEY_OR_ARGUMENT = Object.assign(
     {},
     ATTRIBUTE_HIGHLIGHT,
@@ -5752,8 +5049,8 @@ function mandatoryNameOrIndex(PropName) {
   );
 }
 function useOnlineStatus() {
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
-  useEffect(() => {
+  const [isOnline, setIsOnline] = y(navigator.onLine);
+  _(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
     window.addEventListener("online", handleOnline);
@@ -5766,11 +5063,11 @@ function useOnlineStatus() {
   return isOnline;
 }
 function useWindowSize() {
-  const [Size, setSize] = useState({
+  const [Size, setSize] = y({
     Width: window.innerWidth,
     Height: window.innerHeight
   });
-  useEffect(() => {
+  _(() => {
     const handleResize = () => setSize({
       Width: window.innerWidth,
       Height: window.innerHeight
@@ -5781,7 +5078,7 @@ function useWindowSize() {
   return Size;
 }
 function useRerenderer() {
-  const [State, setState] = useState({});
+  const [State, setState] = y({});
   function rerender() {
     setState({});
   }
@@ -5789,11 +5086,11 @@ function useRerenderer() {
 }
 function useConfiguration(initialConfiguration = {}) {
   allowPlainObject("initial configuration", initialConfiguration);
-  const ConfigurationRef = useRef();
+  const ConfigurationRef = F();
   if (ConfigurationRef.current == null) {
     ConfigurationRef.current = deepCopyOf(initialConfiguration);
   }
-  const configure = useCallback((ChangeSet) => {
+  const configure = b((ChangeSet) => {
     allowPlainObject("configuration change set", ChangeSet);
     if (ChangeSet == null) {
       return;
@@ -5844,8 +5141,8 @@ function useDragging({
   allowFunction('"onDragCancellation" callback', onDragCancellation);
   const RecognizerMayDrag = onDragStart != null && onDragContinuation != null && onDragFinish != null && onDragCancellation != null;
   let ContainerElement;
-  const StartPosition = useRef();
-  const isDragging = useRef(false);
+  const StartPosition = F();
+  const isDragging = F(false);
   const onPointerDown = (Event) => {
     if (ViewRef.current == null || !(Event.target instanceof HTMLElement)) {
       return;
@@ -5932,19 +5229,19 @@ function useDragging({
   const CallbackArguments = (Container2, Event) => {
     const ContainerBox = Container2.getBoundingClientRect();
     const x = Event.clientX - ContainerBox.left + Container2.scrollLeft;
-    const y = Event.clientY - ContainerBox.top + Container2.scrollTop;
+    const y2 = Event.clientY - ContainerBox.top + Container2.scrollTop;
     const dx = x - StartPosition.current.x;
-    const dy = y - StartPosition.current.y;
-    return [dx, dy, x, y, Event];
+    const dy = y2 - StartPosition.current.y;
+    return [dx, dy, x, y2, Event];
   };
-  function matchesSelector(Element2, Selector) {
+  function matchesSelector(Element, Selector) {
     switch (true) {
       case Selector == null:
         return true;
       case typeof Selector === "string":
-        return Element2.matches(Selector);
+        return Element.matches(Selector);
       default:
-        return Element2 === Selector;
+        return Element === Selector;
     }
   }
   return onPointerDown;
@@ -5993,9 +5290,9 @@ function useClickDragging({
   const RecognizerMayClick = MultiClickLimit > 0 && onClick != null;
   const RecognizerMayDrag = onDragStart != null && onDragContinuation != null && onDragFinish != null;
   let ContainerElement;
-  const StartPosition = useRef();
-  const isDragging = useRef(false);
-  const lastClick = useRef({ Count: 0, Time: 0 });
+  const StartPosition = F();
+  const isDragging = F(false);
+  const lastClick = F({ Count: 0, Time: 0 });
   const onPointerDown = (Event) => {
     if (ViewRef.current == null || !(Event.target instanceof HTMLElement)) {
       return;
@@ -6052,16 +5349,16 @@ function useClickDragging({
     if (ContainerElement == null) {
       return;
     }
-    const [dx, dy, x, y] = CallbackArguments(ContainerElement, Event);
+    const [dx, dy, x, y2] = CallbackArguments(ContainerElement, Event);
     if (isDragging.current === false) {
       if (dx * dx + dy * dy < ClickRadius * ClickRadius) {
         return;
       } else {
         isDragging.current = true;
-        onDragStart?.(dx, dy, x, y, Event);
+        onDragStart?.(dx, dy, x, y2, Event);
       }
     }
-    onDragContinuation?.apply(null, [dx, dy, x, y, Event]);
+    onDragContinuation?.apply(null, [dx, dy, x, y2, Event]);
   };
   const finishDragging = (Event, cancelled) => {
     window.removeEventListener("pointermove", onPointerMove);
@@ -6086,8 +5383,8 @@ function useClickDragging({
         ClickCount = now - Time > MultiClickTimeSpan ? 1 : Math.min(ClickCount + 1, MultiClickLimit);
         lastClick.current = { ClickCount, Time: now };
         if (ContainerElement != null) {
-          const [dx, dy, x, y] = CallbackArguments(ContainerElement, Event);
-          onClick?.apply(null, [ClickCount, dx, dy, x, y, Event]);
+          const [dx, dy, x, y2] = CallbackArguments(ContainerElement, Event);
+          onClick?.apply(null, [ClickCount, dx, dy, x, y2, Event]);
         }
       }
     }
@@ -6101,19 +5398,19 @@ function useClickDragging({
   const CallbackArguments = (Container2, Event) => {
     const ContainerBox = Container2.getBoundingClientRect();
     const x = Event.clientX - ContainerBox.left + Container2.scrollLeft;
-    const y = Event.clientY - ContainerBox.top + Container2.scrollTop;
+    const y2 = Event.clientY - ContainerBox.top + Container2.scrollTop;
     const dx = x - StartPosition.current.x;
-    const dy = y - StartPosition.current.y;
-    return [dx, dy, x, y, Event];
+    const dy = y2 - StartPosition.current.y;
+    return [dx, dy, x, y2, Event];
   };
-  function matchesSelector(Element2, Selector) {
+  function matchesSelector(Element, Selector) {
     switch (true) {
       case Selector == null:
         return true;
       case typeof Selector === "string":
-        return Element2.matches(Selector);
+        return Element.matches(Selector);
       default:
-        return Element2 === Selector;
+        return Element === Selector;
     }
   }
   return onPointerDown;
@@ -6213,7 +5510,7 @@ function SIM_ErrorIndicator(PropSet) {
       console.warn(ErrorToShow);
       window.alert(ErrorMessageFor(ErrorToShow));
     };
-    return m`<div class="sim-error-indicator" onClick=${onClick}/>`;
+    return m$1`<div class="sim-error-indicator" onClick=${onClick}/>`;
   });
 }
 installStylesheetFor("sim-error-indicator", `
@@ -6261,7 +5558,7 @@ function safelyRendered(Renderer) {
         "error while rendering component " + quoted(ComponentName) + ": " + Signal
       );
     }
-    return m`<${SIM_ErrorIndicator} error=${Signal}/>`;
+    return m$1`<${SIM_ErrorIndicator} error=${Signal}/>`;
   }
 }
 function fullsized(PropSet) {
@@ -6270,7 +5567,7 @@ function fullsized(PropSet) {
       PropSet,
       optionalTextline("class")
     );
-    return m`<div class="sim-component fullsized ${Classes ?? ""}" ...${RestProps}>
+    return m$1`<div class="sim-component fullsized ${Classes ?? ""}" ...${RestProps}>
         ${ContentList}
       </>`;
   });
@@ -6278,7 +5575,7 @@ function fullsized(PropSet) {
 installStylesheetFor("sim-component.fullsized", `
     .sim-component.fullsized > * {
       display:block; position:relative;
-      left:0px; top:0px; width:100% !important; height:100% !important;
+      left:0px; top:0px; width:100%; height:100%;
     }
   `);
 function centered(PropSet) {
@@ -6287,7 +5584,7 @@ function centered(PropSet) {
       PropSet,
       optionalTextline("class")
     );
-    return m`<div class="sim-component centered ${Classes ?? ""}" ...${RestProps}>
+    return m$1`<div class="sim-component centered ${Classes ?? ""}" ...${RestProps}>
         ${ContentList}
       </>`;
   });
@@ -6311,7 +5608,7 @@ function horizontal(PropSet) {
       optionalOrdinal("gap")
     );
     Gap = Gap ?? 0;
-    return m`<div class="sim-component horizontal ${Classes ?? ""}"
+    return m$1`<div class="sim-component horizontal ${Classes ?? ""}"
         style="gap:${Gap}px; ${Style ?? ""}" ...${RestProps}
       >${ContentList}</>`;
   });
@@ -6335,7 +5632,7 @@ function vertical(PropSet) {
       optionalOrdinal("gap")
     );
     Gap = Gap ?? 0;
-    return m`<div class="sim-component vertical ${Classes ?? ""}"
+    return m$1`<div class="sim-component vertical ${Classes ?? ""}"
         style="gap:${Gap}px; ${Style ?? ""}" ...${RestProps}
       >${ContentList}</>`;
   });
@@ -6398,16 +5695,16 @@ function tabular(PropSet) {
         CellIndex = 0;
       }
     });
-    const ColGroup = ColClasses.trim() === "" ? "" : m`<colgroup>${ColClasses.split(" ").map((Class) => m`<col class="${Class}"/>`)}</>`;
-    return m`<table class="sim-component tabular ${Classes ?? ""}" style="
+    const ColGroup = ColClasses.trim() === "" ? "" : m$1`<colgroup>${ColClasses.split(" ").map((Class) => m$1`<col class="${Class}"/>`)}</>`;
+    return m$1`<table class="sim-component tabular ${Classes ?? ""}" style="
         ${Style ?? ""};
         border-spacing:${ColGap}px ${RowGap}px;
         margin:-${RowGap}px -${ColGap}px -${RowGap}px -${ColGap}px
       " ...${RestProps}
       >${ColGroup}<tbody>
-        ${ContentCount > 0 && RowList.map((Row, i) => m`<tr>
+        ${ContentCount > 0 && RowList.map((Row, i2) => m$1`<tr>
           ${Row.map(
-      (Cell) => m`<td colspan=${ColSpanOfCell(Cell)}>${Cell}</>`
+      (Cell) => m$1`<td colspan=${ColSpanOfCell(Cell)}>${Cell}</>`
     )}
         </tr>`)}
       </tbody></table>`;
@@ -6448,7 +5745,7 @@ function selective(PropSet) {
     );
     const ContentCount = ContentList.length;
     activeIndex = ContentCount === 0 ? 0 : Math.max(0, Math.min(activeIndex ?? 0, ContentCount - 1));
-    return m`<div class="sim-component selective ${Classes ?? ""}"
+    return m$1`<div class="sim-component selective ${Classes ?? ""}"
         ...${RestProps}>${ContentList[activeIndex]}</>`;
   });
 }
@@ -6459,8 +5756,8 @@ installStylesheetFor("sim-component.selective", `
     }
 
     .sim-component.selective > * {
-      display:block; position:absolute;
-      left:0px; top:0px; width:100% ! important; height:100% ! important;
+      display:block; position:relative;
+      left:0px; top:0px; width:100%; height:100%;
     }
   `);
 function stacked(PropSet) {
@@ -6469,7 +5766,7 @@ function stacked(PropSet) {
       PropSet,
       optionalTextline("class")
     );
-    return m`<div class="sim-component stacked ${Classes ?? ""}" ...${RestProps}>
+    return m$1`<div class="sim-component stacked ${Classes ?? ""}" ...${RestProps}>
         ${ContentList}
       </>`;
   });
@@ -6494,7 +5791,7 @@ function Dummy(PropSet) {
       optionalText("value"),
       optionalBoolean("visiblepattern")
     );
-    return m`<div
+    return m$1`<div
         class="sim-component dummy ${visiblePattern ? "visible-pattern" : ""} ${Classes ?? ""}"
         ...${RestProps} dangerouslySetInnerHTML=${{ __html: Value ?? "" }}
       />`;
@@ -6514,7 +5811,7 @@ function Outline(PropSet) {
       PropSet,
       optionalTextline("class")
     );
-    return m`<div class="sim-component outline ${Classes ?? ""}" ...${RestProps}/>`;
+    return m$1`<div class="sim-component outline ${Classes ?? ""}" ...${RestProps}/>`;
   });
 }
 installStylesheetFor("sim-component.outline", `
@@ -6529,7 +5826,7 @@ function Spacer(PropSet) {
       PropSet,
       optionalTextline("class")
     );
-    return m`<div class="sim-component spacer ${Classes ?? ""}" ...${RestProps}/>`;
+    return m$1`<div class="sim-component spacer ${Classes ?? ""}" ...${RestProps}/>`;
   });
 }
 function expandingSpacer(PropSet) {
@@ -6538,7 +5835,7 @@ function expandingSpacer(PropSet) {
       PropSet,
       optionalTextline("class")
     );
-    return m`<div class="sim-component expanding-spacer ${Classes ?? ""}" ...${RestProps}/>`;
+    return m$1`<div class="sim-component expanding-spacer ${Classes ?? ""}" ...${RestProps}/>`;
   });
 }
 installStylesheetFor("sim-component.expanding-spacer", `
@@ -6552,7 +5849,7 @@ function horizontalSeparator(PropSet) {
       PropSet,
       optionalTextline("class")
     );
-    return m`<div class="sim-component horizontal-separator ${Classes ?? ""}" ...${RestProps}/>`;
+    return m$1`<div class="sim-component horizontal-separator ${Classes ?? ""}" ...${RestProps}/>`;
   });
 }
 installStylesheetFor("sim-component.horizontal-separator", `
@@ -6572,7 +5869,7 @@ function verticalSeparator(PropSet) {
       PropSet,
       optionalTextline("class")
     );
-    return m`<div class="sim-component vertical-separator ${Classes ?? ""}" ...${RestProps}/>`;
+    return m$1`<div class="sim-component vertical-separator ${Classes ?? ""}" ...${RestProps}/>`;
   });
 }
 installStylesheetFor("sim-component.vertical-separator", `
@@ -6593,7 +5890,7 @@ function plainTextlineView(PropSet) {
       optionalTextline("class"),
       optionalText("value")
     );
-    return m`<div class=${Classes ?? ""} ...${RestProps}>
+    return m$1`<div class=${Classes ?? ""} ...${RestProps}>
         ${Value ?? ContentList}
       </>`;
   });
@@ -6656,7 +5953,7 @@ function TextView(PropSet) {
       optionalTextline("class"),
       optionalText("value")
     );
-    return m`<div class="sim-component textview ${Classes ?? ""}" ...${RestProps}>${Value ?? ""}</>`;
+    return m$1`<div class="sim-component textview ${Classes ?? ""}" ...${RestProps}>${Value ?? ""}</>`;
   });
 }
 installStylesheetFor("sim-component.textview", `
@@ -6672,7 +5969,7 @@ function HTMLView(PropSet) {
       optionalTextline("class"),
       optionalText("value")
     );
-    return m`<div class="sim-component htmlview ${Classes ?? ""}" ...${RestProps}
+    return m$1`<div class="sim-component htmlview ${Classes ?? ""}" ...${RestProps}
         dangerouslySetInnerHTML=${{ __html: Value ?? "" }}
       />`;
   });
@@ -6710,11 +6007,11 @@ function MarkdownView(PropSet) {
       optionalTextline("class"),
       optionalText("value")
     );
-    const HTMLContents = useMemo(
+    const HTMLContents = q(
       () => MarkdownRenderer.paime(Value ?? ""),
       [Value]
     );
-    return m`<div class="sim-component markdownview ${Classes ?? ""}" ...${RestProps}
+    return m$1`<div class="sim-component markdownview ${Classes ?? ""}" ...${RestProps}
         dangerouslySetInnerHTML=${{ __html: HTMLContents }}
       />`;
   });
@@ -6837,7 +6134,7 @@ function ImageView(PropSet) {
       optionalValue("scaling", ValueIsImageScaling),
       optionalValue("alignment", ValueIsImageAlignment)
     );
-    return m`<img class="sim-component imageview ${Classes ?? ""}" src=${Value ?? ""} style="
+    return m$1`<img class="sim-component imageview ${Classes ?? ""}" src=${Value ?? ""} style="
         object-fit:${ImageScaling ?? "contain"};
         object-position:${ImageAlignment ?? "center center"}; ${Style}
       " ...${RestProps}/>`;
@@ -6865,8 +6162,8 @@ function SVGView(PropSet) {
       optionalValue("scaling", ValueIsImageScaling),
       optionalValue("alignment", ValueIsImageAlignment)
     );
-    const DataURL = useMemo(() => "image/svg+xml;base64," + btoa(Value ?? ""));
-    return m`<img class="sim-component svgview ${Classes ?? ""}" src=${DataURL} style="
+    const DataURL = q(() => "image/svg+xml;base64," + btoa(Value ?? ""));
+    return m$1`<img class="sim-component svgview ${Classes ?? ""}" src=${DataURL} style="
         object-fit:${ImageScaling ?? "contain"};
         object-position:${ImageAlignment ?? "center center"}; ${Style}
       " ...${RestProps}/>`;
@@ -6910,7 +6207,7 @@ function WebView(PropSet) {
       optionalTextline("sandbox"),
       optionalValue("referrerpolicy", ValueIsReferrerPolicy)
     );
-    return m`<iframe class="sim-component webview ${Classes ?? ""}" src=${Value ?? ""}
+    return m$1`<iframe class="sim-component webview ${Classes ?? ""}" src=${Value ?? ""}
         allow=${Permissions} allowfullscreen=${allowsFullScreen}
         sandbox=${SandboxPermissions} referrerpolicy=${ReferrerPolicy}
         ...${RestProps}
@@ -6944,14 +6241,14 @@ function Icon(PropSet) {
     );
     Value = Value ?? `${IconFolder}/circle-information.png`;
     Color = Color ?? "black";
-    const _onClick = useCallback((Event) => {
+    const _onClick = b((Event) => {
       if (disabled) {
         return consumingEvent(Event);
       }
       executeCallback('Icon callback "onClick"', onClick, Event);
     }, [disabled, onClick]);
     const Cursor = disabled ? "not-allowed" : onClick == null ? "auto" : "pointer";
-    return m`<div
+    return m$1`<div
         class="sim-component icon ${disabled ? "disabled" : ""} ${active ? "active" : ""} ${Classes ?? ""}"
         onClick=${_onClick} ...${RestProps}
       >
@@ -7791,14 +7088,14 @@ function FAIcon(PropSet) {
     );
     Value = Value ?? "fa-question-circle-o";
     Color = Color ?? "black";
-    const _onClick = useCallback((Event) => {
+    const _onClick = b((Event) => {
       if (disabled) {
         return consumingEvent(Event);
       }
       executeCallback('Icon callback "onClick"', onClick, Event);
     }, [disabled, onClick]);
     const Cursor = disabled ? "not-allowed" : onClick == null ? "auto" : "pointer";
-    return m`<div class="sim-component fa-icon fa ${Value} ${disabled ? "disabled" : ""} ${active ? "active" : ""} ${Classes ?? ""}" style="
+    return m$1`<div class="sim-component fa-icon fa ${Value} ${disabled ? "disabled" : ""} ${active ? "active" : ""} ${Classes ?? ""}" style="
         color:${Color};
         cursor:${Cursor};
       " onClick=${_onClick} ...${RestProps}/>`;
@@ -7824,11 +7121,11 @@ function Button(PropSet) {
       optionalText("value")
     );
     if (Value == null) {
-      return m`<button class="sim-component button ${Classes ?? ""}" ...${RestProps}>
+      return m$1`<button class="sim-component button ${Classes ?? ""}" ...${RestProps}>
           ${ContentList}
         </>`;
     } else {
-      return m`<button class="sim-component button ${Classes ?? ""}" ...${RestProps}
+      return m$1`<button class="sim-component button ${Classes ?? ""}" ...${RestProps}
           dangerouslySetInnerHTML=${{ __html: Value }}
         />`;
     }
@@ -7868,7 +7165,7 @@ function Checkbox(PropSet) {
     const [actualValue, actualDisabling] = ValueIsSpecial(Value) ? [void 0, disabled || Value.disabled] : [Value, disabled];
     const checked = actualValue == true;
     const indeterminate = actualValue == null;
-    const _onClick = useCallback((Event) => {
+    const _onClick = b((Event) => {
       consumeEvent(Event, actualDisabling);
       if (actualDisabling == true) {
         return;
@@ -7882,7 +7179,7 @@ function Checkbox(PropSet) {
         Event
       );
     }, [actualDisabling, onClick, onValueInput]);
-    return m`<div class="sim-component checkbox ${actualDisabling ? "disabled" : ""} ${Classes ?? ""}"
+    return m$1`<div class="sim-component checkbox ${actualDisabling ? "disabled" : ""} ${Classes ?? ""}"
         style=${Style}
       >
         <input type="checkbox"
@@ -7929,7 +7226,7 @@ function Radiobutton(PropSet) {
     Value = Value ?? SIM_empty;
     const [actualValue, actualDisabling] = ValueIsSpecial(Value) ? [void 0, disabled || Value.disabled] : [Value, disabled];
     const checked = actualValue == true;
-    const _onClick = useCallback((Event) => {
+    const _onClick = b((Event) => {
       consumeEvent(Event, actualDisabling);
       if (actualDisabling == true) {
         return;
@@ -7943,7 +7240,7 @@ function Radiobutton(PropSet) {
         Event
       );
     }, [actualDisabling, onClick, onValueInput]);
-    return m`<div class="sim-component radiobutton ${actualDisabling ? "disabled" : ""} ${Classes ?? ""}"
+    return m$1`<div class="sim-component radiobutton ${actualDisabling ? "disabled" : ""} ${Classes ?? ""}"
         style=${Style}
       >
         <input type="radio" checked=${checked} onClick=${_onClick} ...${RestProps}/>
@@ -7988,7 +7285,7 @@ function Gauge(PropSet) {
       optionalNumber("high"),
       optionalNumber("max")
     );
-    return m`<div class="sim-component gauge ${Classes ?? ""}" style=${Style}>
+    return m$1`<div class="sim-component gauge ${Classes ?? ""}" style=${Style}>
         <meter
           value=${Value} min=${Minimum} low=${lowerBound} opt=${Optimum}
           high=${upperBound} max=${Maximum} ...${RestProps}
@@ -8017,7 +7314,7 @@ function Progressbar(PropSet) {
       optionalNumber("value"),
       optionalNumber("max")
     );
-    return m`<div class="sim-component progressbar ${Classes ?? ""}" style=${Style}>
+    return m$1`<div class="sim-component progressbar ${Classes ?? ""}" style=${Style}>
         <progress value=${Value} max=${Maximum} ...${RestProps}/>
       </>`;
   });
@@ -8073,8 +7370,8 @@ function Slider(PropSet) {
       optionalFunction("onblur")
     );
     disabled = disabled ?? false;
-    const ViewRef = useRef();
-    const shownValue = useRef();
+    const ViewRef = F();
+    const shownValue = F();
     let ValueToShow = Value == null || isNaN(Value) ? SIM_empty : Value;
     if (ViewRef.current != null && document.activeElement === ViewRef.current) {
       ValueToShow = shownValue.current;
@@ -8082,7 +7379,7 @@ function Slider(PropSet) {
       shownValue.current = ValueToShow;
     }
     const [actualValue, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, disabled || ValueToShow.disabled] : [ValueToShow, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -8096,24 +7393,24 @@ function Slider(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    const _onBlur = useCallback((Event) => {
+    const _onBlur = b((Event) => {
       rerender();
       executeCallback('slider callback "onBlur"', onBlur, Event);
     }, [onBlur]);
-    const internalId = useId();
+    const internalId = P();
     const rerender = useRerenderer();
     let HashmarkList = "", HashmarkId;
     if (Hashmarks != null && Hashmarks.length > 0) {
       HashmarkId = internalId + "-Hashmarks";
-      HashmarkList = m`\n<datalist id=${HashmarkId}>
+      HashmarkList = m$1`\n<datalist id=${HashmarkId}>
           ${Hashmarks.map((Item) => {
         const Value2 = Item.replace(/:.*$/, "").trim();
         const Label2 = Item.replace(/^[^:]+:/, "").trim();
-        return m`<option value=${Value2}>${Label2}</option>`;
+        return m$1`<option value=${Value2}>${Label2}</option>`;
       })}
         </datalist>`;
     }
-    return m`<div class="sim-component slider ${Classes ?? ""}" style=${Style}>
+    return m$1`<div class="sim-component slider ${Classes ?? ""}" style=${Style}>
         <input type="range" ref=${ViewRef} disabled=${actualDisabling}
           value=${actualValue} min=${Minimum} max=${Maximum} step=${Stepping}
           list=${HashmarkId}
@@ -8173,8 +7470,8 @@ function TextlineInput(PropSet) {
       optionalFunction("onblur")
     );
     disabled = disabled ?? false;
-    const ViewRef = useRef();
-    const shownValue = useRef();
+    const ViewRef = F();
+    const shownValue = F();
     let ValueToShow = Value == null ? SIM_empty : Value;
     if (ViewRef.current != null && document.activeElement === ViewRef.current) {
       ValueToShow = shownValue.current;
@@ -8182,7 +7479,7 @@ function TextlineInput(PropSet) {
       shownValue.current = ValueToShow;
     }
     const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -8197,20 +7494,20 @@ function TextlineInput(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    const _onBlur = useCallback((Event) => {
+    const _onBlur = b((Event) => {
       rerender();
       executeCallback('TextlineInput callback "onBlur"', onBlur, Event);
     }, [onBlur]);
-    const internalId = useId();
+    const internalId = P();
     const rerender = useRerenderer();
     let SuggestionList = "", SuggestionId;
     if (Suggestions != null && Suggestions.length > 0) {
       SuggestionId = internalId + "-Suggestions";
-      SuggestionList = m`<datalist id=${SuggestionId}>
-          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+      SuggestionList = m$1`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m$1`<option value=${Value2}></option>`)}
         </datalist>`;
     }
-    return m`<input type="text" class="sim-component textline-input ${Classes ?? ""}" ref=${ViewRef}
+    return m$1`<input type="text" class="sim-component textline-input ${Classes ?? ""}" ref=${ViewRef}
         value=${actualValue} minlength=${minLength} maxlength=${maxLength}
         readOnly=${readonly} placeholder=${actualPlaceholder}
         pattern=${Pattern} spellcheck=${SpellChecking}
@@ -8273,8 +7570,8 @@ function PasswordInput(PropSet) {
       optionalFunction("onblur")
     );
     disabled = disabled ?? false;
-    const ViewRef = useRef();
-    const shownValue = useRef();
+    const ViewRef = F();
+    const shownValue = F();
     let ValueToShow = Value == null ? SIM_empty : Value;
     if (ViewRef.current != null && document.activeElement === ViewRef.current) {
       ValueToShow = shownValue.current;
@@ -8282,7 +7579,7 @@ function PasswordInput(PropSet) {
       shownValue.current = ValueToShow;
     }
     const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -8297,12 +7594,12 @@ function PasswordInput(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    const _onBlur = useCallback((Event) => {
+    const _onBlur = b((Event) => {
       rerender();
       executeCallback('PasswordInput callback "onBlur"', onBlur, Event);
     }, [onBlur]);
     const rerender = useRerenderer();
-    return m`<input type="password" class="sim-component password-input ${Classes ?? ""}" ref=${ViewRef}
+    return m$1`<input type="password" class="sim-component password-input ${Classes ?? ""}" ref=${ViewRef}
         value=${actualValue} minlength=${minLength} maxlength=${maxLength}
         readOnly=${readonly} placeholder=${actualPlaceholder}
         pattern=${Pattern} disabled=${actualDisabling}
@@ -8366,8 +7663,8 @@ function NumberInput(PropSet) {
       optionalFunction("onblur")
     );
     disabled = disabled ?? false;
-    const ViewRef = useRef();
-    const shownValue = useRef();
+    const ViewRef = F();
+    const shownValue = F();
     let ValueToShow = ValueIsSpecial(Value) || Value != null && !isNaN(Value) ? Value : SIM_empty;
     if (ViewRef.current != null && document.activeElement === ViewRef.current) {
       ValueToShow = shownValue.current;
@@ -8375,7 +7672,7 @@ function NumberInput(PropSet) {
       shownValue.current = ValueToShow;
     }
     const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -8390,20 +7687,20 @@ function NumberInput(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    const _onBlur = useCallback((Event) => {
+    const _onBlur = b((Event) => {
       rerender();
       executeCallback('NumberInput callback "onBlur"', onBlur, Event);
     }, [onBlur]);
-    const internalId = useId();
+    const internalId = P();
     const rerender = useRerenderer();
     let SuggestionList = "", SuggestionId;
     if (Suggestions != null && Suggestions.length > 0) {
       SuggestionId = internalId + "-Suggestions";
-      SuggestionList = m`<datalist id=${SuggestionId}>
-          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+      SuggestionList = m$1`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m$1`<option value=${Value2}></option>`)}
         </datalist>`;
     }
-    return m`<input type="number" ref=${ViewRef}
+    return m$1`<input type="number" ref=${ViewRef}
         class="sim-component number-input ${Classes ?? ""} ${invalid ? "invalid" : ""}"
         value=${actualValue} min=${Minimum} max=${Maximum} step=${Stepping}
         readOnly=${readonly} placeholder=${actualPlaceholder}
@@ -8470,8 +7767,8 @@ function EMailAddressInput(PropSet) {
       optionalFunction("onblur")
     );
     disabled = disabled ?? false;
-    const ViewRef = useRef();
-    const shownValue = useRef();
+    const ViewRef = F();
+    const shownValue = F();
     let ValueToShow = Value == null ? SIM_empty : Value;
     if (ViewRef.current != null && document.activeElement === ViewRef.current) {
       ValueToShow = shownValue.current;
@@ -8479,7 +7776,7 @@ function EMailAddressInput(PropSet) {
       shownValue.current = ValueToShow;
     }
     const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -8494,20 +7791,20 @@ function EMailAddressInput(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    const _onBlur = useCallback((Event) => {
+    const _onBlur = b((Event) => {
       rerender();
       executeCallback('EMailAddressInput callback "onBlur"', onBlur, Event);
     }, [onBlur]);
-    const internalId = useId();
+    const internalId = P();
     const rerender = useRerenderer();
     let SuggestionList = "", SuggestionId;
     if (Suggestions != null && Suggestions.length > 0) {
       SuggestionId = internalId + "-Suggestions";
-      SuggestionList = m`<datalist id=${SuggestionId}>
-          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+      SuggestionList = m$1`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m$1`<option value=${Value2}></option>`)}
         </datalist>`;
     }
-    return m`<input type="email" class="sim-component emailaddress-input ${Classes ?? ""}" ref=${ViewRef}
+    return m$1`<input type="email" class="sim-component emailaddress-input ${Classes ?? ""}" ref=${ViewRef}
         value=${actualValue} minlength=${minLength} maxlength=${maxLength}
         multiple=${multiple} readOnly=${readonly} placeholder=${actualPlaceholder}
         pattern=${Pattern} disabled=${actualDisabling} list=${SuggestionId}
@@ -8571,8 +7868,8 @@ function PhoneNumberInput(PropSet) {
       optionalFunction("onblur")
     );
     disabled = disabled ?? false;
-    const ViewRef = useRef();
-    const shownValue = useRef();
+    const ViewRef = F();
+    const shownValue = F();
     let ValueToShow = Value == null ? SIM_empty : Value;
     if (ViewRef.current != null && document.activeElement === ViewRef.current) {
       ValueToShow = shownValue.current;
@@ -8580,7 +7877,7 @@ function PhoneNumberInput(PropSet) {
       shownValue.current = ValueToShow;
     }
     const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -8595,20 +7892,20 @@ function PhoneNumberInput(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    const _onBlur = useCallback((Event) => {
+    const _onBlur = b((Event) => {
       rerender();
       executeCallback('PhoneNumberInput callback "onBlur"', onBlur, Event);
     }, [onBlur]);
-    const internalId = useId();
+    const internalId = P();
     const rerender = useRerenderer();
     let SuggestionList = "", SuggestionId;
     if (Suggestions != null && Suggestions.length > 0) {
       SuggestionId = internalId + "-Suggestions";
-      SuggestionList = m`<datalist id=${SuggestionId}>
-          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+      SuggestionList = m$1`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m$1`<option value=${Value2}></option>`)}
         </datalist>`;
     }
-    return m`<input type="tel" class="sim-component phonenumber-input ${Classes ?? ""}" ref=${ViewRef}
+    return m$1`<input type="tel" class="sim-component phonenumber-input ${Classes ?? ""}" ref=${ViewRef}
         value=${actualValue} minlength=${minLength} maxlength=${maxLength}
         readOnly=${readonly} placeholder=${actualPlaceholder} pattern=${Pattern}
         disabled=${actualDisabling} list=${SuggestionId}
@@ -8672,8 +7969,8 @@ function URLInput(PropSet) {
       optionalFunction("onblur")
     );
     disabled = disabled ?? false;
-    const ViewRef = useRef();
-    const shownValue = useRef();
+    const ViewRef = F();
+    const shownValue = F();
     let ValueToShow = Value == null ? SIM_empty : Value;
     if (ViewRef.current != null && document.activeElement === ViewRef.current) {
       ValueToShow = shownValue.current;
@@ -8681,7 +7978,7 @@ function URLInput(PropSet) {
       shownValue.current = ValueToShow;
     }
     const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -8696,20 +7993,20 @@ function URLInput(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    const _onBlur = useCallback((Event) => {
+    const _onBlur = b((Event) => {
       rerender();
       executeCallback('URLInput callback "onBlur"', onBlur, Event);
     }, [onBlur]);
-    const internalId = useId();
+    const internalId = P();
     const rerender = useRerenderer();
     let SuggestionList = "", SuggestionId;
     if (Suggestions != null && Suggestions.length > 0) {
       SuggestionId = internalId + "-Suggestions";
-      SuggestionList = m`<datalist id=${SuggestionId}>
-          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+      SuggestionList = m$1`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m$1`<option value=${Value2}></option>`)}
         </datalist>`;
     }
-    return m`<input type="url" class="sim-component url-input ${Classes ?? ""}" ref=${ViewRef}
+    return m$1`<input type="url" class="sim-component url-input ${Classes ?? ""}" ref=${ViewRef}
         value=${actualValue} minlength=${minLength} maxlength=${maxLength}
         readOnly=${readonly} placeholder=${actualPlaceholder} pattern=${Pattern}
         disabled=${actualDisabling} list=${SuggestionId}
@@ -8774,8 +8071,8 @@ function TimeInput(PropSet) {
       optionalFunction("onblur")
     );
     disabled = disabled ?? false;
-    const ViewRef = useRef();
-    const shownValue = useRef();
+    const ViewRef = F();
+    const shownValue = F();
     let ValueToShow = Value == null ? SIM_empty : Value;
     if (ViewRef.current != null && document.activeElement === ViewRef.current) {
       ValueToShow = shownValue.current;
@@ -8783,7 +8080,7 @@ function TimeInput(PropSet) {
       shownValue.current = ValueToShow;
     }
     const [actualValue, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, disabled || ValueToShow.disabled] : [ValueToShow, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -8798,20 +8095,20 @@ function TimeInput(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    const _onBlur = useCallback((Event) => {
+    const _onBlur = b((Event) => {
       rerender();
       executeCallback('TimeInput callback "onBlur"', onBlur, Event);
     }, [onBlur]);
-    const internalId = useId();
+    const internalId = P();
     const rerender = useRerenderer();
     let SuggestionList = "", SuggestionId;
     if (Suggestions != null && Suggestions.length > 0) {
       SuggestionId = internalId + "-Suggestions";
-      SuggestionList = m`<datalist id=${SuggestionId}>
-          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+      SuggestionList = m$1`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m$1`<option value=${Value2}></option>`)}
         </datalist>`;
     }
-    return m`<input type="time" class="sim-component time-input ${Classes ?? ""}" ref=${ViewRef}
+    return m$1`<input type="time" class="sim-component time-input ${Classes ?? ""}" ref=${ViewRef}
         value=${actualValue} min=${Minimum} max=${Maximum} step=${withSeconds ? 1 : 60}
         readOnly=${readonly} pattern=${SIM_TimePattern}
         disabled=${actualDisabling}
@@ -8872,8 +8169,8 @@ function DateTimeInput(PropSet) {
       optionalFunction("onblur")
     );
     disabled = disabled ?? false;
-    const ViewRef = useRef();
-    const shownValue = useRef();
+    const ViewRef = F();
+    const shownValue = F();
     let ValueToShow = Value == null ? SIM_empty : Value;
     if (ViewRef.current != null && document.activeElement === ViewRef.current) {
       ValueToShow = shownValue.current;
@@ -8881,7 +8178,7 @@ function DateTimeInput(PropSet) {
       shownValue.current = ValueToShow;
     }
     const [actualValue, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, disabled || ValueToShow.disabled] : [ValueToShow, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -8896,20 +8193,20 @@ function DateTimeInput(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    const _onBlur = useCallback((Event) => {
+    const _onBlur = b((Event) => {
       rerender();
       executeCallback('DateTimeInput callback "onBlur"', onBlur, Event);
     }, [onBlur]);
-    const internalId = useId();
+    const internalId = P();
     const rerender = useRerenderer();
     let SuggestionList = "", SuggestionId;
     if (Suggestions != null && Suggestions.length > 0) {
       SuggestionId = internalId + "-Suggestions";
-      SuggestionList = m`<datalist id=${SuggestionId}>
-          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+      SuggestionList = m$1`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m$1`<option value=${Value2}></option>`)}
         </datalist>`;
     }
-    return m`<input type="datetime-local" class="sim-component datetime-input ${Classes ?? ""}" ref=${ViewRef}
+    return m$1`<input type="datetime-local" class="sim-component datetime-input ${Classes ?? ""}" ref=${ViewRef}
         value=${actualValue} min=${Minimum} max=${Maximum} step=${withSeconds ? 1 : 60}
         readOnly=${readonly} pattern=${SIM_TimePattern}
         disabled=${actualDisabling}
@@ -8968,8 +8265,8 @@ function DateInput(PropSet) {
       optionalFunction("onblur")
     );
     disabled = disabled ?? false;
-    const ViewRef = useRef();
-    const shownValue = useRef();
+    const ViewRef = F();
+    const shownValue = F();
     let ValueToShow = Value == null ? SIM_empty : Value;
     if (ViewRef.current != null && document.activeElement === ViewRef.current) {
       ValueToShow = shownValue.current;
@@ -8977,7 +8274,7 @@ function DateInput(PropSet) {
       shownValue.current = ValueToShow;
     }
     const [actualValue, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, disabled || ValueToShow.disabled] : [ValueToShow, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -8992,20 +8289,20 @@ function DateInput(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    const _onBlur = useCallback((Event) => {
+    const _onBlur = b((Event) => {
       rerender();
       executeCallback('DateInput callback "onBlur"', onBlur, Event);
     }, [onBlur]);
-    const internalId = useId();
+    const internalId = P();
     const rerender = useRerenderer();
     let SuggestionList = "", SuggestionId;
     if (Suggestions != null && Suggestions.length > 0) {
       SuggestionId = internalId + "-Suggestions";
-      SuggestionList = m`<datalist id=${SuggestionId}>
-          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+      SuggestionList = m$1`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m$1`<option value=${Value2}></option>`)}
         </datalist>`;
     }
-    return m`<input type="date" class="sim-component date-input ${Classes ?? ""}" ref=${ViewRef}
+    return m$1`<input type="date" class="sim-component date-input ${Classes ?? ""}" ref=${ViewRef}
         value=${actualValue} min=${Minimum} max=${Maximum}
         readOnly=${readonly} pattern=${SIM_TimePattern}
         disabled=${actualDisabling}
@@ -9064,8 +8361,8 @@ function WeekInput(PropSet) {
       optionalFunction("onblur")
     );
     disabled = disabled ?? false;
-    const ViewRef = useRef();
-    const shownValue = useRef();
+    const ViewRef = F();
+    const shownValue = F();
     let ValueToShow = Value == null ? SIM_empty : Value;
     if (ViewRef.current != null && document.activeElement === ViewRef.current) {
       ValueToShow = shownValue.current;
@@ -9073,7 +8370,7 @@ function WeekInput(PropSet) {
       shownValue.current = ValueToShow;
     }
     const [actualValue, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, disabled || ValueToShow.disabled] : [ValueToShow, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -9088,20 +8385,20 @@ function WeekInput(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    const _onBlur = useCallback((Event) => {
+    const _onBlur = b((Event) => {
       rerender();
       executeCallback('WeekInput callback "onBlur"', onBlur, Event);
     }, [onBlur]);
-    const internalId = useId();
+    const internalId = P();
     const rerender = useRerenderer();
     let SuggestionList = "", SuggestionId;
     if (Suggestions != null && Suggestions.length > 0) {
       SuggestionId = internalId + "-Suggestions";
-      SuggestionList = m`<datalist id=${SuggestionId}>
-          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+      SuggestionList = m$1`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m$1`<option value=${Value2}></option>`)}
         </datalist>`;
     }
-    return m`<input type="week" class="sim-component week-input ${Classes ?? ""}" ref=${ViewRef}
+    return m$1`<input type="week" class="sim-component week-input ${Classes ?? ""}" ref=${ViewRef}
         value=${actualValue} min=${Minimum} max=${Maximum}
         readOnly=${readonly} pattern=${SIM_TimePattern}
         disabled=${actualDisabling}
@@ -9160,8 +8457,8 @@ function MonthInput(PropSet) {
       optionalFunction("onblur")
     );
     disabled = disabled ?? false;
-    const ViewRef = useRef();
-    const shownValue = useRef();
+    const ViewRef = F();
+    const shownValue = F();
     let ValueToShow = Value == null ? SIM_empty : Value;
     if (ViewRef.current != null && document.activeElement === ViewRef.current) {
       ValueToShow = shownValue.current;
@@ -9169,7 +8466,7 @@ function MonthInput(PropSet) {
       shownValue.current = ValueToShow;
     }
     const [actualValue, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, disabled || ValueToShow.disabled] : [ValueToShow, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -9184,20 +8481,20 @@ function MonthInput(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    const _onBlur = useCallback((Event) => {
+    const _onBlur = b((Event) => {
       rerender();
       executeCallback('MonthInput callback "onBlur"', onBlur, Event);
     }, [onBlur]);
-    const internalId = useId();
+    const internalId = P();
     const rerender = useRerenderer();
     let SuggestionList = "", SuggestionId;
     if (Suggestions != null && Suggestions.length > 0) {
       SuggestionId = internalId + "-Suggestions";
-      SuggestionList = m`<datalist id=${SuggestionId}>
-          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+      SuggestionList = m$1`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m$1`<option value=${Value2}></option>`)}
         </datalist>`;
     }
-    return m`<input type="month" class="sim-component month-input ${Classes ?? ""}" ref=${ViewRef}
+    return m$1`<input type="month" class="sim-component month-input ${Classes ?? ""}" ref=${ViewRef}
         value=${actualValue} min=${Minimum} max=${Maximum}
         readOnly=${readonly} pattern=${SIM_TimePattern}
         disabled=${actualDisabling}
@@ -9259,8 +8556,8 @@ function SearchInput(PropSet) {
       optionalFunction("onblur")
     );
     disabled = disabled ?? false;
-    const ViewRef = useRef();
-    const shownValue = useRef();
+    const ViewRef = F();
+    const shownValue = F();
     let ValueToShow = Value == null ? SIM_empty : Value;
     if (ViewRef.current != null && document.activeElement === ViewRef.current) {
       ValueToShow = shownValue.current;
@@ -9268,7 +8565,7 @@ function SearchInput(PropSet) {
       shownValue.current = ValueToShow;
     }
     const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -9283,20 +8580,20 @@ function SearchInput(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    const _onBlur = useCallback((Event) => {
+    const _onBlur = b((Event) => {
       rerender();
       executeCallback('SearchInput callback "onBlur"', onBlur, Event);
     }, [onBlur]);
-    const internalId = useId();
+    const internalId = P();
     const rerender = useRerenderer();
     let SuggestionList = "", SuggestionId;
     if (Suggestions != null && Suggestions.length > 0) {
       SuggestionId = internalId + "-Suggestions";
-      SuggestionList = m`<datalist id=${SuggestionId}>
-          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+      SuggestionList = m$1`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m$1`<option value=${Value2}></option>`)}
         </datalist>`;
     }
-    return m`<input type="search" class="sim-component search-input ${Classes ?? ""}" ref=${ViewRef}
+    return m$1`<input type="search" class="sim-component search-input ${Classes ?? ""}" ref=${ViewRef}
         value=${actualValue} minlength=${minLength} maxlength=${maxLength}
         readOnly=${readonly} placeholder=${actualPlaceholder}
         pattern=${Pattern} spellcheck=${SpellChecking}
@@ -9353,7 +8650,7 @@ function FileInput(PropSet) {
     disabled = disabled ?? false;
     let ValueToShow = Value == null ? SIM_empty : Value;
     const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -9368,8 +8665,8 @@ function FileInput(PropSet) {
       );
       Event.target.value = "";
     }, [actualDisabling, onInput, onValueInput]);
-    return m`<label class="sim-component file-input ${Classes ?? ""}">
-        ${actualValue == null ? m`<span>${actualPlaceholder ?? ""}</span>` : m`<span>${actualValue}</span>`}
+    return m$1`<label class="sim-component file-input ${Classes ?? ""}">
+        ${actualValue == null ? m$1`<span>${actualPlaceholder ?? ""}</span>` : m$1`<span>${actualValue}</span>`}
         <input type="file" style="display:none"
           multiple=${multiple} accept=${FileTypes}
           disabled=${actualDisabling} onInput=${_onInput} ...${RestProps}
@@ -9420,7 +8717,7 @@ function PseudoFileInput(PropSet) {
       optionalFunction("oninput")
     );
     disabled = disabled ?? false;
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (disabled == true) {
         return;
@@ -9435,7 +8732,7 @@ function PseudoFileInput(PropSet) {
       );
       Event.target.value = "";
     }, [disabled, onInput, onValueInput]);
-    return m`<label
+    return m$1`<label
         class="sim-component pseudo-file-input ${disabled ? "disabled" : ""} ${Classes ?? ""}"
       >
         <div style="${Style ?? ""};
@@ -9490,7 +8787,7 @@ function ColorInput(PropSet) {
     );
     disabled = disabled ?? false;
     const [actualValue, actualDisabling] = ValueIsSpecial(Value) ? [void 0, disabled || Value.disabled] : [Value, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -9505,16 +8802,16 @@ function ColorInput(PropSet) {
       );
     }, [actualDisabling, onInput, onValueInput]);
     let minWidth = 40;
-    const internalId = useId();
+    const internalId = P();
     let SuggestionList = "", SuggestionId;
     if (Suggestions != null && Suggestions.length > 0) {
       SuggestionId = internalId + "-Suggestions";
       minWidth += 20;
-      SuggestionList = m`<datalist id=${SuggestionId}>
-          ${Suggestions.map((Value2) => m`<option value=${Value2}></option>`)}
+      SuggestionList = m$1`<datalist id=${SuggestionId}>
+          ${Suggestions.map((Value2) => m$1`<option value=${Value2}></option>`)}
         </datalist>`;
     }
-    return m`<input type="color" class="sim-component color-input ${Classes ?? ""}"
+    return m$1`<input type="color" class="sim-component color-input ${Classes ?? ""}"
         style="min-width:${minWidth}px; ${Style}"
         value=${actualValue} readOnly=${Value} list=${SuggestionId}
         disabled=${actualDisabling} onInput=${_onInput} ...${RestProps}
@@ -9561,7 +8858,7 @@ function DropDown(PropSet) {
     disabled = disabled ?? false;
     Options = Options ?? [];
     const [actualValue, actualDisabling] = ValueIsSpecial(Value) ? [void 0, disabled || Value.disabled] : [Value, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -9575,7 +8872,7 @@ function DropDown(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    return m`<select class="sim-component dropdown ${Classes ?? ""}"
+    return m$1`<select class="sim-component dropdown ${Classes ?? ""}"
         disabled=${actualDisabling} onInput=${_onInput} ...${RestProps}
       >${Options.map(
       (Option) => {
@@ -9583,7 +8880,7 @@ function DropDown(PropSet) {
         let OptionLabel = Option.replace(/^[^:]*:/, "").trim();
         const disabled2 = OptionLabel[0] === "-";
         if (/^[-]+$/.test(OptionLabel)) {
-          return m`<hr/>`;
+          return m$1`<hr/>`;
         } else {
           if (OptionValue === Option) {
             OptionValue = OptionValue.replace(/^-/, "");
@@ -9591,7 +8888,7 @@ function DropDown(PropSet) {
           if (disabled2) {
             OptionLabel = OptionLabel.replace(/^-/, "");
           }
-          return m`<option value=${OptionValue}
+          return m$1`<option value=${OptionValue}
               selected=${OptionValue === actualValue} disabled=${disabled2}
             >${OptionLabel}</option>`;
         }
@@ -9640,7 +8937,7 @@ function PseudoDropDown(PropSet) {
     );
     disabled = disabled ?? false;
     const [actualValue, actualDisabling] = ValueIsSpecial(Value) ? [void 0, disabled || Value.disabled] : [Value, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -9654,7 +8951,7 @@ function PseudoDropDown(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    return m`<label
+    return m$1`<label
         class="sim-component pseudo-dropdown ${disabled ? "disabled" : ""} ${Classes ?? ""}"
       >
         <div style="${Style ?? ""};
@@ -9669,7 +8966,7 @@ function PseudoDropDown(PropSet) {
         let OptionLabel = Option.replace(/^[^:]*:/, "").trim();
         const disabled2 = OptionLabel[0] === "-";
         if (/^[-]+$/.test(OptionLabel)) {
-          return m`<hr/>`;
+          return m$1`<hr/>`;
         } else {
           if (OptionValue === Option) {
             OptionValue = OptionValue.replace(/^-/, "");
@@ -9677,7 +8974,7 @@ function PseudoDropDown(PropSet) {
           if (disabled2) {
             OptionLabel = OptionLabel.replace(/^-/, "");
           }
-          return m`<option value=${OptionValue}
+          return m$1`<option value=${OptionValue}
                 selected=${OptionValue === actualValue} disabled=${disabled2}
               >${OptionLabel}</option>`;
         }
@@ -9745,8 +9042,8 @@ function TextInput(PropSet) {
       optionalFunction("onblur")
     );
     disabled = disabled ?? false;
-    const ViewRef = useRef();
-    const shownValue = useRef();
+    const ViewRef = F();
+    const shownValue = F();
     let ValueToShow = Value == null ? SIM_empty : Value;
     if (ViewRef.current != null && document.activeElement === ViewRef.current) {
       ValueToShow = shownValue.current;
@@ -9754,7 +9051,7 @@ function TextInput(PropSet) {
       shownValue.current = ValueToShow;
     }
     const [actualValue, actualPlaceholder, actualDisabling] = ValueIsSpecial(ValueToShow) ? [void 0, ValueToShow === SIM_empty ? Placeholder ?? ValueToShow.Placeholder : ValueToShow.Placeholder, disabled || ValueToShow.disabled] : [ValueToShow, Placeholder, disabled];
-    const _onInput = useCallback((Event) => {
+    const _onInput = b((Event) => {
       consumeEvent(Event);
       if (actualDisabling == true) {
         return;
@@ -9769,13 +9066,13 @@ function TextInput(PropSet) {
         Event
       );
     }, [actualDisabling, onInput, onValueInput]);
-    const _onBlur = useCallback((Event) => {
+    const _onBlur = b((Event) => {
       rerender();
       executeCallback('TextInput callback "onBlur"', onBlur, Event);
     }, [onBlur]);
     const rerender = useRerenderer();
-    const uniqueId = useId();
-    return m`<textarea class="sim-component text-input ${Classes ?? ""}"
+    const uniqueId = P();
+    return m$1`<textarea class="sim-component text-input ${Classes ?? ""}"
         key=${uniqueId} ref=${ViewRef}
         style="${LineWrapping == true ? "overflow-wrap:break-word; hyphens:auto;" : "white-space:pre;"} resize:${Resizability ?? "none"}; ${Style}"
         value=${actualValue} minlength=${minLength} maxlength=${maxLength}
@@ -9824,14 +9121,14 @@ function TabStrip(PropSet) {
       optionalBoolean("disabled"),
       optionalFunction("onactivationchange")
     );
-    const externalActiveIndex = useRef(activeIndex ?? 0);
-    const internalActiveIndex = useRef(activeIndex ?? 0);
+    const externalActiveIndex = F(activeIndex ?? 0);
+    const internalActiveIndex = F(activeIndex ?? 0);
     if (activeIndex != null && activeIndex !== externalActiveIndex.current) {
       internalActiveIndex.current = activeIndex;
     } else {
       activeIndex = internalActiveIndex.current;
     }
-    const onClick = useCallback((Index, Event) => {
+    const onClick = b((Index, Event) => {
       if (disabled) {
         return consumingEvent(Event);
       }
@@ -9843,14 +9140,14 @@ function TabStrip(PropSet) {
     const TabList = toChildArray(ContentList).filter(
       (Tab) => Tab.type != null || Tab.trim() !== ""
     );
-    return m`<div class="sim-component tabstrip ${Classes ?? ""}" ...${RestProps}>
-        ${TabList.map((Tab, i) => {
-      const Gap = i === GapIndex ? m`<div class="gap"/>` : "";
-      if (i === activeIndex) {
-        return m`${Gap}<div class="active tab">${Tab}</>`;
+    return m$1`<div class="sim-component tabstrip ${Classes ?? ""}" ...${RestProps}>
+        ${TabList.map((Tab, i2) => {
+      const Gap = i2 === GapIndex ? m$1`<div class="gap"/>` : "";
+      if (i2 === activeIndex) {
+        return m$1`${Gap}<div class="active tab">${Tab}</>`;
       } else {
-        return m`${Gap}<div class="${disabled ? "disabled" : ""} tab"
-            onClick=${(Event) => onClick(i, Event)}>${Tab}</>`;
+        return m$1`${Gap}<div class="${disabled ? "disabled" : ""} tab"
+            onClick=${(Event) => onClick(i2, Event)}>${Tab}</>`;
       }
     })}
       </>`;
@@ -9901,14 +9198,14 @@ function AccordionFold(PropSet) {
       optionalFunction("onexpansionchange")
     );
     disabled = disabled ?? false;
-    const externalExpansion = useRef(expanded ?? false);
-    const internalExpansion = useRef(expanded ?? false);
+    const externalExpansion = F(expanded ?? false);
+    const internalExpansion = F(expanded ?? false);
     if (expanded != null && expanded !== externalExpansion.current) {
       internalExpansion.current = expanded;
     } else {
       expanded = internalExpansion.current;
     }
-    const _onClick = useCallback((Event) => {
+    const _onClick = b((Event) => {
       consumeEvent(Event);
       if (disabled != true) {
         internalExpansion.current = expanded = !expanded;
@@ -9917,11 +9214,11 @@ function AccordionFold(PropSet) {
       }
     }, [disabled, onExpansionChange]);
     const rerender = useRerenderer();
-    return m`<div class="sim-component accordion-fold ${Classes ?? ""}">
+    return m$1`<div class="sim-component accordion-fold ${Classes ?? ""}">
         <div class="header">
           <div class="expander ${expanded ? "expanded" : "collapsed"}" onClick=${_onClick}/>
           <div class="title">${Header}</>
-        </>${expanded ? m`<div class="content">${ContentList}</>` : ""}
+        </>${expanded ? m$1`<div class="content">${ContentList}</>` : ""}
       </>`;
   });
 }
@@ -9982,9 +9279,9 @@ function Default_KeyOfFlatListItem(Item, List, Index) {
 }
 function Default_FlatListItemRenderer(Item, List, Index, isSelected = false, InsertionDirection = "") {
   if (typeof Item.toHTML === "function") {
-    return m`<div class="default" dangerouslySetInnerHTML=${{ __html: Item.toHTML() }}/>`;
+    return m$1`<div class="default" dangerouslySetInnerHTML=${{ __html: Item.toHTML() }}/>`;
   } else {
-    return m`<div class="default">${"" + Item}</>`;
+    return m$1`<div class="default">${"" + Item}</>`;
   }
 }
 function FlatListView(PropSet) {
@@ -10047,7 +9344,7 @@ function FlatListView(PropSet) {
         selectedItems.length = SelectionLimit;
       }
     }
-    const [State, setState] = useState({
+    const [State, setState] = y({
       dragging: false,
       DropTargetIndex: void 0,
       DropMode: void 0
@@ -10099,7 +9396,7 @@ function FlatListView(PropSet) {
         List2
       );
     };
-    const onDragStart = useCallback((Event) => {
+    const onDragStart = b((Event) => {
       const Item = Event.target.Item;
       const Index = Event.target.Index;
       if (!SelectionSet.has(Item)) {
@@ -10157,12 +9454,12 @@ function FlatListView(PropSet) {
       }
     };
     if (List.length === 0) {
-      return m`<div class="sim-component flatlistview placeholder ${Classes ?? ""}" ...${RestProps}>
+      return m$1`<div class="sim-component flatlistview placeholder ${Classes ?? ""}" ...${RestProps}>
           <div dangerouslySetInnerHTML=${{ __html: Placeholder ?? "(empty)" }}/>
         </>`;
     } else {
       const { dragging, DropTargetItem, DropMode } = State;
-      return m`<div class="sim-component flatlistview ${dragging ? "dragging" : ""} ${Classes ?? ""}"
+      return m$1`<div class="sim-component flatlistview ${dragging ? "dragging" : ""} ${Classes ?? ""}"
               onClick=${onClick}
           onDragStart=${ListIsSortable && onDragStart}
            onDragOver=${ListIsSortable && onDragOver}
@@ -10171,8 +9468,8 @@ function FlatListView(PropSet) {
           ref=${animatedElement} ...${RestProps}
         >
           ${List.map((Item, Index) => {
-        const DOMRef = useRef();
-        useEffect(() => {
+        const DOMRef = F();
+        _(() => {
           DOMRef.current.Item = Item;
           DOMRef.current.Index = Index;
         }, []);
@@ -10185,7 +9482,7 @@ function FlatListView(PropSet) {
         );
         const ItemIsSelected = SelectionSet.has(Item);
         const InsertionMode = Item === DropTargetItem ? DropMode : "";
-        return m`<div class=${"itemview" + (ItemIsSelected ? " selected" : "") + (Item === DropTargetItem ? ` DropTarget ${DropMode}` : "")} key=${Key} ref=${DOMRef} draggable=${ListIsSortable}>
+        return m$1`<div class=${"itemview" + (ItemIsSelected ? " selected" : "") + (Item === DropTargetItem ? ` DropTarget ${DropMode}` : "")} key=${Key} ref=${DOMRef} draggable=${ListIsSortable}>
               ${executedCallback(
           'FlatListView callback "ListItemRenderer"',
           ListItemRenderer,
@@ -10266,9 +9563,9 @@ function Default_KeyOfNestedListItem(Item) {
 }
 function Default_NestedListItemRenderer(Item, isSelected = false, isPlain = false, isExpanded = false, InsertionDirection = "") {
   if (typeof Item.toHTML === "function") {
-    return m`<div class="default" dangerouslySetInnerHTML=${{ __html: Item.toHTML() }}/>`;
+    return m$1`<div class="default" dangerouslySetInnerHTML=${{ __html: Item.toHTML() }}/>`;
   } else {
-    return m`<div class="default">${"" + Item}</>`;
+    return m$1`<div class="default">${"" + Item}</>`;
   }
 }
 function NestedListView(PropSet) {
@@ -10333,8 +9630,8 @@ function NestedListView(PropSet) {
       });
     }
     scanList(List);
-    const emptyList = useRef([]);
-    const yeasayer = useRef(() => true);
+    const emptyList = F([]);
+    const yeasayer = F(() => true);
     KeyOfListItem = KeyOfListItem ?? Default_KeyOfNestedListItem;
     ListItemRenderer = ListItemRenderer ?? Default_NestedListItemRenderer;
     ListItemMayBeSelected = ListItemMayBeSelected ?? yeasayer.current;
@@ -10370,12 +9667,12 @@ function NestedListView(PropSet) {
             return true;
           }
         });
-        for (let i = selectedItems.length - 1; i >= 0; i--) {
-          const thisItem = selectedItems[i];
+        for (let i2 = selectedItems.length - 1; i2 >= 0; i2--) {
+          const thisItem = selectedItems[i2];
           if (selectedItems.some((otherItem, j) => {
-            return j !== i && ItemContainsItem(otherItem, thisItem);
+            return j !== i2 && ItemContainsItem(otherItem, thisItem);
           })) {
-            selectedItems.splice(i, 1);
+            selectedItems.splice(i2, 1);
             SelectionSet.delete(thisItem);
           }
         }
@@ -10393,10 +9690,10 @@ function NestedListView(PropSet) {
       );
     }
     function deselectAllInnerItemsOf(Item) {
-      for (let i = selectedItems.length - 1; i >= 0; i--) {
-        const otherItem = selectedItems[i];
+      for (let i2 = selectedItems.length - 1; i2 >= 0; i2--) {
+        const otherItem = selectedItems[i2];
         if (ItemContainsItem(Item, otherItem)) {
-          selectedItems.splice(i, 1);
+          selectedItems.splice(i2, 1);
           SelectionSet.delete(otherItem);
         }
       }
@@ -10428,7 +9725,7 @@ function NestedListView(PropSet) {
         newSelection
       );
     }
-    const ExpansionMap = useMemo(() => {
+    const ExpansionMap = q(() => {
       const ExpansionMap2 = /* @__PURE__ */ new Map();
       if (expandedItems == null) {
         expandedItems = [];
@@ -10527,8 +9824,8 @@ function NestedListView(PropSet) {
         );
       }
     }
-    const ListItemWithKey = useRef(new Object(null));
-    const DragAndDropState = useRef({
+    const ListItemWithKey = F(new Object(null));
+    const DragAndDropState = F({
       dragging: false,
       DropTargetItem: void 0,
       DropMode: void 0,
@@ -10661,7 +9958,7 @@ function NestedListView(PropSet) {
         ListContext.State.DropMode = void 0;
       }
     }
-    const [State, setState] = useState({ Rendering: 0 });
+    const [State, setState] = y({ Rendering: 0 });
     function rerender() {
       setState((oldState) => ({ Rendering: oldState.Rendering + 1 }));
     }
@@ -10686,12 +9983,12 @@ function NestedListView(PropSet) {
       rerender
     };
     if (List.length === 0) {
-      return m`<div class="sim-component nestedlistview placeholder ${Classes ?? ""}" ...${RestProps}>
+      return m$1`<div class="sim-component nestedlistview placeholder ${Classes ?? ""}" ...${RestProps}>
           <div dangerouslySetInnerHTML=${{ __html: Placeholder ?? "(empty)" }}/>
         </>`;
     } else {
       const { dragging } = ListContext.State;
-      return m`<div class="sim-component nestedlistview ${dragging ? "dragging" : ""}"
+      return m$1`<div class="sim-component nestedlistview ${dragging ? "dragging" : ""}"
           onDragStart=${onDragStart} onDragEnter=${onDragEnter} onDragOver=${onDragOver}
           onDragLeave=${onDragLeave} onDragEnd=${onDragEnd} onDrop=${onDrop}
           ref=${animatedElement} ...${RestProps}
@@ -10805,7 +10102,7 @@ function NLV_ListView(PropSet) {
   if (List == null) {
     debugger;
   }
-  return m`<div class="listview" ref=${animatedElement}>${List.map((ListItem) => m`<${NLV_ListItemView}
+  return m$1`<div class="listview" ref=${animatedElement}>${List.map((ListItem) => m$1`<${NLV_ListItemView}
         ListItem=${ListItem} ListContext=${ListContext} Rendering=${Rendering}
       />`)}</>`;
 }
@@ -10826,7 +10123,7 @@ function NLV_ListItemView(PropSet) {
     KeyOfListItem,
     ListItem
   );
-  useEffect(() => {
+  _(() => {
     ListContext.ListItemWithKey[ListItemKey] = ListItem;
   }, []);
   const onClick = (Event) => {
@@ -10871,17 +10168,17 @@ function NLV_ListItemView(PropSet) {
     ListContext.ListItemMayBeExpanded,
     ListItem
   );
-  const ExpansionMarker = m`<div
+  const ExpansionMarker = m$1`<div
       class="expansion-marker ${ExpansionIcon} ${mayBeExpanded ? "" : "disabled"}"
       onClick=${mayBeExpanded && onExpansionClick}
     />`;
-  const Contents = !ListItemIsPlain && ListItemIsExpanded && !(ListContext.State.dragging && ListItemIsSelected) ? m`<${NLV_ListView} List=${innerList}
+  const Contents = !ListItemIsPlain && ListItemIsExpanded && !(ListContext.State.dragging && ListItemIsSelected) ? m$1`<${NLV_ListView} List=${innerList}
           ListContext=${ListContext} Rendering=${Rendering}
         />` : "";
   const { DropTargetItem, DropMode } = ListContext.State;
   const ListItemIsDropTarget = ListItem === DropTargetItem;
   const ListIsSortable = ListContext.ListIsSortable;
-  return m`<div class=${"listitemview" + (ListItemIsSelected ? " selected" : "") + (ListItemIsDropTarget ? ` DropTarget ${DropMode}` : "")} ref=${animatedElement} key=${ListItemKey} data-key=${ListItemKey}
+  return m$1`<div class=${"listitemview" + (ListItemIsSelected ? " selected" : "") + (ListItemIsDropTarget ? ` DropTarget ${DropMode}` : "")} ref=${animatedElement} key=${ListItemKey} data-key=${ListItemKey}
         draggable=${ListIsSortable} onClick=${onClick}
     > <div class="labelline">
         ${ExpansionMarker}
