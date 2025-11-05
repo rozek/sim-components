@@ -28,12 +28,12 @@
   const ValueIsPhoneNumber = ValueIsTextline // *C* should be implemented
 
   import { render, html }                              from 'htm/preact'
-  import { createContext, toChildArray, cloneElement } from 'preact'
-  import { createPortal }                              from 'preact/compat'
-  import { useId, useRef, useState, useEffect, useCallback, useMemo, useContext } from 'preact/hooks'
+  import { createContext, toChildArray, cloneElement } from 'htm/preact' // 'preact'
+  import { createPortal }                              from 'htm/preact' // 'preact/compat'
+  import { useId, useRef, useState, useEffect, useCallback, useMemo, useContext } from 'htm/preact' // 'preact/hooks'
   type VNode = any
 
-  import { useAutoAnimate } from '@formkit/auto-animate/preact'
+  import { useAutoAnimate } from 'auto-animate'
 
 /**** for MarkdownView ****/
 
@@ -1406,7 +1406,7 @@ console.warn(ErrorToShow)
   installStylesheetFor('sim-component.fullsized',`
     .sim-component.fullsized > * {
       display:block; position:relative;
-      left:0px; top:0px; width:100% !important; height:100% !important;
+      left:0px; top:0px; width:100%; height:100%;
     }
   `)
 
@@ -1615,8 +1615,8 @@ console.warn(ErrorToShow)
     }
 
     .sim-component.selective > * {
-      display:block; position:absolute;
-      left:0px; top:0px; width:100% ! important; height:100% ! important;
+      display:block; position:relative;
+      left:0px; top:0px; width:100%; height:100%;
     }
   `)
 
