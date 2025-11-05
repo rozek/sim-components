@@ -2,12 +2,6 @@ import { defineConfig } from 'vite'
 import pkg from './package.json'
 
 export default defineConfig({
-  resolve: {
-    alias: [
-      { find: 'preact/hooks', replacement: 'node_modules/preact/hooks/dist/hooks.es.js' },
-      { find: 'preact/compat', replacement: 'node_modules/preact/compat/dist/compat.es.js' }
-    ]
-  },
   build: {
     lib: {
       entry: './src/sim-components.ts',
@@ -19,7 +13,7 @@ export default defineConfig({
     outDir: './dist',
     emptyOutDir: true,
     rollupOptions: {
-      external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
+      external: [...Object.keys(pkg.peerDependencies || {})],
       output: {
         globals: {},
         entryFileNames: '[name].esm.js',
