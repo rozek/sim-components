@@ -28,12 +28,12 @@
   const ValueIsPhoneNumber = ValueIsTextline // *C* should be implemented
 
   import { render, html }                              from 'htm/preact'
-  import { createContext, toChildArray, cloneElement } from 'htm/preact' // 'preact'
-  import { createPortal }                              from 'htm/preact' // 'preact/compat'
-  import { useId, useRef, useState, useEffect, useCallback, useMemo, useContext } from 'htm/preact' // 'preact/hooks'
+  import { createContext, toChildArray, cloneElement } from 'preact'
+  import { createPortal }                              from 'preact/compat'
+  import { useId, useRef, useState, useEffect, useCallback, useMemo, useContext } from 'preact/hooks'
   type VNode = any
 
-  import { useAutoAnimate } from 'auto-animate'
+  import { useAutoAnimate } from '@formkit/auto-animate'
 
 /**** for MarkdownView ****/
 
