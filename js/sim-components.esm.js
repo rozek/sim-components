@@ -8,9 +8,9 @@ import {
 quoted, ValueIsBoolean, ValueIsNumber, ValueIsNumberInRange, ValueIsFiniteNumber, ValueIsInteger, ValueIsIntegerInRange, ValueIsOrdinal, ValueIsCardinal, ValueIsString, ValueIsStringMatching, ValueIsText, ValueIsTextline, ValueIsListSatisfying, ValueIsPlainObject, ValueIsFunction, ValueIsColor, ValueIsEMailAddress, ValueIsURL, ValueIsOneOf, ValidatorForClassifier, acceptNil, rejectNil, expectValue, expectBoolean, allowOrdinal, expectText, allowTextline, expectTextline, allowPlainObject, expectPlainObject, allowFunction, expectFunction, } from 'javascript-interface-library';
 const ValueIsPhoneNumber = ValueIsTextline; // *C* should be implemented
 import { html } from 'htm/preact';
-import { toChildArray } from 'htm/preact'; // 'preact'
-import { useId, useRef, useState, useEffect, useCallback, useMemo } from 'htm/preact'; // 'preact/hooks'
-import { useAutoAnimate } from 'auto-animate';
+import { toChildArray } from 'preact';
+import { useId, useRef, useState, useEffect, useCallback, useMemo } from 'preact/hooks';
+import { useAutoAnimate } from '@formkit/auto-animate';
 /**** for MarkdownView ****/
 import { Marked } from 'marked';
 import markedKatex from 'marked-katex-extension';
