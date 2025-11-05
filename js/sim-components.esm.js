@@ -10,7 +10,7 @@ const ValueIsPhoneNumber = ValueIsTextline; // *C* should be implemented
 import { html } from 'htm/preact';
 import { toChildArray } from 'preact';
 import { useId, useRef, useState, useEffect, useCallback, useMemo } from 'preact/hooks';
-import { useAutoAnimate } from '@formkit/auto-animate';
+import { useAutoAnimate } from '@formkit/auto-animate/preact';
 /**** for MarkdownView ****/
 import { Marked } from 'marked';
 import markedKatex from 'marked-katex-extension';
