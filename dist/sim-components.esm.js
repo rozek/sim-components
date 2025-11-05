@@ -1,13 +1,12 @@
 import { ValidatorForClassifier, acceptNil, rejectNil, ValueIsStringMatching, ValueIsFiniteNumber, ValueIsPlainObject, expectText, expectBoolean, quoted, ValueIsOneOf, ValueIsListSatisfying, ValueIsOrdinal, expectPlainObject, ValueIsFunction, expectFunction, allowTextline, ValueIsBoolean, ValueIsNumber, ValueIsNumberInRange, ValueIsInteger, ValueIsIntegerInRange, ValueIsCardinal, ValueIsString, ValueIsText, ValueIsTextline, ValueIsColor, ValueIsEMailAddress, ValueIsURL, allowPlainObject, expectValue, allowFunction, allowOrdinal, expectTextline } from "javascript-interface-library";
-import { h as h$1, options, toChildArray } from "preact";
+import { h as h$1, options as options$1, toChildArray } from "preact";
 import e$1 from "htm";
-import { useAutoAnimate } from "@formkit/auto-animate";
 import { Marked } from "marked";
 import { Marked as Marked2 } from "marked";
 import markedKatex from "marked-katex-extension";
 import { markedHighlight } from "marked-highlight";
 var m$1 = e$1.bind(h$1);
-var t, r, u, i, o = Object.is, f = 0, c = [], e = options, a = e.__b, v = e.__r, l = e.diffed, m = e.__c, p = e.unmount, s = e.__;
+var t, r, u, i, o = Object.is, f = 0, c = [], e = options$1, a = e.__b, v = e.__r, l = e.diffed, m = e.__c, p = e.unmount, s = e.__;
 function d(n, t2) {
   e.__h && e.__h(r, n, f || t2), f = 0;
   var u2 = r.__H || (r.__H = { __: [], __h: [] });
@@ -141,6 +140,579 @@ function C(n, t2) {
 }
 function D(n, t2) {
   return "function" == typeof t2 ? t2(n) : t2;
+}
+const parents = /* @__PURE__ */ new Set();
+const coords = /* @__PURE__ */ new WeakMap();
+const siblings = /* @__PURE__ */ new WeakMap();
+const animations = /* @__PURE__ */ new WeakMap();
+const intersections = /* @__PURE__ */ new WeakMap();
+const mutationObservers = /* @__PURE__ */ new WeakMap();
+const intervals = /* @__PURE__ */ new WeakMap();
+const options = /* @__PURE__ */ new WeakMap();
+const debounces = /* @__PURE__ */ new WeakMap();
+const enabled = /* @__PURE__ */ new WeakSet();
+let root;
+let scrollX = 0;
+let scrollY = 0;
+const TGT = "__aa_tgt";
+const DEL = "__aa_del";
+const NEW = "__aa_new";
+const handleMutations = (mutations) => {
+  const elements = getElements(mutations);
+  if (elements) {
+    elements.forEach((el) => animate(el));
+  }
+};
+const handleResizes = (entries) => {
+  entries.forEach((entry) => {
+    if (entry.target === root)
+      updateAllPos();
+    if (coords.has(entry.target))
+      updatePos(entry.target);
+  });
+};
+function isOffscreen(el) {
+  const rect = el.getBoundingClientRect();
+  const vw = (root === null || root === void 0 ? void 0 : root.clientWidth) || 0;
+  const vh = (root === null || root === void 0 ? void 0 : root.clientHeight) || 0;
+  return rect.bottom < 0 || rect.top > vh || rect.right < 0 || rect.left > vw;
+}
+function observePosition(el) {
+  const oldObserver = intersections.get(el);
+  oldObserver === null || oldObserver === void 0 ? void 0 : oldObserver.disconnect();
+  let rect = coords.get(el);
+  let invocations = 0;
+  const buffer = 5;
+  if (!rect) {
+    rect = getCoords(el);
+    coords.set(el, rect);
+  }
+  const { offsetWidth, offsetHeight } = root;
+  const rootMargins = [
+    rect.top - buffer,
+    offsetWidth - (rect.left + buffer + rect.width),
+    offsetHeight - (rect.top + buffer + rect.height),
+    rect.left - buffer
+  ];
+  const rootMargin = rootMargins.map((px) => `${-1 * Math.floor(px)}px`).join(" ");
+  const observer = new IntersectionObserver(() => {
+    ++invocations > 1 && updatePos(el);
+  }, {
+    root,
+    threshold: 1,
+    rootMargin
+  });
+  observer.observe(el);
+  intersections.set(el, observer);
+}
+function updatePos(el, debounce = true) {
+  clearTimeout(debounces.get(el));
+  const optionsOrPlugin = getOptions(el);
+  const delay = debounce ? isPlugin(optionsOrPlugin) ? 500 : optionsOrPlugin.duration : 0;
+  debounces.set(el, setTimeout(async () => {
+    const currentAnimation = animations.get(el);
+    try {
+      await (currentAnimation === null || currentAnimation === void 0 ? void 0 : currentAnimation.finished);
+      coords.set(el, getCoords(el));
+      observePosition(el);
+    } catch {
+    }
+  }, delay));
+}
+function updateAllPos() {
+  clearTimeout(debounces.get(root));
+  debounces.set(root, setTimeout(() => {
+    parents.forEach((parent) => forEach(parent, (el) => lowPriority(() => updatePos(el))));
+  }, 100));
+}
+function poll(el) {
+  setTimeout(() => {
+    intervals.set(el, setInterval(() => lowPriority(updatePos.bind(null, el)), 2e3));
+  }, Math.round(2e3 * Math.random()));
+}
+function lowPriority(callback) {
+  if (typeof requestIdleCallback === "function") {
+    requestIdleCallback(() => callback());
+  } else {
+    requestAnimationFrame(() => callback());
+  }
+}
+let resize;
+const supportedBrowser = typeof window !== "undefined" && "ResizeObserver" in window;
+if (supportedBrowser) {
+  root = document.documentElement;
+  new MutationObserver(handleMutations);
+  resize = new ResizeObserver(handleResizes);
+  window.addEventListener("scroll", () => {
+    scrollY = window.scrollY;
+    scrollX = window.scrollX;
+  });
+  resize.observe(root);
+}
+function getElements(mutations) {
+  const observedNodes = mutations.reduce((nodes, mutation) => {
+    return [
+      ...nodes,
+      ...Array.from(mutation.addedNodes),
+      ...Array.from(mutation.removedNodes)
+    ];
+  }, []);
+  const onlyCommentNodesObserved = observedNodes.every((node) => node.nodeName === "#comment");
+  if (onlyCommentNodesObserved)
+    return false;
+  return mutations.reduce((elements, mutation) => {
+    if (elements === false)
+      return false;
+    if (mutation.target instanceof Element) {
+      target(mutation.target);
+      if (!elements.has(mutation.target)) {
+        elements.add(mutation.target);
+        for (let i2 = 0; i2 < mutation.target.children.length; i2++) {
+          const child = mutation.target.children.item(i2);
+          if (!child)
+            continue;
+          if (DEL in child) {
+            return false;
+          }
+          target(mutation.target, child);
+          elements.add(child);
+        }
+      }
+      if (mutation.removedNodes.length) {
+        for (let i2 = 0; i2 < mutation.removedNodes.length; i2++) {
+          const child = mutation.removedNodes[i2];
+          if (DEL in child) {
+            return false;
+          }
+          if (child instanceof Element) {
+            elements.add(child);
+            target(mutation.target, child);
+            siblings.set(child, [
+              mutation.previousSibling,
+              mutation.nextSibling
+            ]);
+          }
+        }
+      }
+    }
+    return elements;
+  }, /* @__PURE__ */ new Set());
+}
+function target(el, child) {
+  if (!child && !(TGT in el))
+    Object.defineProperty(el, TGT, { value: el });
+  else if (child && !(TGT in child))
+    Object.defineProperty(child, TGT, { value: el });
+}
+function animate(el) {
+  var _a, _b;
+  const isMounted = el.isConnected;
+  const preExisting = coords.has(el);
+  if (isMounted && siblings.has(el))
+    siblings.delete(el);
+  if (((_a = animations.get(el)) === null || _a === void 0 ? void 0 : _a.playState) !== "finished") {
+    (_b = animations.get(el)) === null || _b === void 0 ? void 0 : _b.cancel();
+  }
+  if (NEW in el) {
+    add(el);
+  } else if (preExisting && isMounted) {
+    remain(el);
+  } else if (preExisting && !isMounted) {
+    remove(el);
+  } else {
+    add(el);
+  }
+}
+function raw(str) {
+  return Number(str.replace(/[^0-9.\-]/g, ""));
+}
+function getScrollOffset(el) {
+  let p2 = el.parentElement;
+  while (p2) {
+    if (p2.scrollLeft || p2.scrollTop) {
+      return { x: p2.scrollLeft, y: p2.scrollTop };
+    }
+    p2 = p2.parentElement;
+  }
+  return { x: 0, y: 0 };
+}
+function getCoords(el) {
+  const rect = el.getBoundingClientRect();
+  const { x, y: y2 } = getScrollOffset(el);
+  return {
+    top: rect.top + y2,
+    left: rect.left + x,
+    width: rect.width,
+    height: rect.height
+  };
+}
+function getTransitionSizes(el, oldCoords, newCoords) {
+  let widthFrom = oldCoords.width;
+  let heightFrom = oldCoords.height;
+  let widthTo = newCoords.width;
+  let heightTo = newCoords.height;
+  const styles = getComputedStyle(el);
+  const sizing = styles.getPropertyValue("box-sizing");
+  if (sizing === "content-box") {
+    const paddingY = raw(styles.paddingTop) + raw(styles.paddingBottom) + raw(styles.borderTopWidth) + raw(styles.borderBottomWidth);
+    const paddingX = raw(styles.paddingLeft) + raw(styles.paddingRight) + raw(styles.borderRightWidth) + raw(styles.borderLeftWidth);
+    widthFrom -= paddingX;
+    widthTo -= paddingX;
+    heightFrom -= paddingY;
+    heightTo -= paddingY;
+  }
+  return [widthFrom, widthTo, heightFrom, heightTo].map(Math.round);
+}
+function getOptions(el) {
+  return TGT in el && options.has(el[TGT]) ? options.get(el[TGT]) : { duration: 250, easing: "ease-in-out" };
+}
+function getTarget(el) {
+  if (TGT in el)
+    return el[TGT];
+  return void 0;
+}
+function isEnabled(el) {
+  const target2 = getTarget(el);
+  return target2 ? enabled.has(target2) : false;
+}
+function forEach(parent, ...callbacks) {
+  callbacks.forEach((callback) => callback(parent, options.has(parent)));
+  for (let i2 = 0; i2 < parent.children.length; i2++) {
+    const child = parent.children.item(i2);
+    if (child) {
+      callbacks.forEach((callback) => callback(child, options.has(child)));
+    }
+  }
+}
+function getPluginTuple(pluginReturn) {
+  if (Array.isArray(pluginReturn))
+    return pluginReturn;
+  return [pluginReturn];
+}
+function isPlugin(config) {
+  return typeof config === "function";
+}
+function remain(el) {
+  const oldCoords = coords.get(el);
+  const newCoords = getCoords(el);
+  if (!isEnabled(el))
+    return coords.set(el, newCoords);
+  if (isOffscreen(el)) {
+    coords.set(el, newCoords);
+    observePosition(el);
+    return;
+  }
+  let animation;
+  if (!oldCoords)
+    return;
+  const pluginOrOptions = getOptions(el);
+  if (typeof pluginOrOptions !== "function") {
+    let deltaLeft = oldCoords.left - newCoords.left;
+    let deltaTop = oldCoords.top - newCoords.top;
+    const deltaRight = oldCoords.left + oldCoords.width - (newCoords.left + newCoords.width);
+    const deltaBottom = oldCoords.top + oldCoords.height - (newCoords.top + newCoords.height);
+    if (deltaBottom == 0)
+      deltaTop = 0;
+    if (deltaRight == 0)
+      deltaLeft = 0;
+    const [widthFrom, widthTo, heightFrom, heightTo] = getTransitionSizes(el, oldCoords, newCoords);
+    const start = {
+      transform: `translate(${deltaLeft}px, ${deltaTop}px)`
+    };
+    const end = {
+      transform: `translate(0, 0)`
+    };
+    if (widthFrom !== widthTo) {
+      start.width = `${widthFrom}px`;
+      end.width = `${widthTo}px`;
+    }
+    if (heightFrom !== heightTo) {
+      start.height = `${heightFrom}px`;
+      end.height = `${heightTo}px`;
+    }
+    animation = el.animate([start, end], {
+      duration: pluginOrOptions.duration,
+      easing: pluginOrOptions.easing
+    });
+  } else {
+    const [keyframes] = getPluginTuple(pluginOrOptions(el, "remain", oldCoords, newCoords));
+    animation = new Animation(keyframes);
+    animation.play();
+  }
+  animations.set(el, animation);
+  coords.set(el, newCoords);
+  animation.addEventListener("finish", updatePos.bind(null, el, false), {
+    once: true
+  });
+}
+function add(el) {
+  if (NEW in el)
+    delete el[NEW];
+  const newCoords = getCoords(el);
+  coords.set(el, newCoords);
+  const pluginOrOptions = getOptions(el);
+  if (!isEnabled(el))
+    return;
+  if (isOffscreen(el)) {
+    observePosition(el);
+    return;
+  }
+  let animation;
+  if (typeof pluginOrOptions !== "function") {
+    animation = el.animate([
+      { transform: "scale(.98)", opacity: 0 },
+      { transform: "scale(0.98)", opacity: 0, offset: 0.5 },
+      { transform: "scale(1)", opacity: 1 }
+    ], {
+      duration: pluginOrOptions.duration * 1.5,
+      easing: "ease-in"
+    });
+  } else {
+    const [keyframes] = getPluginTuple(pluginOrOptions(el, "add", newCoords));
+    animation = new Animation(keyframes);
+    animation.play();
+  }
+  animations.set(el, animation);
+  animation.addEventListener("finish", updatePos.bind(null, el, false), {
+    once: true
+  });
+}
+function cleanUp(el, styles) {
+  var _a;
+  el.remove();
+  coords.delete(el);
+  siblings.delete(el);
+  animations.delete(el);
+  (_a = intersections.get(el)) === null || _a === void 0 ? void 0 : _a.disconnect();
+  setTimeout(() => {
+    if (DEL in el)
+      delete el[DEL];
+    Object.defineProperty(el, NEW, { value: true, configurable: true });
+    if (styles && el instanceof HTMLElement) {
+      for (const style in styles) {
+        el.style[style] = "";
+      }
+    }
+  }, 0);
+}
+function remove(el) {
+  var _a;
+  if (!siblings.has(el) || !coords.has(el))
+    return;
+  const [prev, next] = siblings.get(el);
+  Object.defineProperty(el, DEL, { value: true, configurable: true });
+  const finalX = window.scrollX;
+  const finalY = window.scrollY;
+  if (next && next.parentNode && next.parentNode instanceof Element) {
+    next.parentNode.insertBefore(el, next);
+  } else if (prev && prev.parentNode) {
+    prev.parentNode.appendChild(el);
+  } else {
+    (_a = getTarget(el)) === null || _a === void 0 ? void 0 : _a.appendChild(el);
+  }
+  if (!isEnabled(el))
+    return cleanUp(el);
+  const [top, left, width, height] = deletePosition(el);
+  const optionsOrPlugin = getOptions(el);
+  const oldCoords = coords.get(el);
+  if (finalX !== scrollX || finalY !== scrollY) {
+    adjustScroll(el, finalX, finalY, optionsOrPlugin);
+  }
+  let animation;
+  let styleReset = {
+    position: "absolute",
+    top: `${top}px`,
+    left: `${left}px`,
+    width: `${width}px`,
+    height: `${height}px`,
+    margin: "0",
+    pointerEvents: "none",
+    transformOrigin: "center",
+    zIndex: "100"
+  };
+  if (!isPlugin(optionsOrPlugin)) {
+    Object.assign(el.style, styleReset);
+    animation = el.animate([
+      {
+        transform: "scale(1)",
+        opacity: 1
+      },
+      {
+        transform: "scale(.98)",
+        opacity: 0
+      }
+    ], {
+      duration: optionsOrPlugin.duration,
+      easing: "ease-out"
+    });
+  } else {
+    const [keyframes, options2] = getPluginTuple(optionsOrPlugin(el, "remove", oldCoords));
+    if ((options2 === null || options2 === void 0 ? void 0 : options2.styleReset) !== false) {
+      styleReset = (options2 === null || options2 === void 0 ? void 0 : options2.styleReset) || styleReset;
+      Object.assign(el.style, styleReset);
+    }
+    animation = new Animation(keyframes);
+    animation.play();
+  }
+  animations.set(el, animation);
+  animation.addEventListener("finish", () => cleanUp(el, styleReset), {
+    once: true
+  });
+}
+function adjustScroll(el, finalX, finalY, optionsOrPlugin) {
+  const scrollDeltaX = scrollX - finalX;
+  const scrollDeltaY = scrollY - finalY;
+  const scrollBefore = document.documentElement.style.scrollBehavior;
+  const scrollBehavior = getComputedStyle(root).scrollBehavior;
+  if (scrollBehavior === "smooth") {
+    document.documentElement.style.scrollBehavior = "auto";
+  }
+  window.scrollTo(window.scrollX + scrollDeltaX, window.scrollY + scrollDeltaY);
+  if (!el.parentElement)
+    return;
+  const parent = el.parentElement;
+  let lastHeight = parent.clientHeight;
+  let lastWidth = parent.clientWidth;
+  const startScroll = performance.now();
+  function smoothScroll() {
+    requestAnimationFrame(() => {
+      if (!isPlugin(optionsOrPlugin)) {
+        const deltaY = lastHeight - parent.clientHeight;
+        const deltaX = lastWidth - parent.clientWidth;
+        if (startScroll + optionsOrPlugin.duration > performance.now()) {
+          window.scrollTo({
+            left: window.scrollX - deltaX,
+            top: window.scrollY - deltaY
+          });
+          lastHeight = parent.clientHeight;
+          lastWidth = parent.clientWidth;
+          smoothScroll();
+        } else {
+          document.documentElement.style.scrollBehavior = scrollBefore;
+        }
+      }
+    });
+  }
+  smoothScroll();
+}
+function deletePosition(el) {
+  var _a;
+  const oldCoords = coords.get(el);
+  const [width, , height] = getTransitionSizes(el, oldCoords, getCoords(el));
+  let offsetParent = el.parentElement;
+  while (offsetParent && (getComputedStyle(offsetParent).position === "static" || offsetParent instanceof HTMLBodyElement)) {
+    offsetParent = offsetParent.parentElement;
+  }
+  if (!offsetParent)
+    offsetParent = document.body;
+  const parentStyles = getComputedStyle(offsetParent);
+  const parentCoords = !animations.has(el) || ((_a = animations.get(el)) === null || _a === void 0 ? void 0 : _a.playState) === "finished" ? getCoords(offsetParent) : coords.get(offsetParent);
+  const top = Math.round(oldCoords.top - parentCoords.top) - raw(parentStyles.borderTopWidth);
+  const left = Math.round(oldCoords.left - parentCoords.left) - raw(parentStyles.borderLeftWidth);
+  return [top, left, width, height];
+}
+function autoAnimate(el, config = {}) {
+  if (supportedBrowser && resize) {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const isDisabledDueToReduceMotion = mediaQuery.matches && !isPlugin(config) && !config.disrespectUserMotionPreference;
+    if (!isDisabledDueToReduceMotion) {
+      enabled.add(el);
+      if (getComputedStyle(el).position === "static") {
+        Object.assign(el.style, { position: "relative" });
+      }
+      forEach(el, updatePos, poll, (element) => resize === null || resize === void 0 ? void 0 : resize.observe(element));
+      if (isPlugin(config)) {
+        options.set(el, config);
+      } else {
+        options.set(el, {
+          duration: 250,
+          easing: "ease-in-out",
+          ...config
+        });
+      }
+      const mo = new MutationObserver(handleMutations);
+      mo.observe(el, { childList: true });
+      mutationObservers.set(el, mo);
+      parents.add(el);
+    }
+  }
+  const controller = Object.freeze({
+    parent: el,
+    enable: () => {
+      enabled.add(el);
+    },
+    disable: () => {
+      enabled.delete(el);
+      forEach(el, (node) => {
+        const a2 = animations.get(node);
+        try {
+          a2 === null || a2 === void 0 ? void 0 : a2.cancel();
+        } catch {
+        }
+        animations.delete(node);
+        const d2 = debounces.get(node);
+        if (d2)
+          clearTimeout(d2);
+        debounces.delete(node);
+        const i2 = intervals.get(node);
+        if (i2)
+          clearInterval(i2);
+        intervals.delete(node);
+      });
+    },
+    isEnabled: () => enabled.has(el),
+    destroy: () => {
+      enabled.delete(el);
+      parents.delete(el);
+      options.delete(el);
+      const mo = mutationObservers.get(el);
+      mo === null || mo === void 0 ? void 0 : mo.disconnect();
+      mutationObservers.delete(el);
+      forEach(el, (node) => {
+        resize === null || resize === void 0 ? void 0 : resize.unobserve(node);
+        const a2 = animations.get(node);
+        try {
+          a2 === null || a2 === void 0 ? void 0 : a2.cancel();
+        } catch {
+        }
+        animations.delete(node);
+        const io = intersections.get(node);
+        io === null || io === void 0 ? void 0 : io.disconnect();
+        intersections.delete(node);
+        const i2 = intervals.get(node);
+        if (i2)
+          clearInterval(i2);
+        intervals.delete(node);
+        const d2 = debounces.get(node);
+        if (d2)
+          clearTimeout(d2);
+        debounces.delete(node);
+        coords.delete(node);
+        siblings.delete(node);
+      });
+    }
+  });
+  return controller;
+}
+function useAutoAnimate(options2) {
+  const element = F(null);
+  const [controller, setController] = y();
+  const setEnabled = (enabled2) => {
+    if (controller) {
+      enabled2 ? controller.enable() : controller.disable();
+    }
+  };
+  _(() => {
+    if (element.current instanceof HTMLElement)
+      setController(autoAnimate(element.current, {}));
+  }, []);
+  _(() => {
+    return () => {
+      var _a;
+      (_a = controller === null || controller === void 0 ? void 0 : controller.destroy) === null || _a === void 0 ? void 0 : _a.call(controller);
+    };
+  }, [controller]);
+  return [element, setEnabled];
 }
 function getDefaultExportFromCjs(x) {
   return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
@@ -5234,14 +5806,14 @@ function useDragging({
     const dy = y2 - StartPosition.current.y;
     return [dx, dy, x, y2, Event];
   };
-  function matchesSelector(Element, Selector) {
+  function matchesSelector(Element2, Selector) {
     switch (true) {
       case Selector == null:
         return true;
       case typeof Selector === "string":
-        return Element.matches(Selector);
+        return Element2.matches(Selector);
       default:
-        return Element === Selector;
+        return Element2 === Selector;
     }
   }
   return onPointerDown;
@@ -5403,14 +5975,14 @@ function useClickDragging({
     const dy = y2 - StartPosition.current.y;
     return [dx, dy, x, y2, Event];
   };
-  function matchesSelector(Element, Selector) {
+  function matchesSelector(Element2, Selector) {
     switch (true) {
       case Selector == null:
         return true;
       case typeof Selector === "string":
-        return Element.matches(Selector);
+        return Element2.matches(Selector);
       default:
-        return Element === Selector;
+        return Element2 === Selector;
     }
   }
   return onPointerDown;
